@@ -3,12 +3,12 @@ import axios from 'axios';
 import {Route, Switch} from 'react-router-dom';
 
 //components
-import ProfileLink from '../ProfileLink';
+import ProfileLink from '../../ProfileLink';
 import DogGuide from './DogGuide';
 import ManagerList from './ManagerList';
-import AddDogManagers from './Components/AddDogManagers';
+import AddDogManagers from './AddDogManagers';
 
-export class DogProfile extends Component {
+export default class DogProfile extends Component {
     state = {
         dog: {},
         dogId: this.props.match.params.id,

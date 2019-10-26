@@ -3,10 +3,10 @@ import axios from 'axios';
 import {Link} from 'react-router-dom';
 
 //components
-import Nav from '../Nav';
-import DataOverview from './DataOverview';
+import Nav from '../../Nav';
+import Tracker from './Components/Tracker';
 
-export default class Tracker extends Component {
+export default class DogHome extends Component {
     state = {
         dogId: this.props.match.params.id,
         dateNow: Date.now(),
@@ -52,7 +52,7 @@ export default class Tracker extends Component {
     componentDidMount() {
         axios({
             method: "GET",
-            url: `${process.env.REACT_APP_API}/dogs/dog/${dogId}`
+            url: `${process.env.REACT_APP_API}/dogs/dog/${this.state.dogId}`
         })
         .then((dog) => {
             this.setState({cookiesList: JSON.parse(dog.cookies)})
@@ -86,7 +86,7 @@ export default class Tracker extends Component {
                     <h1>{this.state.dateDay}</h1>
                     {this.state.trackings ? 
                         <div>
-                            <DataOverview
+                            <Tracker
                                 cookies={this.state.cookiesToday}
                                 poops={this.state.poopsToday}
                                 walks={this.state.walksToday}
@@ -100,10 +100,10 @@ export default class Tracker extends Component {
                         </div>
                     }
                     <div>
-                        <Link to={`/dog/${this.state.dogId}/walk`}><img src='/' alt='walk'/></Link>
-                        <Link to={`/dog/${this.state.dogId}/cookie`}><img src='/' alt='cookie'/></Link>
-                        <Link to={`/dog/${this.state.dogId}/ice`}><img src='/' alt='emergency'/></Link>
-                        <Link to={`/dog/${this.state.dogId}/dictionary`}><img src='/' alt='dictionary'/></Link>
+                        <Link to={`/dog/${this.state.dogId}/home/walk`}><img src='/' alt='walk'/></Link>
+                        <Link to={`/dog/${this.state.dogId}/home/cookie`}><img src='/' alt='cookie'/></Link>
+                        <Link to={`/dog/${this.state.dogId}/home/ice`}><img src='/' alt='emergency'/></Link>
+                        <Link to={`/dog/${this.state.dogId}/home/dictionary`}><img src='/' alt='dictionary'/></Link>
                     </div>
                 </div>
             </>

@@ -18,8 +18,19 @@ router.get('/email/:email', (req, res, next) => {
 
 // GET route => to get session user and populate
 router.get('/:id', (req, res, next) => {
-  User.find({id: req.params.id})
-      .populate('dogs', 'owner', 'dog_manager')
+  User.findById(req.params.id)
+     .populate({
+        path: 'owner',
+        populate: {
+                    path: 'dogs'
+                  }
+      })
+      .populate({
+        path: 'dog_manager',
+        populate: {
+                    path: 'dogs'
+                  }
+      })
       .then(user => {
         res.json(user);
       })

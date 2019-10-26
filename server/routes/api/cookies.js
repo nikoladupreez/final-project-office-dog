@@ -6,16 +6,17 @@ const User = require('../../models/user');
 const Dog = require('.../../models/dog');
 const Cookie = require('../../models/cookie'); 
 
-// GET route => to get all the cookies of a dog of today
-router.get('/dog/:id', (req, res, next) => {
-  Dog.findById({id: req.params.id})
-     .populate('cookies')
-     .then(dog => {
-        res.json(dog);
-     })
-     .catch(err => {
-        res.json(err.message);
-     })
-});
+// POST route => add new cookies
+router.post('/dog/:id/add-cookie', (req, res, next) => {
+   Cookie.create({
+      quantity: req.body.count,
+      dog: mongoose.Types.ObjectId(req.params.id),
+      dog_manager: mongoose.Types.ObjectId(req.body.user.id)
+   })
+   .then((cookie) => {
+      return Dog.update({id: req.params.id}, {$push: {cookies: cookie}})
+   })
+   .catch((err) => res.json(err.message);
+ });
   
 module.exports = router;

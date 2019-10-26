@@ -1,0 +1,40 @@
+.login-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.login-back-box {
+    width: 90%;
+}
+
+.login-logo {
+    width: 100%;
+    height: 200px;
+    background-color: gray;
+}
+
+.login-box {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+
+    form {
+        display: flex;
+        flex-direction: column;
+
+        div {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        button {
+            width: 100px;
+            height: 30px;
+            box-shadow: 2px 2px 2px gray;
+        };
+    }
+}

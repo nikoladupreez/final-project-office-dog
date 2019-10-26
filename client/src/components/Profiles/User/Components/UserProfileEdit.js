@@ -1,18 +1,17 @@
-import React, {Components} from 'react';
+import React, {Component} from 'react';
 import axios from 'axios';
 import qs from "querystring";
-import { createBrowserHistory } from 'history';
-const history = createBrowserHistory();
 
 //components
-import {getUser} from "../../utils/auth";
+import {getUser} from "../../../../utils/auth";
 
-export default class UserProfileEdit extends Components {
+export default class UserProfileEdit extends Component {
     constructor(props){
         super(props)
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
+
     state = {
         user: getUser(),
         image: this.state.user.image_URL,
@@ -37,7 +36,7 @@ export default class UserProfileEdit extends Components {
             data: qs.stringify(this.state),
         })
         .then((res) => {
-            history.push({pathname: '/user/profile'}); 
+            this.props.history.push({pathname: '/user/profile'}); 
         })
         .catch((err) => {
             console.log(err.message);

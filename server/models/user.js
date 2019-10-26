@@ -7,8 +7,7 @@ const User = new mongoose.Schema({
         required: [true, "Please enter your email!"]
     },
     password: {type: String, required: [true, "Please enter a password!"]},
-    firstname: {type: String, required: [true, "Please enter your first name!"]},
-    lastname : {type: String, required: [true, "Please enter your last name!"]},
+    name: {type: String, required: [true, "Please enter your full name!"]},
     display_name: String, 
     phone: {
         type: String, 
@@ -16,7 +15,7 @@ const User = new mongoose.Schema({
                 'Please enter a valid phone number!'], 
         required: [true, "Please enter your phone number!"]
     },
-    image_URL: {type: String, default: "./images/default"}, //change the default! front-end should also be able to find
+    avatar: String, 
     owner: {type: mongoose.Types.ObjectId, ref: "owner"}, 
     dog_manager: {type: mongoose.Types.ObjectId, ref: "dogManager"}
 },

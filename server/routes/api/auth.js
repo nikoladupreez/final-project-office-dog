@@ -8,7 +8,7 @@ const User       = require('../../models/user');
 
 // POST route => to create a new user
 router.post('/signup', (req, res, next) => {
-    const {email, password, firstname, lastname, displayName, phone, image} = req.body;
+    const {email, password, name, displayName, phone, avatar} = req.body;
   
     if (!email || !password) {
       res.status(400).json({ message: 'Provide email and password.' });
@@ -38,11 +38,10 @@ router.post('/signup', (req, res, next) => {
         const newUser = new User({
             email:  email,
             password: hashPass,
-            firstname: firstname,
-            lastname: lastname,
+            name: name,
             display_name: displayName,
-            phone: phone
-            // image_URL: image
+            phone: phone,
+            avatar: avatar
         });
   
         newUser.save(err => {

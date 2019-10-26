@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom'
 
 //components
-import {getUser, logout} from "../../utils/auth";
+import {getUser, logout} from "../utils/auth";
 
 export default class Nav extends Component {
     constructor(props){

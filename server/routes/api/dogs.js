@@ -31,56 +31,78 @@ router.get('/commands', (req, res, next) => {
          })
 })
 
+
+const createOwner = async () => {
+  return await Owner.create({dogs:[]});
+}
+
 // POST route => to create a new dogspace
 router.post('/add-dog', (req, res, next) => {
     let commandIds = req.body.commands;
     let commandObjectIds = [];
-    commandIds.forEach((commandId) => {
+
+    if(commandIds) {
+      commandIds.forEach((commandId) => {
       commandObjectIds.push(mongoose.Types.ObjectId(commandId))
-    });
+      });
+    }
+
+    let user = req.body.owner;
+
+    if(!user) res.status(400).send("Owner missing")
 
     Dog.create({
-        name: req.body.name,
-        breed: req.body.breed,
-        birthday: req.body.birthday,
-        gender: req.body.gender,
-        // avatar: req.body.avatar,
-        food_info: {
-          brand: req.body.foodBrand,
-          frequency: req.body.foodFreq,
-          grams: req.body.foodGrams,
-          human: req.body.foodHuman,
-          dangerous: req.body.foodDanger 
-        },
-        walk_info: {
-          avg_frequency: req.body.walkAvgFreq,
-          avg_km: req.body.walkAvgKm,
-          avg_minutes: req.body.walkAvgMinutes
-        },
-        poop_avg_frequency: req.body.poopAvgFreq,
-        cookies_avg_frequency: req.body.cookiesAvgFreq,
-        chip_number: req.body.chipNumber,
-        ice_1: {
-          name: req.body.ice1Name,
-          phone: req.body.ice1Phone
-        },
-        ice_2: {
-          name: req.body.ice2Name,
-          phone: req.body.ice2Phone
-        }, 
-        vet: {
-          name: req.body.vetName,
-          phone: req.body.vetPhone
-        },
-        commands: commandObjectIds,
-        owner: mongoose.Types.ObjectId(req.user.id),
-        })
-        .then(dog => {
-          res.json(dog);
-        })
-        .catch(err => {
-          res.json(err.message);
-        })
+      name: req.body.name,
+      breed: req.body.breed,
+      birthday: req.body.birthday,
+      gender: req.body.gender,
+      avatar: req.body.avatar,
+      food_info: {
+        brand: req.body.foodBrand,
+        frequency: req.body.foodFreq,
+        grams: req.body.foodGrams,
+        human: req.body.foodHuman,
+        dangerous: req.body.foodDanger 
+      },
+      walk_info: {
+        avg_frequency: req.body.walkAvgFreq,
+        avg_km: req.body.walkAvgKm,
+        avg_minutes: req.body.walkAvgMinutes
+      },
+      poop_avg_frequency: req.body.poopAvgFreq,
+      cookies_avg_frequency: req.body.cookiesAvgFreq,
+      chip_number: req.body.chipNumber,
+      ice_1: {
+        name: req.body.ice1Name,
+        phone: req.body.ice1Phone
+      },
+      ice_2: {
+        name: req.body.ice2Name,
+        phone: req.body.ice2Phone
+      }, 
+      vet: {
+        name: req.body.vetName,
+        phone: req.body.vetPhone
+      },
+      commands: commandObjectIds,
+      owner: mongoose.Types.ObjectId(user.id),
+      })
+      .then((dog) => {
+        if(!user.owner){
+          user.owner = createOwner();
+        } 
+
+        Owner.update({id: user.owner._id}, {$push: {dogs: dog}})
+              .then(() => {
+                res.json(dog);
+              })
+              .catch((err) => {
+                res.status(500).json(err.message);
+              })
+      })
+      .catch(err => {
+        res.status(500).json(err.message);
+      })
   });
 
 

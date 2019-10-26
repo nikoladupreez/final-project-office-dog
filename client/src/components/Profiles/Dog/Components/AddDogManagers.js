@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import axios from "axios";
 import qs from "querystring";
-import { createBrowserHistory } from 'history';
-const history = createBrowserHistory();
 
 //compontents
 import ListBox from './ListBox';
@@ -76,7 +74,7 @@ export default class AddDogManagers extends Component {
             data: qs.stringify(this.state.dogManagers),
         })
         .then((res) => {
-            history.push(`/dog/${this.state.dogId}/managers`); 
+            this.props.history.push(`/dog/${this.state.dogId}/managers`); 
         })
         .catch((err) => {
             console.log(err.message);

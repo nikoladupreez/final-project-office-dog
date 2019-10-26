@@ -2,24 +2,16 @@ import React, { Component } from 'react'
 import {Route, Switch} from 'react-router-dom';
 
 //components
-import DogProfile from '../Profiles/Dog/DogProfile'
-import UserProfile from '../Profiles/User/UserProfile'
-import Tracker from './Tracker';
+import DogProfileSpace from '../Profiles/Dog/Components/DogProfile'
+import DogHomeSpace from './DogHome/DogHomeSpace';
 
-export class Dogspace extends Component {
+export default class Dogspace extends Component {
     render() {
         return (
                 <Switch>
-                    <Route path='/dog/:id/profile'>
-                        <DogProfile/>
-                    </Route>
-                    <Route path='/dog/:id'>
-                        <Tracker/>
-                    </Route>
-                    <Route path='/user/profile'>
-                        <UserProfile/>
-                    </Route>
+                    <Route path='/dog/:id/home' components={DogHomeSpace}/>
+                    <Route path='/dog/:id/profile' components={DogProfileSpace}/>
                 </Switch>
         )
     }
-}
+};

@@ -1,0 +1,19 @@
+.index-container {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    img {
+        width: 250px;
+        height: 250px;
+        background-color: gray;
+    }
+
+    button {
+        margin: 20px;
+        width: 100px;
+        height: 20px;
+        box-shadow: 2px 2px 2px gray;
+    }
+}

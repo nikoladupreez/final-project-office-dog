@@ -3,11 +3,11 @@ import axios from 'axios';
 import {Route, Switch} from 'react-router-dom';
 
 //components
-import ProfileLink from '../ProfileLink';
+import ProfileLink from '../../ProfileLink';
 import UserProfileEdit from './UserProfileEdit';
-import {getUser} from "../../utils/auth";
+import {getUser} from "../../../../utils/auth";
 
-export class UserProfile extends Component {
+export default class UserProfile extends Component {
     state = {
         userPopulated: {},
         user: getUser()

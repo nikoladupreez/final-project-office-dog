@@ -4,7 +4,7 @@ import {Switch, Route} from 'react-router-dom';
 //components
 import {getUser} from "../../utils/auth";
 import DogForm from './components/DogForm';
-import DogConfirm from './components/DogConfirm';
+import ConfirmAdd from './components/ConfirmAdd';
 
 export default class AddDogspace extends Component {
     state = {
@@ -15,14 +15,8 @@ export default class AddDogspace extends Component {
         return (
             <>
                 <Switch>
-                    <Route path='/add-dog' component={DogForm}/>
-                    <Route path='/confirm-dog'>
-                        <DogConfirm
-                            ownerName={this.state.owner.firstname}
-                            dogName={this.props.location.state.dog.name}
-                            dogId={this.props.location.state.dog.id}
-                        />
-                    </Route>
+                    <Route exact path='/add-dog' component={DogForm}/>
+                    <Route exact path='/add-dog/confirm' component={ConfirmAdd}/>
                 </Switch>
             </>
         )
