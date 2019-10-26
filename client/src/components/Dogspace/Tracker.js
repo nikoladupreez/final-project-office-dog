@@ -9,8 +9,10 @@ import DataOverview from './DataOverview';
 export default class Tracker extends Component {
     state = {
         dogId: this.props.match.params.id,
-        weekDay: "",
-        dateDay: null,
+        dateNow: Date.now(),
+        dateToday: this.getDateString(this.state.dateNow),
+        weekDay: this.state.dateNow.getUTCDay(),
+        dateDay: this.state.dateNow.getUTCDate(),
         trackings: false,
         cookiesList: [],
         poopsList: [],
@@ -22,17 +24,29 @@ export default class Tracker extends Component {
 
     getCookiesToday() {
         let cookiesTotal = [...this.state.cookiesList];
-        cookiesTotal.filter((cookie) => {
-            return (cookie.added_at === Date.now()) //weergave verander
+        let cookies = cookiesTotal.filter((cookie) => {
+            let cookieDate = this.getDateString(cookie.added_at);
+            return (cookieDate === this.state.dateToday)
         })
+        this.setState({cookiesToday: cookies});
     }
 
     getPoopsToday() {
-        
+        let poopsTotal = [...this.state.poopsList];
+        let poops = poopsTotal.filter((poop) => {
+            let poopDate = this.getDateString(poop.added_at);
+            return (poopDate === this.state.dateToday)
+        })
+        this.setState({poopsToday: poops});
     }
 
     getWalksToday() {
-        
+        let walksTotal = [...this.state.walksList];
+        let walks = walksTotal.filter((walk) => {
+            let walkDate = this.getDateString(walk.added_at);
+            return (walkDate === this.state.dateToday)
+        })
+        this.setState({walksToday: walks});
     }
 
     componentDidMount() {
@@ -47,8 +61,12 @@ export default class Tracker extends Component {
         })
     }
 
-    getDateToday() {
-        return Date.now(); //weergave verander
+    getDateString(date) {
+        let month = date.getUTCMonth() + 1;
+        let day = date.getUTCDate();
+        let year = date.getUTCFullYear();
+        let dateShort = `${year}/${month}/${day}`;
+        return dateShort;
     }
 
     checkForTrackings() {
@@ -68,7 +86,11 @@ export default class Tracker extends Component {
                     <h1>{this.state.dateDay}</h1>
                     {this.state.trackings ? 
                         <div>
-                            <DataOverview/>
+                            <DataOverview
+                                cookies={this.state.cookiesToday}
+                                poops={this.state.poopsToday}
+                                walks={this.state.walksToday}
+                            />
                         </div>
                      :
 
@@ -78,10 +100,10 @@ export default class Tracker extends Component {
                         </div>
                     }
                     <div>
-                        <Link to=''><img src='' alt=''/></Link>
-                        <Link to=''><img src='' alt=''/></Link>
-                        <Link to=''><img src='' alt=''/></Link>
-                        <Link to=''><img src='' alt=''/></Link>
+                        <Link to={`/dog/${this.state.dogId}/walk`}><img src='/' alt='walk'/></Link>
+                        <Link to={`/dog/${this.state.dogId}/cookie`}><img src='/' alt='cookie'/></Link>
+                        <Link to={`/dog/${this.state.dogId}/ice`}><img src='/' alt='emergency'/></Link>
+                        <Link to={`/dog/${this.state.dogId}/dictionary`}><img src='/' alt='dictionary'/></Link>
                     </div>
                 </div>
             </>

@@ -37,8 +37,8 @@ const Dog = new mongoose.Schema({
     walks: [{type: mongoose.Schema.Types.ObjectId, ref: "walks"}],
     cookies: [{type: mongoose.Schema.Types.ObjectId, ref: "cookies"}],
     poops: [{type: mongoose.Schema.Types.ObjectId, ref: "poops"}],
-    owner: {type: mongoose.Types.ObjectId, ref: "owner"},
-    dog_managers: [{type: mongoose.Schema.Types.ObjectId, ref: "dogManager"}]
+    owner: {type: mongoose.Types.ObjectId, ref: "user"},
+    dog_managers: [{type: mongoose.Schema.Types.ObjectId, ref: "user"}]
 });
 
 module.exports = mongoose.model('dog', Dog);

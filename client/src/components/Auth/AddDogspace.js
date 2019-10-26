@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import {Switch, Route} from 'react-router-dom';
-import axios from "axios";
+
+//components
+import {getUser} from "../../utils/auth";
 import DogForm from './components/DogForm';
 import DogConfirm from './components/DogConfirm';
 
 export default class AddDogspace extends Component {
     state = {
-        owner: JSON.parse(localStorage.getItem('user'))
+        owner: getUser()
     }
 
     render() {

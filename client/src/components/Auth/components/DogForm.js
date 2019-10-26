@@ -4,6 +4,9 @@ import qs from "querystring";
 import { createBrowserHistory } from 'history';
 const history = createBrowserHistory();
 
+//components
+import {getUser} from "../../../utils/auth";
+
 export default class AddDogspace extends Component {
     constructor(props){
         super(props);
@@ -41,7 +44,7 @@ export default class AddDogspace extends Component {
         breedList: [], 
         iconList: [],
         commandList: [],
-        owner: JSON.parse(localStorage.getItem('user'))
+        owner: getUser()
     }
 
     getBreedList() {

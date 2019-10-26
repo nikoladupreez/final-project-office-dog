@@ -9,7 +9,6 @@ import Tracker from './Tracker';
 export class Dogspace extends Component {
     render() {
         return (
-            <>
                 <Switch>
                     <Route path='/dog/:id/profile'>
                         <DogProfile/>
@@ -21,7 +20,6 @@ export class Dogspace extends Component {
                         <UserProfile/>
                     </Route>
                 </Switch>
-            </>
         )
     }
 }

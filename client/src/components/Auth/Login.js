@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
+
+//components
 import {login} from "../../utils/auth";
-import Nav from "../Nav/Nav";
 
 
 export default class Login extends Component {
@@ -27,8 +28,6 @@ export default class Login extends Component {
 
     render() {
         return (
-            <>
-                <Nav />
                 <div>
                     <form onSubmit={this.handleSubmit}>
                         <input onChange={this.handleChange} value={this.state.email} placeholder="email" type="text" name="email"/>
@@ -36,7 +35,6 @@ export default class Login extends Component {
                         <button type="submit">Login</button>
                     </form>
                 </div>
-            </>
         )
     }
 }

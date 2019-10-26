@@ -84,7 +84,7 @@ router.post('/add-dog', (req, res, next) => {
   });
 
 
-  // GET route => to get a specific dog
+  // GET route => to get a specific dogspace
   router.get('/dog/:id', (req, res, next) => {
     Dog.findById(req.params.id)
        .populate('dog_managers', 'owner', 'cookies', 'walks', 'poops', 'commands')
@@ -96,13 +96,15 @@ router.post('/add-dog', (req, res, next) => {
        })
   });
 
+
   const createDogManager = async () => {
     return await DogManager.create();
   }
 
-  // POST route => to add dogmanagers to specific dog
+  // POST route => to add managers to specific dogspace
   router.post('/dog/:id/add-managers', (req, res, next) => {
-    let usersArray = req.body;
+    let usersArray = req.body; //users with managerId populated
+
     Dog.findById(req.params.id)
        .then((dog) => {
           usersArray.forEach((user) => {
@@ -112,7 +114,7 @@ router.post('/add-dog', (req, res, next) => {
 
             DogManager.update({id: user.dog_manager.id}, {$push: {dogs: dog}})
                       .then((manager) => {
-                         Dog.update({id: dog.id}, {$push: {dog_managers: manager}})
+                         Dog.update({id: dog.id}, {$push: {dog_managers: user}})
                             .catch((err) => res.json(err.message));
                       })
                       .catch((err) => res.json(err.message));

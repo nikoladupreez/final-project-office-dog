@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom'
-// import "./nav.scss";
+
+//components
 import {getUser, logout} from "../../utils/auth";
 
 export default class Nav extends Component {

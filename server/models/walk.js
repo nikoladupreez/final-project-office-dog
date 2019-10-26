@@ -1,7 +1,7 @@
 const mongoose require("mongoose");
 
 const Walk = new mongoose.Schema({
-    added_at: {type: Date, default: Date.now},
+    added_at: {type: Date, default: Date.now()},
     time_seconds: Number,
     distance_meters: Number,
     dog: {type: mongoose.Types.ObjectId, ref: "dog"},
@@ -11,4 +11,3 @@ const Walk = new mongoose.Schema({
 
 module.exports = mongoose.model('walk', Walk);
 
-//can you also save an image of the route?

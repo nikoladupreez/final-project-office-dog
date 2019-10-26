@@ -9,6 +9,7 @@ const User = new mongoose.Schema({
     password: {type: String, required: [true, "Please enter a password!"]},
     firstname: {type: String, required: [true, "Please enter your first name!"]},
     lastname : {type: String, required: [true, "Please enter your last name!"]},
+    display_name: String, 
     phone: {
         type: String, 
         match:  [/^((\+|00(\s|\s?\-\s?)?)31(\s|\s?\-\s?)?(\(0\)[\-\s]?)?|0)[1-9]((\s|\s?\-\s?)?[0-9])((\s|\s?-\s?)?[0-9])((\s|\s?-\s?)?[0-9])\s?[0-9]\s?[0-9]\s?[0-9]\s?[0-9]\s?[0-9]$/, 
