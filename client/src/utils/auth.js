@@ -52,7 +52,9 @@ export const getUser = function(){
     }
 
 export const logout = function(navigate){
+        debugger;
        return axios({
+            method: "POST",
             url: "/auth/logout"
         })
         .then((res)=> {

@@ -6,10 +6,14 @@ const User = require('../../models/user');
 
 // GET route => to get user by email and populate with manager
 router.get('/email/:email', (req, res, next) => {
-    User.find({email: req.params.email})
+    User.findOne({email: req.params.email})
         .populate('dog_manager')
         .then(user => {
-          res.json(user);
+          if(user === null){
+            res.status(404).json({message: 'User not found'});
+          } else {
+            res.json(user);
+          }
         })
         .catch(err => {
           res.json(err.message);
@@ -19,24 +23,24 @@ router.get('/email/:email', (req, res, next) => {
 // GET route => to get session user and populate
 router.get('/:id', (req, res, next) => {
   User.findById(req.params.id)
-     .populate({
-        path: 'owner',
-        populate: {
-                    path: 'dogs'
-                  }
-      })
       .populate({
-        path: 'dog_manager',
-        populate: {
-                    path: 'dogs'
-                  }
-      })
-      .then(user => {
-        res.json(user);
-      })
-      .catch(err => {
-        res.json(err.message);
-      })
+          path: 'owner',
+          populate: {
+                      path: 'dogs'
+                    }
+        })
+        .populate({
+          path: 'dog_manager',
+          populate: {
+                      path: 'dogs'
+                    }
+        })
+        .then(user => {
+          res.json(user);
+        })
+        .catch(err => {
+          res.json(err.message);
+        })
 });
 
 // POST route => edit user info

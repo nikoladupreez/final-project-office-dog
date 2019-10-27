@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from "axios";
 // import qs from "querystring";
-import {getUser} from "../../../utils/auth";
+import {getUser, setUser} from "../../../utils/auth";
 
 //components
 
@@ -50,7 +50,7 @@ export default class AddDogspace extends Component {
         vetName: "",
         vetPhone: "",
         commands: [],
-        owner: getUser(),
+        user: getUser(),
         page: 1
     }
 
@@ -98,7 +98,6 @@ export default class AddDogspace extends Component {
     }
 
     handleCheckbox(e){
-        debugger; 
         let array = [...this.state[e.target.name]];
         if(e.target.checked){         
             array.push(e.target.value)
@@ -121,6 +120,7 @@ export default class AddDogspace extends Component {
 
     handleSubmit(e) {
         debugger;
+        let user = this.state.user;
         axios({
             method: "POST",
             url: `${process.env.REACT_APP_API}/dogs/add-dog`,
@@ -128,7 +128,20 @@ export default class AddDogspace extends Component {
             data: JSON.stringify(this.state)
         })
         .then((res) => {
-            this.props.history.push({pathname: '/add-dog/confirm', state: res.data}); 
+            debugger;
+            if(!user.owner){
+                axios({
+                    method: "GET",
+                    url: `${process.env.REACT_APP_API}/users/${user._id}`
+                })
+                .then((updatedUser) => {
+                    setUser(updatedUser.data);
+                    this.props.history.push({pathname: '/add-dog/confirm', state: res.data}); 
+                })
+                .catch((err) => console.log(err.message));
+            } else {
+                this.props.history.push({pathname: '/add-dog/confirm', state: res.data}); 
+            }
         })
         .catch((err) => console.log(err.message));
     }
@@ -259,7 +272,7 @@ export default class AddDogspace extends Component {
                            <label>Chip nr {this.state.name}</label>
                            <input required onChange={this.handleChange} value={this.state.chipNumber} placeholder="0000 1234578" type="text" name="chipNumber"/>
                            <label>Your phone nr</label>
-                           <p>{this.state.owner.phone}</p>
+                           <p>{this.state.user.phone}</p>
                            <label>Emergency contact 1</label>
                            <input required onChange={this.handleChange} value={this.state.ice1Name} placeholder="Name" type="text" name="ice1Name"/>
                            <input required onChange={this.handleChange} value={this.state.ice1Phone} placeholder="Phone nr" type="text" name="ice1Phone"/>
@@ -279,7 +292,7 @@ export default class AddDogspace extends Component {
                            <label>Choose commands {this.state.name} knows</label>
                            {this.commandList.map((command, index) => {
                                return (
-                                    <label><input key={index} onChange={this.handleCheckbox} value={command._id} type="checkbox" name="commands"/>{command.commando}</label>
+                                    <label key={index}><input key={index} onChange={this.handleCheckbox} value={command._id} type="checkbox" name="commands"/>{command.commando}</label>
                                )
                            })}
                            <label>English translation</label>     {/* What is suppose to happen here? */}

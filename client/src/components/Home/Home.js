@@ -15,7 +15,15 @@ export default class Home extends Component {
     }
 
     userHasDogs() {
-        if(this.state.myDogList.length > 0 || this.state.coworkerDogList.length > 0) {
+        if(this.state.myDogList.length > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    userManagesDogs() {
+        if(this.state.coworkerDogList.length > 0) {
             return true;
         } else {
             return false;
@@ -28,10 +36,10 @@ export default class Home extends Component {
             url: `${process.env.REACT_APP_API}/users/${this.state.user._id}`
         })
         .then((user) => {
-            this.setState({userPopulated: user});
+            this.setState({userPopulated: user.data});
 
-            if(user.owner) this.setState({myDogList: user.owner.dogs});
-            if(user.dog_manager) this.setState({coworkerDogList: user.dog_manager.dogs});
+            if(user.data.owner) this.setState({myDogList: user.data.owner.dogs});
+            if(user.data.dog_manager) this.setState({coworkerDogList: user.data.dog_manager.dogs});
         })
         .catch((err) => console.log(err.message));
     }
@@ -46,7 +54,7 @@ export default class Home extends Component {
                             <Link to='/user/profile'><img src='/' alt='user-profile'/></Link>
                         </div>
                     </div>
-                    <div className={!this.userHasDogs() ? 'dog-container' : 'hidden'}>
+                    <div className={!this.userHasDogs() && !this.userManagesDogs() ? 'dog-container' : 'hidden'}>
                         <h1>Whoops! No dogs yet..</h1>
                     </div>
                     <div className={this.userHasDogs() ? 'dog-container' : 'hidden'}>
@@ -56,13 +64,15 @@ export default class Home extends Component {
                                 return (
                                     <DogspaceBox
                                         key={index}
-                                        id={dog.id}
+                                        id={dog._id}
                                         avatar={dog.avatar}
                                         name={dog.name}
                                     />
                                 )
                             })}
                         </div>
+                    </div>
+                    <div className={this.userManagesDogs() ? 'dog-container' : 'hidden'}>
                         <h1>My coworker's dogs</h1>
                         <div>
                             {this.state.coworkerDogList.map((dog, index) => {

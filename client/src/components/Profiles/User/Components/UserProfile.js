@@ -1,33 +1,43 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import {Route, Switch} from 'react-router-dom';
 
 //components
 import ProfileLink from '../../ProfileLink';
-import UserProfileEdit from './UserProfileEdit';
-import {getUser} from "../../../../utils/auth";
+import {getUser, logout} from "../../../../utils/auth";
 
 export default class UserProfile extends Component {
-    state = {
-        userPopulated: {},
-        user: getUser()
+    constructor(props){
+        super(props)
+        this.state = {
+            userPopulated: {},
+            user: getUser()
+        }
+        this.logoutUser = this.logoutUser.bind(this);
+        this.goBack = this.goBack.bind(this);
     }
 
     componentDidMount() {
         axios({
             method: "GET",
-            url: `${process.env.REACT_APP_API}/users/${this.state.user.id}`
+            url: `${process.env.REACT_APP_API}/users/${this.state.user._id}`
         })
-        .then((user) => this.setState({userPopulated: JSON.parse(user)}))
+        .then((user) => this.setState({userPopulated: user}))
         .catch((err) => console.log(err.message));
+    }
+
+    logoutUser() {
+        logout(this.props.history);
+    }
+
+    goBack() {
+        this.props.history.go(-1);
     }
 
     render() {
         return (
-            <Switch>
-                <Route exact path='/user/profile'>
                     <div>
                         <div>
+                            <button onClick={this.goBack}>Back</button>
                             <img src='/' alt='user-icon'/>
                             <div>
                                 <h1>{this.state.user.display_name}</h1>
@@ -38,14 +48,13 @@ export default class UserProfile extends Component {
                         </div>
                         <div>
                             <ProfileLink url='/user/edit-profile' icon='/' title='Edit profile'/>
+                            <ProfileLink url='/home' icon='/' title='Dogspaces'/>
+                            <div onClick={this.logoutUser}>
+                                <img src='/' alt='icon'/>
+                                <h1>Logout</h1>
+                            </div>
                         </div>
                     </div>
-                 </Route>
-                 <Route exact path='/user/edit-profile'>
-                     <UserProfileEdit/>
-                 </Route>
-            </Switch>
-            
         )
     }
 };

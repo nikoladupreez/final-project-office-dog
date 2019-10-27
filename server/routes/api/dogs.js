@@ -7,6 +7,9 @@ const Owner = require('../../models/owner');
 const Dog = require('../../models/dog');
 const Command = require('../../models/command');
 const DogManager = require('../../models/dogManager');
+const Poop = require('../../models/poop');
+const Cookie = require('../../models/cookie');
+const Walk = require('../../models/walk');
 
 
 // GET route => to get all the dogspaces
@@ -32,10 +35,6 @@ router.get('/commands', (req, res, next) => {
 })
 
 
-const createOwner = async () => {
-  return await Owner.create({dogs:[]});
-}
-
 // POST route => to create a new dogspace
 router.post('/add-dog', (req, res, next) => {
     let commandIds = req.body.commands;
@@ -47,9 +46,8 @@ router.post('/add-dog', (req, res, next) => {
       });
     }
 
-    let user = req.body.owner;
-
-    if(!user) res.status(400).send("Owner missing")
+    let user = req.body.user;
+    if(!user) res.status(400).json({message: "Owner missing!"})
 
     Dog.create({
       name: req.body.name,
@@ -85,23 +83,33 @@ router.post('/add-dog', (req, res, next) => {
         phone: req.body.vetPhone
       },
       commands: commandObjectIds,
-      owner: mongoose.Types.ObjectId(user.id),
+      owner: mongoose.Types.ObjectId(user._id),
       })
       .then((dog) => {
         if(!user.owner){
-          user.owner = createOwner();
-        } 
-
-        Owner.update({id: user.owner._id}, {$push: {dogs: dog}})
-              .then(() => {
-                res.json(dog);
-              })
-              .catch((err) => {
-                res.status(500).json(err.message);
-              })
+          Owner.create({dogs:[mongoose.Types.ObjectId(dog.id)]})
+               .then((owner) => {
+                  User.update({_id: user._id}, {owner: mongoose.Types.ObjectId(owner.id)})
+                      .then((updatedUser) => {
+                        res.json(dog);
+                      })
+                      .catch((err) => res.status(500).json({message: "Something went wrong with updating the user.", error: err}))
+               })
+               .catch((err) => {
+                  res.status(500).json({ message:'Something went wrong with creating the owner.', error: err});
+              });   
+        } else {
+          Owner.updateOne({id: user.owner.id}, {$push: {dogs: dog}})
+               .then((updatedOwner) => {
+                  res.json(dog);
+               })
+               .catch((err) => {
+                  res.status(500).json({ message:'Something went wrong with updating the owner.', error: err});
+                })
+        }
       })
-      .catch(err => {
-        res.status(500).json(err.message);
+      .catch((err) => {
+          res.status(500).json({message:'Something went wrong with saving the dog to the database.', error: err});
       })
   });
 
@@ -109,7 +117,12 @@ router.post('/add-dog', (req, res, next) => {
   // GET route => to get a specific dogspace
   router.get('/dog/:id', (req, res, next) => {
     Dog.findById(req.params.id)
-       .populate('dog_managers', 'owner', 'cookies', 'walks', 'poops', 'commands')
+       .populate('walks')
+       .populate('cookies')
+       .populate('poops')
+       .populate('owner')
+       .populate('commands')
+       .populate('dog_managers')
        .then(dog => {
           res.json(dog);
        })
@@ -119,30 +132,63 @@ router.post('/add-dog', (req, res, next) => {
   });
 
 
-  const createDogManager = async () => {
-    return await DogManager.create();
+  const createDogManager = async (dog) => {
+    return await DogManager.create({dogs: [mongoose.Types.ObjectId(dog.id)]});
   }
 
   // POST route => to add managers to specific dogspace
   router.post('/dog/:id/add-managers', (req, res, next) => {
     let usersArray = req.body; //users with managerId populated
-
+    debugger;
     Dog.findById(req.params.id)
        .then((dog) => {
           usersArray.forEach((user) => {
             if(!user.dog_manager){
-              user.dog_manager = createDogManager();
-            } 
-
-            DogManager.update({id: user.dog_manager.id}, {$push: {dogs: dog}})
-                      .then((manager) => {
-                         Dog.update({id: dog.id}, {$push: {dog_managers: user}})
-                            .catch((err) => res.json(err.message));
-                      })
-                      .catch((err) => res.json(err.message));
+              DogManager.create({dogs:[mongoose.Types.ObjectId(dog.id)]})
+                        .then((manager) => {
+                            User.updateOne({_id: user._id}, {dog_manager: mongoose.Types.ObjectId(manager.id)})
+                                .then((updatedUser) => {
+                                    Dog.updateOne({id: dog.id}, {$push: {dog_managers: mongoose.Types.ObjectId(user._id)}})
+                                       .then((updatedDog) => {
+                                          res.json(updatedDog);
+                                       })
+                                       .catch((err) => res.status(500).json({message: "Something went wrong with updating the dog", error: err}));
+                                })
+                                .catch((err) => res.status(500).json({message: "Something went wrong with updating the user.", error: err}));
+                        })
+                        .catch((err) => res.status(500).json({ message:'Something went wrong with creating the dogmanager.', error: err}));   
+            } else {
+              DogManager.updateOne({id: user.dog_manager.id}, {$push: {dogs: dog}})
+                   .then((updatedManager) => {
+                        Dog.updateOne({id: dog.id}, {$push: {dog_managers: mongoose.Types.ObjectId(user._id)}})
+                           .then((updatedDog) => {
+                              res.json(updatedDog);
+                           })
+                           .catch((err) => res.status(500).json({message: "Something went wrong with updating the dog", error: err}));
+                   })
+                   .catch((err) => {
+                      res.status(500).json({ message:'Something went wrong with updating the dogmanager.', error: err});
+                    })
+            }
           })
+       })
+       .catch((err) => {
+          res.status(500).json({message: "Something went wrong with finding the dog in the database.", error: err});
        })
   })
 
 
   module.exports = router;
+
+  // if(!user.dog_manager){
+  //   createDogManager(dog);
+  // } 
+
+  // DogManager.update({id: user.dog_manager.id}, {$push: {dogs: dog}})
+  //           .then((manager) => {
+  //              Dog.update({id: dog.id}, {$push: {dog_managers: user}})
+  //                 .catch((err) => res.json(err.message));
+  //           })
+  //           .catch((err) => {
+  //             res.status(500).json({message: "Something went wrong with updating the manager", error: err});
+  //           })

@@ -5,12 +5,12 @@ import {Route, Switch} from 'react-router-dom';
 import ManagerList from './Components/ManagerList';
 import AddManagers from './Components/AddDogManagers';
 
-export class DogProfileSpace extends Component {
+export default class DogManagerSpace extends Component {
     render() {
         return (
                 <Switch>
-                    <Route exact path='/dog/:id/profile/managers' components={ManagerList}/>
-                    <Route exact path='/dog/:id/profile/managers/add' components={AddManagers}/>
+                    <Route exact path='/dog/:id/profile/managers/add' component={AddManagers}/>
+                    <Route exact path='/dog/:id/profile/managers' component={ManagerList}/>
                 </Switch>
         )
     }

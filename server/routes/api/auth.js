@@ -35,25 +35,18 @@ router.post('/signup', (req, res, next) => {
         const salt     = bcrypt.genSaltSync(10);
         const hashPass = bcrypt.hashSync(password, salt);
   
-        const newUser = new User({
+        User.create({
             email:  email,
             password: hashPass,
             name: name,
             display_name: displayName,
             phone: phone,
             avatar: avatar
-        });
-  
-        newUser.save(err => {
-            if (err) {
-                res.status(400).json({ message: 'Something went wrong with saving the user to database.', error: err });
-                return;
-            }
-            
+        })
+        .then((user) => {
             // Automatically log in user after sign up
             // .login() here is actually predefined passport method
-            req.login(newUser, (err) => {
-
+            req.login(user, (err) => {
                 if (err) {
                     res.status(500).json({ message: 'Something went wrong with logging in after signup.' });
                     return;
@@ -61,16 +54,18 @@ router.post('/signup', (req, res, next) => {
             
                 // Send the user's information to the frontend
                 // We can use also: res.status(200).json(req.user);
-                res.status(200).json(newUser);
-            });
-        });
+                res.status(200).json(user);
+            })
+        })
+        .catch((err) => {
+            res.status(400).json({ message: 'Something went wrong with saving the user to database.', error: err });
+        })
     });
 });
 
 
 // POST route => to log a user in 
 router.post('/login', (req, res, next) => {
-    debugger
     passport.authenticate('local', (err, user, failureDetails) => {
         if (err) {
             res.status(500).json({ message: 'Something went wrong authenticating the user' });
@@ -109,6 +104,7 @@ router.get('/loggedin', (req, res, next) => {
 
 // POST route => to log a user out
 router.post('/logout', (req, res, next) => {
+    debugger;
     // req.logout() is defined by passport
     req.logout();
     res.status(200).json({ message: 'Log out success!' });

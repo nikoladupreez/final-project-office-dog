@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
-import qs from "querystring";
 import {getUser} from "../../../../utils/auth";
 
 export default class Cookie extends Component {
     constructor(props) {
         super(props)
-        this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.increaseCount = this.increaseCount.bind(this);
+        this.decreaseCount = this.decreaseCount.bind(this);
     }
 
     state = {
@@ -17,19 +17,30 @@ export default class Cookie extends Component {
         dogId: this.props.match.params.id
     }
 
-    handleChange(e) {
-        this.setState({count: e.target.value})
+    increaseCount() {
+        let count = this.state.count;
+        let countNew = count + 1;
+        this.setState({count: countNew});
+    }
+
+    decreaseCount() {
+        if (this.state.count > 0){
+            let count = this.state.count;
+            let countNew = count - 1;
+            this.setState({count: countNew});
+        }
     }
 
     handleSubmit() {
+        debugger;
         axios({
             method: "POST",
-            url: `${process.env.REACT_APP_API}/dog/${this.state.dogId}/add-cookie`,
-            headers: { 'content-type': 'application/x-www-form-urlencoded' },
-            data: qs.stringify(this.state)
+            url: `${process.env.REACT_APP_API}/cookies/dog/${this.state.dogId}/add`,
+            headers: { 'content-type': 'application/json' },
+            data: JSON.stringify(this.state)
         })
         .then((res) => {
-            this.props.history.push(`/dog/${this.state.dogId}`);
+            this.props.history.push(`/dog/${this.state.dogId}/home`);
         })
         .catch((err) => console.log(err.message));
     }
@@ -39,8 +50,9 @@ export default class Cookie extends Component {
             <div>
                 <Link to={`/dog/${this.state.dogId}`}><img src='/' alt='back-link'/></Link>
                 <h1>Cookies</h1>
-                <img src='/' alt='cookie'/>
-                <input onChange={this.handleChange} type='number' />
+                <img onClick={this.increaseCount} src='/' alt='cookie'/>
+                <p>{this.state.count}</p>
+                <p onClick={this.decreaseCount}>Less</p>
                 <button onClick={this.handleSubmit}>Add cookies</button>
             </div>
         )

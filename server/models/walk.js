@@ -1,7 +1,7 @@
-const mongoose require("mongoose");
+const mongoose = require("mongoose");
 
 const Walk = new mongoose.Schema({
-    added_at: {type: Date, default: Date.now()},
+    added_at: {type: Date, default: new Date()},
     time_seconds: Number,
     distance_meters: Number,
     dog: {type: mongoose.Types.ObjectId, ref: "dog"},

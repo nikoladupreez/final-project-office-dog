@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const Dog = new mongoose.Schema({
     name: String, 
     breed: {type: String, default: "Unknown"},
-    birthday: {type: String, default: Date.now().toString()},
+    birthday: {type: String, default: "Unknown"},
     gender: String, 
     avatar: String, 
     food_info: {
@@ -34,9 +34,9 @@ const Dog = new mongoose.Schema({
         phone: String
     },
     commands: [{type: mongoose.Schema.Types.ObjectId, ref: "command"}],
-    walks: [{type: mongoose.Schema.Types.ObjectId, ref: "walks"}],
-    cookies: [{type: mongoose.Schema.Types.ObjectId, ref: "cookies"}],
-    poops: [{type: mongoose.Schema.Types.ObjectId, ref: "poops"}],
+    walks: [{type: mongoose.Schema.Types.ObjectId, ref: "walk"}],
+    cookies: [{type: mongoose.Schema.Types.ObjectId, ref: "cookie"}],
+    poops: [{type: mongoose.Schema.Types.ObjectId, ref: "poop"}],
     owner: {type: mongoose.Types.ObjectId, ref: "user"},
     dog_managers: [{type: mongoose.Schema.Types.ObjectId, ref: "user"}]
 },

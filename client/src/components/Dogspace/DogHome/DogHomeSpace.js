@@ -12,11 +12,11 @@ export default class DogHomeSpace extends Component {
     render() {
         return (
                 <Switch>
-                    <Route exact path='/dog/:id/home' components={DogHome}/>
-                    <Route exact path='/dog/:id/home/walk' components={Walker}/>
-                    <Route exact path='/dog/:id/home/cookie' components={Cookie}/>
-                    <Route exact path='/dog/:id/home/ice' components={Ice}/>
-                    <Route exact path='/dog/:id/home/dictionary' components={Dictionary}/>
+                    <Route exact path='/dog/:id/home/walk' component={Walker}/>
+                    <Route exact path='/dog/:id/home/cookie' component={Cookie}/>
+                    <Route exact path='/dog/:id/home/ice' component={Ice}/>
+                    <Route exact path='/dog/:id/home/dictionary' component={Dictionary}/>
+                    <Route exact path='/dog/:id/home' component={DogHome}/>
                 </Switch>
         )
     }
