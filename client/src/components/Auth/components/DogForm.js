@@ -1,25 +1,24 @@
 import React, { Component } from 'react';
 import axios from "axios";
-import mobiscroll from "@mobiscroll/react";
-import "@mobiscroll/react/dist/css/mobiscroll.min.css";
 import {getUser, setUser} from "../../../utils/auth";
-import chevronIcon from '../../../images/light.svg';
+import chevronIcon from '../../../images/light.png';
 import crossIcon from '../../../images/cross.svg';
+import 'date-fns';
+import Grid from '@material-ui/core/Grid';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
 
 //style
 import '../../../styles/AddDog.scss';
-
-mobiscroll.settings = {
-    lang: 'en',
-    theme: 'ios'
-};
 
 export default class AddDogspace extends Component {
     constructor(props){
         super(props);
         this.handleChange = this.handleChange.bind(this);
         this.handleCheckbox = this.handleCheckbox.bind(this);
-        this.handleRadio = this.handleRadio.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.selectBreed = this.selectBreed.bind(this);
         this.deleteBreed = this.deleteBreed.bind(this);
@@ -48,35 +47,26 @@ export default class AddDogspace extends Component {
         gender: "",
         avatar: "",
         foodBrand: "",
-        foodFreq: 0,
+        foodFreq: 1,
         foodGrams: 0,
         foodHuman: "",
-        foodDanger: [], 
         walkAvgFreq: 0,
         walkAvgKm: 0,
         walkAvgMinutes: 0,
         poopAvgFreq: 0,
         cookiesAvgFreq: 0,
-        chipNumber: "",
         ice1Name: "",
         ice1Phone: "",
         ice2Name: "",
         ice2Phone: "",
         vetName: "",
+        vetCompany: "",
         vetPhone: "",
         commands: [],
         user: getUser(),
         breedsShown: [],
-        page: 1
-    }
-
-    goToNext(form){
-        let newPageNr = this.state.page + 1;
-        if (this.state.page === 2 && this.state.breed){
-            this.setState({page: newPageNr});
-        } else if (form.checkValidity()){
-            this.setState({page: newPageNr});
-        }
+        isValidated: true,
+        page: 3
     }
 
     getBreedList() {
@@ -110,6 +100,11 @@ export default class AddDogspace extends Component {
        .catch((err) => console.log(err));
     }
 
+    handleDateChange = (date) => {
+        this.getDogAge(date) 
+        this.setState({birthday: date});
+    };
+
     handleChange(e) {
         if(e.target.id === 'birthday'){
             this.getDogAge(e.target.value);
@@ -129,14 +124,6 @@ export default class AddDogspace extends Component {
             });
             this.setState({[e.target.name]: arrayNew});
         }  
-    }
-
-    handleRadio(e){
-        if(e.target.checked){
-            this.setState({
-                [e.target.name]: e.target.value
-            })
-        }
     }
 
     handleSubmit(e) {
@@ -167,6 +154,27 @@ export default class AddDogspace extends Component {
         .catch((err) => console.log(err.message));
     }
 
+    handleSearch(e) {
+        let searchQuery = e.target.value;
+        let searchResult = this.breedList.filter((breed) => {
+          return (breed.name.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1)
+        });
+        this.setState({breedsShown: searchResult});
+    }
+
+    handleSelect(selection) {
+        switch (this.state.page){
+            case 4:
+                this.setState({gender: selection});
+                break;
+            case 7:
+                this.setState({foodHuman: selection});
+                break;
+            default:
+                break; 
+        }
+    }
+
     goBack() {
        if(this.state.page === 1){
             this.props.history.go(-1);
@@ -175,6 +183,21 @@ export default class AddDogspace extends Component {
            let pageNew = page - 1;
            this.setState({page: pageNew});
        }
+    }
+
+    goToNext(form){
+        let newPageNr = this.state.page + 1;
+        if (this.state.page === 2 && this.state.breed){
+            this.setState({page: newPageNr});
+        } else if (this.state.page === 3 && this.state.age){
+            this.setState({page: newPageNr});
+        } else if (this.state.page === 4 && this.state.gender){
+            this.setState({page: newPageNr});
+        } else if (this.state.page === 8 && this.state.walkAvgFreq){
+            this.setState({page: newPageNr});
+        } else if (form.checkValidity()){
+            this.setState({page: newPageNr});
+        }
     }
 
     selectBreed = (breedName) => {  
@@ -187,20 +210,42 @@ export default class AddDogspace extends Component {
         this.setState({breed: ""});
     }
 
-    handleSearch = (e) => {
-        let searchQuery = e.target.value;
-        let searchResult = this.breedList.filter((breed) => {
-          return (breed.name.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1)
-        });
-        this.setState({breedsShown: searchResult});
-    }
-
     increaseNumber(target) {
         switch(target){
             case 'age':
                 let age = this.state.age;
                 let newAge = age + 1
                 this.setState({age: newAge});
+                break;
+            case 'foodFreq':
+                let foodFreq = this.state.foodFreq;
+                let newFoodFreq = foodFreq + 1
+                this.setState({foodFreq: newFoodFreq});
+                break;
+            case 'cookieFreq':
+                let cookieFreq = this.state.cookiesAvgFreq;
+                let newCookieFreq = cookieFreq + 1
+                this.setState({cookiesAvgFreq: newCookieFreq});
+                break;
+            case 'walkFreq':
+                let walkFreq = this.state.walkAvgFreq;
+                let newWalkFreq = walkFreq + 1
+                this.setState({walkAvgFreq: newWalkFreq});
+                break;
+            case 'walkKm':
+                let walkKm = this.state.walkAvgKm;
+                let newWalkKm = walkKm + 1
+                this.setState({walkAvgKm: newWalkKm});
+                break;
+            case 'walkMinutes':
+                let walkMin = this.state.walkAvgMinutes;
+                let newWalkMin = walkMin + 1
+                this.setState({walkAvgMinutes: newWalkMin});
+                break;
+            case 'poopFreq':
+                let poopFreq = this.state.poopAvgFreq;
+                let newPoopFreq = poopFreq + 1
+                this.setState({poopAvgFreq: newPoopFreq});
                 break;
             default:
                 break;
@@ -214,6 +259,48 @@ export default class AddDogspace extends Component {
                     let age = this.state.age;
                     let newAge = age - 1
                     this.setState({age: newAge});
+                }
+                break;
+            case 'foodFreq':
+                if(this.state.foodFreq > 1){
+                    let foodFreq = this.state.foodFreq;
+                    let newFoodFreq = foodFreq - 1
+                    this.setState({foodFreq: newFoodFreq});
+                }
+                break;
+            case 'cookieFreq':
+                if(this.state.cookiesAvgFreq > 0){
+                    let cookieFreq = this.state.cookiesAvgFreq;
+                    let newCookieFreq = cookieFreq - 1
+                    this.setState({cookiesAvgFreq: newCookieFreq});
+                }
+                break;
+            case 'walkFreq':
+                if(this.state.walkAvgFreq > 0){
+                    let walkFreq = this.state.walkAvgFreq;
+                    let newWalkFreq = walkFreq - 1
+                    this.setState({walkAvgFreq: newWalkFreq});
+                }
+                    break;
+            case 'walkKm':
+                if(this.state.walkAvgKm > 0){
+                    let walkKm = this.state.walkAvgKm;
+                    let newWalkKm = walkKm - 1
+                    this.setState({walkAvgKm: newWalkKm});
+                }
+                break;
+            case 'walkMinutes':
+                if(this.state.walkAvgMinutes > 0){
+                    let walkMin = this.state.walkAvgMinutes;
+                    let newWalkMin = walkMin - 1
+                    this.setState({walkAvgMinutes: newWalkMin});
+                }
+                break;
+            case 'poopFreq':
+                if(this.state.poopAvgFreq > 0){
+                    let poopFreq = this.state.poopAvgFreq;
+                    let newPoopFreq = poopFreq - 1
+                    this.setState({poopAvgFreq: newPoopFreq});
                 }
                 break;
             default:
@@ -234,8 +321,7 @@ export default class AddDogspace extends Component {
     getDogAge(dogBirthday) {
         let today = new Date();
         let yearToday = today.getFullYear();
-        let birthday = dogBirthday;
-        let birthYear = parseInt(birthday.slice(0,4));
+        let birthYear = dogBirthday.getFullYear();
    
         let age = yearToday - birthYear;
         this.setState({age: age});
@@ -255,7 +341,7 @@ export default class AddDogspace extends Component {
                                 <label>What is your dog's name?</label>
                                 <input required onChange={this.handleChange} value={this.state.name} placeholder="Takkie" type="text" name="name"/>
                                 <div className='dog-btn-box'>
-                                    <button onClick={() => {this.goToNext(this.formPage1)}}>Next</button>
+                                    <button onClick={() => {this.goToNext(this.formPage1)}} disabled={this.state.isValidated === false}>Next</button>
                                 </div>
                             </form>
                         </div>
@@ -272,7 +358,7 @@ export default class AddDogspace extends Component {
                                     <h2>{this.state.breed}</h2>
                                     <img src={crossIcon} alt='crossIcon' onClick={this.deleteBreed}/>
                                 </div>
-                                <button onClick={() => {this.goToNext()}}>Next</button>
+                                <button onClick={() => {this.goToNext()}} disabled={this.state.isValidated === false}>Next</button>
                             </div>
                         : 
                             <div className='dog-breed-list'>
@@ -289,11 +375,22 @@ export default class AddDogspace extends Component {
 
                     <div className={this.state.page === 3 ? 'dog-part-3' : 'hidden'}>
                         <h1>How old is {this.state.name}?</h1>
-                        <mobiscroll.FormGroup ref={form => this.formPage3 = form} onSubmit={(e) => {e.preventDefault(); return false}} className='dog-date-box'>
-                            <label>Date of Birth</label>
-                                <mobiscroll.Date display="bubble" onChange={this.handleChange} placeholder="yyyy/mm/dd" className='date-input'/>
-                        </mobiscroll.FormGroup>
-                            
+                        <MuiPickersUtilsProvider utils={DateFnsUtils} className='datepicker'>
+                            <Grid container justify="space-around">
+                                <KeyboardDatePicker
+                                disableToolbar
+                                variant="inline"
+                                format="dd-MM-yyyy"
+                                margin="normal"
+                                id="date-picker-inline"
+                                value={this.state.birthday ? this.state.birthday : new Date()}
+                                onChange={this.handleDateChange}
+                                KeyboardButtonProps={{
+                                    'aria-label': 'change date',
+                                }}
+                                />
+                            </Grid>
+                        </MuiPickersUtilsProvider>
                         <p>Don’t know {this.state.name}'s exact date of birth? Share it's estimated age:</p>
                         <div className='dog-age-control'>
                             <img className={this.state.birthday ? 'hidden' : 'age-control'} src='/' alt='min' onClick={() => {this.decreaseNumber('age')}}/>
@@ -305,128 +402,214 @@ export default class AddDogspace extends Component {
                         <div className='dog-age-text'>
                             <p>years old</p>
                         </div>
-                        <button onClick={() => {this.goToNext(this.formPage3)}}>Next</button>           
+                        <div className='dog-next-btn-box'>
+                            <button className='nxt-btn' onClick={() => {this.goToNext()}} disabled={this.state.isValidated === false}>Next</button>   
+                        </div>        
                     </div>
 
                     <div className={this.state.page === 4 ? 'dog-part-4' : 'hidden'}>
-                        <form ref={form => this.formPage4 = form} onSubmit={(e) => {e.preventDefault(); return false}}>
-                            <label>What is the gender of {this.state.name}?</label>
-                            <select required onChange={this.handleChange} name='gender' placeholder='Gender' value={this.state.gender}>
-                                <option>Female</option>
-                                <option>Male</option>
-                                <option>Other</option>
-                            </select>
-                            <button onClick={() => {this.goToNext(this.formPage4)}}>Next</button>
-                        </form>
+                        <label>What is the gender of {this.state.name}?</label>
+                        <div className='gender-btn-box'>
+                            <button onClick={() => {this.handleSelect('male')}}>male</button>
+                            <button onClick={() => {this.handleSelect('female')}}>female</button>
+                        </div>
+                        <div className='dog-next-btn-box'>
+                            <button onClick={() => {this.goToNext()}} disabled={this.state.isValidated === false}>Next</button>
+                        </div>
                     </div>
 
                     <div className={this.state.page === 5 ? 'dog-part-5' : 'hidden'}>
                         <form ref={form => this.formPage5 = form} onSubmit={(e) => {e.preventDefault(); return false}}>
-                            <label>Choose an avatar for {this.state.name}</label>
-                            <div>
-                                <label><input required onChange={this.handleRadio} type='radio' value='/1.png' name='avatar'/><img src='/' alt='avatar1'/></label>
-                                <label><input onChange={this.handleRadio} type='radio' value='/2.png' name='avatar'/><img src='/' alt='avatar2'/></label>
-                                <label><input onChange={this.handleRadio} type='radio' value='/3.png' name='avatar'/><img src='/' alt='avatar3'/></label>
-                                <label><input onChange={this.handleRadio} type='radio' value='/4.png' name='avatar'/><img src='/' alt='avatar4'/></label>
-                                <label><input onChange={this.handleRadio} type='radio' value='/5.png' name='avatar'/><img src='/' alt='avatar5'/></label>
-                                <label><input onChange={this.handleRadio} type='radio' value='/6.png' name='avatar'/><img src='/' alt='avatar6'/></label>
+                            <h1>Choose an avatar for {this.state.name}</h1>
+                            <div className='dog-avatar-container'>
+                                    <div className='dog-avatar-option'>
+                                        <label><div className='dog-avatar-box'><img src='/' alt='avatar1'/></div><input required onChange={this.handleRadio} type='radio' value='/1.png' name='avatar'/></label> 
+                                    </div>
+                                    <div className='dog-avatar-option'>
+                                        <label><div className='dog-avatar-box'><img src='/' alt='avatar2'/></div><input required onChange={this.handleRadio} type='radio' value='/1.png' name='avatar'/></label> 
+                                    </div>
+                                    <div className='dog-avatar-option'>
+                                        <label><div className='dog-avatar-box'><img src='/' alt='avatar3'/></div><input required onChange={this.handleRadio} type='radio' value='/1.png' name='avatar'/></label> 
+                                    </div>
+                                    <div className='dog-avatar-option'>
+                                        <label><div className='dog-avatar-box'><img src='/' alt='avatar4'/></div><input required onChange={this.handleRadio} type='radio' value='/1.png' name='avatar'/></label> 
+                                    </div>
+                                    <div className='dog-avatar-option'>
+                                        <label><div className='dog-avatar-box'><img src='/' alt='avatar5'/></div><input required onChange={this.handleRadio} type='radio' value='/1.png' name='avatar'/></label> 
+                                    </div>
+                                    <div className='dog-avatar-option'>
+                                        <label><div className='dog-avatar-box'><img src='/' alt='avatar6'/></div><input required onChange={this.handleRadio} type='radio' value='/1.png' name='avatar'/></label> 
+                                    </div>
+                                    <div className='dog-avatar-option'>
+                                        <label><div className='dog-avatar-box'><img src='/' alt='avatar7'/></div><input required onChange={this.handleRadio} type='radio' value='/1.png' name='avatar'/></label> 
+                                    </div>
+                                    <div className='dog-avatar-option'>
+                                        <label><div className='dog-avatar-box'><img src='/' alt='avatar8'/></div><input required onChange={this.handleRadio} type='radio' value='/1.png' name='avatar'/></label> 
+                                    </div>
+                                    <div className='dog-avatar-option'>
+                                        <label><div className='dog-avatar-box'><img src='/' alt='avatar9'/></div><input required onChange={this.handleRadio} type='radio' value='/1.png' name='avatar'/></label> 
+                                    </div>
                             </div>
-                            <button onClick={() => {this.goToNext(this.formPage5)}}>Next</button>
+                            <div className='dog-next-btn-box'>
+                                <button onClick={() => {this.goToNext(this.formPage5)}} disabled={this.state.isValidated === false}>Next</button>
+                            </div>
                         </form>
                     </div>
                     
                     <div className={this.state.page === 6 ? 'dog-part-6' : 'hidden'}>
-                            <p>Lets build {this.state.name} an office dog guide for co-workers!</p>
-                            <ul>
-                                <li>Dietary info</li>
-                                <li>Activity info</li>
-                                <li>Emergency card</li>
-                                <li>Commands</li>
-                            </ul>
-                            <button onClick={() => {this.goToNext(this.formPage5)}}>Next</button>
+                        <img src='/' alt='add-dog'/>
+                        <div className='dog-part-6-box'>
+                            <p>That was it for the general information! Let’s build {this.state.name} an office dog guide for coworkers to research! Chapters:</p>
+                            <div className='dog-chapters'>
+                                <div className='dog-chapter'><img src='/' alt='chapter-icon'/><p>Dietary information</p></div>
+                                <div className='dog-chapter'><img src='/' alt='chapter-icon'/><p>Activity information</p></div>
+                                <div className='dog-chapter'><img src='/' alt='chapter-icon'/><p>Emergency contacts</p></div>
+                                <div className='dog-chapter'><img src='/' alt='chapter-icon'/><p>Commands dictionary</p></div>
+                            </div>
+                            <div className='dog-next-btn-box'>
+                                <button onClick={() => {this.goToNext(this.formPage5)}} disabled={this.state.isValidated === false}>Next</button>
+                            </div>
+                        </div>
                     </div>
 
                     <div className={this.state.page === 7 ? 'dog-part-7' : 'hidden'}>
                         <form ref={form => this.formPage7 = form} onSubmit={(e) => {e.preventDefault(); return false}}>
-                            <p>Dietery info</p>
-                           <label>Food brand</label>
+                            <div className='dog-chapter-title-box'>
+                                <img src='/' alt='chapter-icon'/>
+                                <h1>Dietery information</h1>
+                            </div>
+                           <label>Food brand {this.state.name} eats</label>
                            <input required onChange={this.handleChange} value={this.state.foodBrand} placeholder="Food brand" type="text" name="foodBrand"/>
                            <label>Times fed a day</label>
-                           <input required onChange={this.handleChange} value={this.state.foodFreq} type="number" name="foodFreq"/>
-                           <label>Grams per feeding</label>
-                           <input required onChange={this.handleChange} value={this.state.foodGrams} type="number" name="foodGrams"/>
-                           <label>Allowed human food?</label>
-                           <label><input required onChange={this.handleRadio} value='Yes' type="radio" name="foodHuman"/>Yes</label>
-                           <label><input required onChange={this.handleRadio} value='No' type="radio" name="foodHuman"/>No</label>
-                           <label>Considered dangerous for {this.state.name}</label>
-                           <div>
-                                <label><input onChange={this.handleCheckbox} value='Chocolate' type="checkbox" name="foodDanger"/>Chocolate</label>
-                                <label><input onChange={this.handleCheckbox} value='Grapes' type="checkbox" name="foodDanger"/>Grapes</label>
-                                <label><input onChange={this.handleCheckbox} value='Gum' type="checkbox" name="foodDanger"/>Gum</label>
-                                <label><input onChange={this.handleCheckbox} value='Milk' type="checkbox" name="foodDanger"/>Milk</label>
-                                <label><input onChange={this.handleCheckbox} value='Nuts' type="checkbox" name="foodDanger"/>Nuts</label>
-                                <label><input onChange={this.handleCheckbox} value='Coffee' type="checkbox" name="foodDanger"/>Coffee</label>
-                                <label><input onChange={this.handleCheckbox} value='Candy' type="checkbox" name="foodDanger"/>Candy</label>
-                                <label><input onChange={this.handleCheckbox} value='Bacon' type="checkbox" name="foodDanger"/>Bacon</label>
+                            <div className='diet-amount-box'>
+                                <img src='/' alt='min' onClick={() => {this.decreaseNumber('foodFreq')}}/>
+                                <div className='diet-amount'><p>{this.state.foodFreq}</p></div>
+                                <img src='/' alt='plus' onClick={() => {this.increaseNumber('foodFreq')}}/>
+                            </div>
+                           <label>Amount fed per feeding</label>
+                           <div className='diet-amount-box'>
+                                <div className='empty'></div>
+                                <input id='diet-grams'required onChange={this.handleChange} placeholder='100' type="number" name="foodGrams"/>
+                                <p>grams</p>
                            </div>
-                           <button onClick={() => {this.goToNext(this.formPage7)}}>Next</button>
+                            <label>Treats per day</label>
+                            <div className='diet-amount-box'>
+                                <img src='/' alt='min' onClick={() => {this.decreaseNumber('cookieFreq')}}/>
+                                <div className='diet-amount'><p>{this.state.cookiesAvgFreq}</p></div>
+                                <img src='/' alt='plus' onClick={() => {this.increaseNumber('cookieFreq')}}/>
+                            </div>
+                           <label>Is {this.state.name} allowed to have human food?</label>
+                           <div className='human-food-btn-box'>
+                                <button onClick={() => {this.handleSelect('no')}}>no</button>
+                                <button onClick={() => {this.handleSelect('yes')}}>yes</button>
+                            </div>
+                           <div className='dog-next-btn-box'>
+                                <button className='food-next-btn' onClick={() => {this.goToNext(this.formPage7)}} disabled={this.state.isValidated === false}>Next</button>
+                           </div>
                         </form>
                     </div>
 
                     <div className={this.state.page === 8 ? 'dog-part-8' : 'hidden'}>
-                        <form ref={form => this.formPage8 = form} onSubmit={(e) => {e.preventDefault(); return false}}>
-                         <p>Activity info</p>
-                           <label>How much does {this.state.name} usually walk a day?</label>
-                           <input required onChange={this.handleChange} value={this.state.walkAvgFreq} type="number" name="walkAvgFreq"/>
-                           <p>times</p>
-                           <input required onChange={this.handleChange} value={this.state.walkAvgKm} type="number" name="walkAvgKm"/>
-                           <p>km</p>
-                           <input required onChange={this.handleChange} value={this.state.walkAvgMinutes} type="number" name="walkAvgMinutes"/>
-                           <p>minutes</p>
-                           <label>How many poopies?</label>
-                           <input required onChange={this.handleChange} value={this.state.poopAvgFreq} type="number" name="poopAvgFreq"/>
-                           <img src='/' alt='poop'/>
-                           <p>a day</p>
-                           <label>How many treats does {this.state.name} get?</label>
-                           <input required onChange={this.handleChange} value={this.state.cookiesAvgFreq} type="number" name="cookiesAvgFreq"/>
-                           <img src='/' alt='cookie'/>
-                           <p>a day</p>
-                           <button onClick={() => {this.goToNext(this.formPage8)}}>Next</button>
-                        </form>
+                            <div className='dog-chapter-title-box'>
+                                <img src='/' alt='chapter-icon'/>
+                                <h1>Activity information</h1>
+                            </div>
+                           <label>How much do you usually walk {this.state.name}?</label>
+                           <div className='activity-box'>
+                                <div className='empty'></div>
+                                <div className='activity-amount-box'>
+                                        <img src='/' alt='min' onClick={() => {this.decreaseNumber('walkFreq')}}/>
+                                        <div className='activity-amount'><p>{this.state.walkAvgFreq}</p></div>
+                                        <img src='/' alt='plus' onClick={() => {this.increaseNumber('walkFreq')}}/>
+                                </div>
+                                <p>times <br/> a day</p>
+                           </div>
+                           <div className='activity-box'>
+                                <div className='empty'></div>
+                                <div className='activity-amount-box'>
+                                        <img src='/' alt='min' onClick={() => {this.decreaseNumber('walkKm')}}/>
+                                        <div className='activity-amount'><p>{this.state.walkAvgKm}</p></div>
+                                        <img src='/' alt='plus' onClick={() => {this.increaseNumber('walkKm')}}/>
+                                </div>
+                                <p>km <br/> a day</p>
+                           </div>
+                           <div className='activity-box'>
+                                <div className='empty'></div>
+                                <div className='activity-amount-box'>
+                                        <img src='/' alt='min' onClick={() => {this.decreaseNumber('walkMinutes')}}/>
+                                        <div className='activity-amount'><p>{this.state.walkAvgMinutes}</p></div>
+                                        <img src='/' alt='plus' onClick={() => {this.increaseNumber('walkMinutes')}}/>
+                                </div>
+                                <p>minutes <br/> a day</p>
+                           </div>
+                           <label>How much does {this.state.name} poop?</label>
+                           <div className='activity-box'>
+                                <div className='empty'></div>
+                                <div className='activity-amount-box'>
+                                        <img src='/' alt='min' onClick={() => {this.decreaseNumber('poopFreq')}}/>
+                                        <div className='activity-amount'><p>{this.state.poopAvgFreq}</p></div>
+                                        <img src='/' alt='plus' onClick={() => {this.increaseNumber('poopFreq')}}/>
+                                </div>
+                                <p>poops <br/> a day</p>
+                           </div>
+                           <div className='dog-next-btn-box'>
+                                <button onClick={() => {this.goToNext()}} disabled={this.state.isValidated === false}>Next</button>
+                           </div>
                     </div>   
 
                     <div className={this.state.page === 9 ? 'dog-part-9' : 'hidden'}>
+                        <div className='dog-part-9-chapter'>
+                            <div className='dog-chapter-title-box'>
+                                    <img src='/' alt='chapter-icon'/>
+                                    <h1>Emergency card</h1>
+                            </div>
+                        </div>
                         <form ref={form => this.formPage9 = form} onSubmit={(e) => {e.preventDefault(); return false}}>
-                            <p>Emergency card</p>
-                           <label>Chip nr {this.state.name}</label>
-                           <input required onChange={this.handleChange} value={this.state.chipNumber} placeholder="0000 1234578" type="text" name="chipNumber"/>
-                           <label>Your phone nr</label>
+                           <label>Dutch Animal Ambulance</label>
+                           <p>0900 0245</p>
+                           <label>{this.state.name}'s Owner</label>
+                           <p>{this.state.user.name}</p>
                            <p>{this.state.user.phone}</p>
                            <label>Emergency contact 1</label>
                            <input required onChange={this.handleChange} value={this.state.ice1Name} placeholder="Name" type="text" name="ice1Name"/>
-                           <input required onChange={this.handleChange} value={this.state.ice1Phone} placeholder="Phone nr" type="text" name="ice1Phone"/>
+                           <input required onChange={this.handleChange} value={this.state.ice1Phone} placeholder="Phone number" type="text" name="ice1Phone"/>
                            <label>Emergency contact 2</label>
                            <input onChange={this.handleChange} value={this.state.ice2Name} placeholder="Name" type="text" name="ice2Name"/>
-                           <input onChange={this.handleChange} value={this.state.ice2Phone} placeholder="Phone nr" type="text" name="ice2Phone"/>
-                           <label>Vet</label>
+                           <input onChange={this.handleChange} value={this.state.ice2Phone} placeholder="Phone number" type="text" name="ice2Phone"/>
+                           <label>Veterinary</label>
                            <input required onChange={this.handleChange} value={this.state.vetName} placeholder="Name" type="text" name="vetName"/>
-                           <input required onChange={this.handleChange} value={this.state.vetPhone} placeholder="Phone nr" type="text" name="vetPhone"/>
-                           <button onClick={() => {this.goToNext(this.formPage9)}}>Next</button>
+                           <input required onChange={this.handleChange} value={this.state.vetCompany} placeholder="Company name" type="text" name="vetCompany"/>
+                           <input required onChange={this.handleChange} value={this.state.vetPhone} placeholder="Phone number" type="text" name="vetPhone"/>
+                           <div className='dog-next-btn-box'>
+                                <button onClick={() => {this.goToNext(this.formPage9)}} disabled={this.state.isValidated === false}>Next</button>
+                           </div>
                         </form>
                     </div>
 
                     <div className={this.state.page === 10 ? 'dog-part-10' : 'hidden'}>
+                        <div className='dog-chapter-title-box'>
+                            <img src='/' alt='chapter-icon'/>
+                            <h1>Commands</h1>
+                        </div>
+                        <h2>Pick the commands {this.state.name} knows so your coworkers can start communicate! </h2>
                         <form ref={form => this.formPage10 = form} onSubmit={(e) => {e.preventDefault(); return false}}>
-                            <p>Command dictionary</p>
-                           <label>Choose commands {this.state.name} knows</label>
                            {this.commandList.map((command, index) => {
                                return (
-                                    <label key={index}><input key={index} onChange={this.handleCheckbox} value={command._id} type="checkbox" name="commands"/>{command.commando}</label>
+                                   <div key={index} className='dog-command-option-box'>
+                                        <div className='dog-command-option'>
+                                            <label><div className='dog-command-box'>{command.commando}</div><input key={index} onChange={this.handleCheckbox} value={command._id} type="checkbox" name="commands"/></label>
+                                        </div>
+                                   </div>
                                )
                            })}
-                           <label>English translation</label>     {/* What is suppose to happen here? */}
-                           <button onClick={this.handleSubmit}>Add dog</button>
                         </form>
+                        <div className='dog-translate'>
+                            <label>Translate commands to english</label> 
+                            {/* Switcher */}
+                        </div>
+                        <div className='dog-next-btn-box'>
+                            <button onClick={this.handleSubmit} disabled={this.state.isValidated === false}>Next</button>
+                        </div>
                     </div>
                     
                     {this.state.page === 1 || this.state.page === 3 || this.state.page === 4 || this.state.page === 5 ? 
@@ -446,6 +629,15 @@ export default class AddDogspace extends Component {
                             <div className={this.state.page === 3 ? 'dog-dot-select' : 'dog-dot'}></div>
                             <div className={this.state.page === 4 ? 'dog-dot-select' : 'dog-dot'}></div>
                             <div className={this.state.page === 5 ? 'dog-dot-select' : 'dog-dot'}></div>
+                        </div>
+                        : <></>}
+
+                    {this.state.page === 7 || this.state.page === 8 || this.state.page === 9 || this.state.page === 10  ? 
+                        <div className='dog-dots-box'>
+                            <div className={this.state.page === 7 ? 'dog-dot-select' : 'dog-dot'}></div>
+                            <div className={this.state.page === 8 ? 'dog-dot-select' : 'dog-dot'}></div>
+                            <div className={this.state.page === 9 ? 'dog-dot-select' : 'dog-dot'}></div>
+                            <div className={this.state.page === 10 ? 'dog-dot-select' : 'dog-dot'}></div>
                         </div>
                         : <></>}
                 </div>

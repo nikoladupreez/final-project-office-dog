@@ -60,7 +60,6 @@ router.post('/add-dog', (req, res, next) => {
         frequency: req.body.foodFreq,
         grams: req.body.foodGrams,
         human: req.body.foodHuman,
-        dangerous: req.body.foodDanger 
       },
       walk_info: {
         avg_frequency: req.body.walkAvgFreq,
@@ -69,7 +68,6 @@ router.post('/add-dog', (req, res, next) => {
       },
       poop_avg_frequency: req.body.poopAvgFreq,
       cookies_avg_frequency: req.body.cookiesAvgFreq,
-      chip_number: req.body.chipNumber,
       ice_1: {
         name: req.body.ice1Name,
         phone: req.body.ice1Phone
@@ -80,6 +78,7 @@ router.post('/add-dog', (req, res, next) => {
       }, 
       vet: {
         name: req.body.vetName,
+        company: req.body.vetCompany,
         phone: req.body.vetPhone
       },
       commands: commandObjectIds,

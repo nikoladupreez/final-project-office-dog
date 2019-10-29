@@ -11,7 +11,6 @@ const Dog = new mongoose.Schema({
         frequency: Number,
         grams: Number,
         human: String,
-        dangerous: Array
     },
     walk_info: {
         avg_frequency: Number,
@@ -20,7 +19,6 @@ const Dog = new mongoose.Schema({
     },
     poop_avg_frequency: Number,
     cookies_avg_frequency: Number,
-    chip_number: String, 
     ice_1: {
         name: String,
         phone: String
@@ -31,6 +29,7 @@ const Dog = new mongoose.Schema({
     },
     vet: {
         name: String,
+        company: String, 
         phone: String
     },
     commands: [{type: mongoose.Schema.Types.ObjectId, ref: "command"}],
