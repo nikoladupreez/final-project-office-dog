@@ -1,3 +1,214 @@
+.signup-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    a {
+        color: black;
+    }
+}
+
+.signup-back-box {
+    width: 89.4%;
+    margin: 57px 0 30px 0;
+
+    img {
+        width: 21px;
+        height: 22px;
+    }
+}
+
+.signup-title {
+    margin: 0;
+    width: 335px;
+    height: 41px;
+    font-size: 35px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #535353;
+}
+
+.signup-subtitle {
+    margin: 5px 0 10px 0;
+    font-weight: 500;
+    width: 335px;
+    height: 24px;
+    font-size: 20px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #535353;
+}
+
 .hidden {
     display: none;
 }
+
+.sign-part-1{
+    display: flex;
+    flex-direction: column;
+    width: 89.3%;
+
+    form {
+        display: flex;
+        flex-direction: column;
+    
+        label {
+            margin: 30px 0 10px 0;
+            width: 167.5px;
+            height: 16px;
+            font-size: 14px;
+            font-family: 'FontsFree-Net-SF-Pro-Rounded-Bold';
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            color: #535353;
+        }
+    }
+
+    .signup-tos {
+        margin: 20px 0 0 0;
+        width: 335px;
+        height: 16px;
+        font-size: 14px;
+        font-weight: 300;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        text-align: center;
+        color: #535353;
+    }
+
+    span {
+        font-family: 'FontsFree-Net-SF-Pro-Rounded-Bold';
+    }
+}
+
+.sign-part-2 {
+    display: flex;
+    flex-direction: column;
+    width: 89.3%;
+
+    form {
+        margin: 30px 0 0 0;
+        display: flex;
+        flex-direction: column;
+
+
+        label {
+            margin: 30px 0 10px 0;
+            font-size: 14px;
+            font-family: 'FontsFree-Net-SF-Pro-Rounded-Bold';
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            color: #535353;
+        }
+    }
+}
+
+.inputText {
+    padding: 0 0 0 20px;
+    margin: 0;
+    width: 310px;
+    height: 50px;
+    border-radius: 10px;
+    border: solid 1.5px #939393;
+    font-size: 18px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #535353;
+}
+
+
+.signup-btn-box {
+    margin: 50px 0 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    button {
+        width: 183px;
+        height: 54px;
+        border-radius: 27px;
+        background-color: #535353;
+        font-size: 18px;
+        font-weight: 600;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: 0.5px;
+        text-align: center;
+        color: #ffffff;
+    };
+
+    button:disabled {
+        background-color: #e1e1e1;
+    }
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #e1e1e1;
+  }
+
+  .signup-avatar-container {
+      margin: 0 0 20px 0;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+  }
+
+  #signup-avatar-label {
+      margin: 30px 0 20px 0;
+  }
+
+  .signup-avatar-option {
+      margin: 10px 0 0 0;
+      display: flex;
+      flex-direction: column;
+     
+      label {
+          margin: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+      }
+
+      input {
+          background-color: white;
+          width: 15px;
+          height: 15px;
+      }
+  }
+
+  .signup-avatar-box {
+      margin: 0 0 15px 0;
+      width: 85px;
+      height: 85px;
+      background-color: #d8d8d8;
+      border-radius: 50%;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      img {
+          width: 100%;
+          height: auto;
+      }
+  }
+  

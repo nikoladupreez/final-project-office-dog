@@ -7,7 +7,12 @@ const User = require('../../models/user');
 // GET route => to get user by email and populate with manager
 router.get('/email/:email', (req, res, next) => {
     User.findOne({email: req.params.email})
-        .populate('dog_manager')
+        .populate({
+          path: 'dog_manager',
+          populate: {
+                      path: 'dogs'
+                    }
+        })
         .then(user => {
           if(user === null){
             res.status(404).json({message: 'User not found'});

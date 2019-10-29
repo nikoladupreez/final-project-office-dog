@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import {Route, Switch} from 'react-router-dom';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faTimes, faChevronLeft, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 
 //style
 import '../styles/App.scss';
@@ -12,6 +14,8 @@ import Home from '../components/Home/Home';
 import AddDogspace from '../components/Auth/AddDogspace';
 import Dogspace from '../components/Dogspace/Dogspace';
 import UserProfileSpace from '../components/Profiles/User/UserProfileSpace';
+
+library.add(faTimes, faChevronLeft, faUserCircle);
 
 class App extends Component {
   state = {

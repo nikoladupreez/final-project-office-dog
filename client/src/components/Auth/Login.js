@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {Link} from 'react-router-dom';
+import crossIcon from '../../images/cross.svg';
 
 //components
 import {login} from "../../utils/auth";
@@ -34,19 +35,22 @@ export default class Login extends Component {
         return (
                 <div className='login-container'>
                     <div className='login-back-box'>
-                        <Link to='/'><img src='/' alt='go-back'/></Link>
+                        <Link to='/'><img src={crossIcon} alt='back'/></Link>
                     </div>
                     <img className='login-logo' src='/' alt='logo'/>
                     <div className='login-box'>
-                        <h1>Sign in to ... </h1>
+                        <h1>Sign in to DOGSPACE </h1>
                         <h2>Enter your details below</h2>
                         <form onSubmit={(e) => {e.preventDefault(); return false}}>
-                            <label>Email address</label>
-                            <input required onChange={this.handleChange} value={this.state.email} placeholder="email" type="text" name="email"/>
-                            <label>Password</label>
-                            <input required onChange={this.handleChange} value={this.state.password} placeholder="password"  type="password" name="password"/>
-                            <div>
-                                <button onClick={this.handleSubmit}>Login</button>
+                            <label className='login-email-label'>Email address</label>
+                            <input required onChange={this.handleChange} value={this.state.email} type="text" name="email"/>
+                            <div className='login-password-box'>
+                                <label>Password</label>
+                                <Link to='/'><p>Forgot password?</p></Link>
+                            </div>
+                            <input required onChange={this.handleChange} value={this.state.password} type="password" name="password"/>
+                            <div className='login-btn-box'>
+                                <button onClick={this.handleSubmit}>Sign in</button>
                             </div>
                         </form>
                     </div>

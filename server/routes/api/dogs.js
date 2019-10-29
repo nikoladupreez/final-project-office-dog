@@ -148,7 +148,7 @@ router.post('/add-dog', (req, res, next) => {
                         .then((manager) => {
                             User.updateOne({_id: user._id}, {dog_manager: mongoose.Types.ObjectId(manager.id)})
                                 .then((updatedUser) => {
-                                    Dog.updateOne({id: dog.id}, {$push: {dog_managers: mongoose.Types.ObjectId(user._id)}})
+                                    Dog.updateOne({_id: dog._id}, {$push: {dog_managers: mongoose.Types.ObjectId(user._id)}})
                                        .then((updatedDog) => {
                                           res.json(updatedDog);
                                        })
@@ -158,9 +158,9 @@ router.post('/add-dog', (req, res, next) => {
                         })
                         .catch((err) => res.status(500).json({ message:'Something went wrong with creating the dogmanager.', error: err}));   
             } else {
-              DogManager.updateOne({id: user.dog_manager.id}, {$push: {dogs: dog}})
+              DogManager.updateOne({_id: user.dog_manager._id}, {$push: {dogs: dog}})
                    .then((updatedManager) => {
-                        Dog.updateOne({id: dog.id}, {$push: {dog_managers: mongoose.Types.ObjectId(user._id)}})
+                        Dog.updateOne({_id: dog._id}, {$push: {dog_managers: mongoose.Types.ObjectId(user._id)}})
                            .then((updatedDog) => {
                               res.json(updatedDog);
                            })

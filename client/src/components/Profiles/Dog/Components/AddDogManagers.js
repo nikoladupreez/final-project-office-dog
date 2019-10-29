@@ -66,8 +66,16 @@ export default class AddDogManagers extends Component {
             debugger;
             if(user.data._id === this.state.user._id){
                 this.setState({isOwner: true});
-            } else if(user.data.dog_manager && user.data.dog_manager.dogs.contains(this.state.dogId)){
-                this.setState({alreadyManager: true});
+            } else if(user.data.dog_manager){
+                let dogFound = user.data.dog_manager.dogs.filter((dog) => {
+                    return (dog._id === this.state.dogId)
+                });
+                if (dogFound.length > 0){
+                    this.setState({alreadyManager: true});
+                } else {
+                    dogManagers.push(user.data);
+                    this.setState({dogManagers: dogManagers});
+                }
             } else {
                 dogManagers.push(user.data);
                 this.setState({dogManagers: dogManagers});

@@ -1,0 +1,183 @@
+ .home-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.home-user-box {
+    width: 89.4%;
+    margin: 57px 0 30px 0;
+    display: flex;
+    justify-content: flex-end;
+
+    img {
+        width: 39px;
+        height: 45px;
+    }
+}
+
+.hidden {
+    display: none;
+}
+
+.dog-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    p {
+        margin: 0;
+        width: 335px;
+        height: 56px;
+        font-size: 20px;
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.4;
+        letter-spacing: normal;
+        color: #535353;
+    }
+}
+
+.sample-dogspace-box {
+    margin: 0 0 30px 0;
+    width: 335px;
+    height: 54px;
+    border-radius: 27px;
+    border: solid 3px #f6f6f6;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.sample-dogspace-subbox {
+    margin: 0 0 0 17.5px;
+    width: 57%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    h1 {
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        color: #e1e1e1;
+    }
+}
+
+.sample-dogspace-img {
+    width: 29px;
+    height: 29px;
+    background-color: #f2f2f2;
+    border-radius: 50%;
+}
+
+.home-add-dog-box {
+    margin: 50px 0 0 0;
+    width: 100%;
+}
+
+.home-or-box {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.home-or-line {
+    width: 111.7px;
+    height: 5px;
+    background-color: #d8d8d8;
+}
+
+.home-or {
+    height: 100%;
+    display: flex;
+    align-items: center;
+
+    p {
+        margin: 0;
+        width: 111.7px;
+        height: 24px;
+        font-size: 20px;
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        text-align: center;
+        color: #535353;
+    }
+}
+
+.home-create-dog-box {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h1 {
+        margin: 50px 0 3px 0;
+        width: 335px;
+        height: 41px;
+        font-size: 35px;
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        color: #535353;
+    }
+
+    p {
+        margin: 0;
+        width: 335px;
+        height: 84px;
+        font-size: 20px;
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.4;
+        letter-spacing: normal;
+        color: #535353;
+    }
+
+    button {
+        margin: 50px 0 0 0;
+        width: 263px;
+        height: 54px;
+        border-radius: 27px;
+        background-color: #535353;
+        font-size: 18px;
+        font-weight: 600;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: 0.5px;
+        text-align: center;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+
+    }
+}
+
+.add-dogspace-img {
+    width: 29px;
+    height: 29px;
+    border-radius: 50%;
+    background-color: #ffffff;
+}
+
+.add-dogspace-box {
+    margin: 0 0 0 10px;
+    width: 77%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

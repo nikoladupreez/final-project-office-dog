@@ -1,7 +1,51 @@
+@font-face {
+    font-family: 'FontsFree-Net-SF-Pro-Rounded-Regular';
+    src: url('../styles/SFProFonts/FontsFree-Net-SF-Pro-Rounded-Regular.ttf') format('truetype');
+    font-weight: normal;
+ }
+
+ @font-face {
+    font-family: 'FontsFree-Net-SF-Pro-Rounded-Bold';
+    src: url('../styles/SFProFonts/FontsFree-Net-SF-Pro-Rounded-Bold.ttf') format('truetype');
+    font-weight: normal;
+ }
+
+ @font-face {
+    font-family: 'FontsFree-Net-SF-Pro-Rounded-Medium';
+    src: url('../styles/SFProFonts/FontsFree-Net-SF-Pro-Rounded-Medium.ttf') format('truetype');
+    font-weight: normal;
+ }
+
+ @font-face {
+    font-family: 'FontsFree-Net-SF-Pro-Rounded-Semibold';
+    src: url('../styles/SFProFonts/FontsFree-Net-SF-Pro-Rounded-Semibold.ttf') format('truetype');
+    font-weight: normal;
+ }
+
+ @font-face {
+    font-family: 'FontsFree-Net-SF-Pro-Rounded-Thin';
+    src: url('../styles/SFProFonts/FontsFree-Net-SF-Pro-Rounded-Thin.ttf') format('truetype');
+    font-weight: normal;
+ }
+
+ @font-face {
+    font-family: 'FontsFree-Net-SFProText-Regular-1';
+    src: url('../styles/SFProFonts/FontsFree-Net-SFProText-Regular-1.ttf') format('truetype');
+    font-weight: normal;
+ }
+
+ @font-face {
+    font-family: 'FontsFree-Net-SFProText-Semibold-1';
+    src: url('../styles/SFProFonts/FontsFree-Net-SFProText-Semibold-1.ttf') format('truetype');
+    font-weight: normal;
+ }
+
+ * {
+     font-family: 'FontsFree-Net-SF-Pro-Rounded-Regular';
+ }
+
 .App {
+    margin: 0;
     width: 100vw;
     height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }

@@ -1,10 +1,14 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
+import userIcon from '../../images/shape.svg';
 
 //components
 import DogspaceBox from './DogspaceBox';
 import {getUser} from "../../utils/auth";
+
+//style
+import '../../styles/Home.scss';
 
 export default class Home extends Component {
     state = {
@@ -46,23 +50,25 @@ export default class Home extends Component {
 
     render() {
         return (
-            <div>
-                <h1>Dogspaces</h1>
-                <div>
-                    <div>
-                        <div>
-                            <Link to='/user/profile'><img src='/' alt='user-profile'/></Link>
-                        </div>
+            <div className='home-container'>
+                    <div className='home-user-box'>
+                        <Link to='/user/profile'><img src={userIcon} alt='user-profile'/></Link>
                     </div>
                     <div className={!this.userHasDogs() && !this.userManagesDogs() ? 'dog-container' : 'hidden'}>
-                        <h1>Whoops! No dogs yet..</h1>
+                        <div className='sample-dogspace-box'>
+                            <div className='sample-dogspace-subbox'>
+                                <div className='sample-dogspace-img'></div>
+                                <h1>Dogspace</h1>
+                            </div>
+                        </div>
+                        <p>You're not connected to a dogspace yet, ask the dogowner to add you! </p>
                     </div>
                     <div className={this.userHasDogs() ? 'dog-container' : 'hidden'}>
-                        <h1>My dogs</h1>
                         <div>
                             {this.state.myDogList.map((dog, index) => {
                                 return (
                                     <DogspaceBox
+                                        owner='true'
                                         key={index}
                                         id={dog._id}
                                         avatar={dog.avatar}
@@ -73,13 +79,13 @@ export default class Home extends Component {
                         </div>
                     </div>
                     <div className={this.userManagesDogs() ? 'dog-container' : 'hidden'}>
-                        <h1>My coworker's dogs</h1>
                         <div>
                             {this.state.coworkerDogList.map((dog, index) => {
                                 return (
                                     <DogspaceBox
+                                        owner='false'
                                         key={index}
-                                        id={dog.id}
+                                        id={dog._id}
                                         avatar={dog.avatar}
                                         name={dog.name}
                                     />
@@ -87,10 +93,20 @@ export default class Home extends Component {
                             })}
                         </div>
                     </div>
-                    <div>
-                        <Link to='/add-dog'><button>Add dog</button></Link>
-                    </div>
-                </div>       
+                    <div className='home-add-dog-box'>
+                        <div className='home-or-box'>
+                            <div className='home-or-line'></div>
+                            <div className='home-or'>
+                                <p>or</p>
+                            </div>
+                            <div className='home-or-line'></div>
+                        </div>
+                        <div className='home-create-dog-box'>
+                            <h1>Create dogspace!</h1>
+                            <p>Are you an office dog owner and want to start using Dogspace? Create one here!</p>
+                            <Link to='/add-dog'><button><div className='add-dogspace-box'><div className='add-dogspace-img'></div>Create dogspace</div></button></Link>
+                        </div>
+                    </div>      
             </div>
         )
     }

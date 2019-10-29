@@ -28,27 +28,12 @@ export default class DogProfile extends Component {
     getDogAge() {
         let today = new Date();
         let yearToday = today.getFullYear();
-        let monthToday = today.getMonth() + 1;
-        let dateToday = today.getDate();
 
         let dog = {...this.state.dog};
-        let age = 0;
         let birthday = dog.birthday;
         let birthYear = parseInt(birthday.slice(0,4));
-        let birthMonth = parseInt(birthday.slice(5,7));
-        let birthDate = parseInt(birthday.slice(8,10));
-     
-        if(yearToday === birthYear && monthToday === birthMonth){
-            age = dateToday - birthDate;
-            this.setState({ageType: "days"})
-        } else if (yearToday === birthYear) {
-            age = yearToday - birthYear;
-            this.setState({ageType: "months"})
-        } else {
-            age = yearToday - birthYear;
-            this.setState({ageType: "years"})
-        }
-
+   
+        let age = yearToday - birthYear;
         this.setState({age: age});
     }
 
@@ -63,16 +48,7 @@ export default class DogProfile extends Component {
                             <img src={this.state.dog.avatar} alt='dog-avatar'/>
                             <h1>{this.state.dog.name}</h1>
                             <h2>{this.state.dog.gender}</h2>
-                            {this.state.ageType === 'years' ? 
-                                <h2>{this.state.age} years old</h2>
-                             : <></>}
-                            {this.state.ageType === 'months' ? 
-                                <h2>{this.state.age} months old</h2>
-                             : <></>}
-                            {this.state.ageType === 'days' ? 
-                                <h2>{this.state.age} days old</h2>
-                             : <></>}
-                            
+                            <h2>{this.state.age} y/o</h2>
                             <h2>{this.state.dog.breed}</h2>
                         </div>
                         <div>

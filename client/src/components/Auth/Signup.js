@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
+import crossIcon from '../../images/cross.svg';
 
 //style
 import '../../styles/Signup.scss';
@@ -25,25 +26,30 @@ class Signup extends Component {
         displayName: "",
         phone: "", 
         avatar: "",
-        page: 1
+        page: 1, 
+        isValidated: false
     }
 
     goToNext(){
-        if (this.formPage1.checkValidity()){
-            this.setState({page: 2});
-        }
+        this.setState({page: 2});
+        this.setState({isValidated: false})
     }
 
     handleChange(e){
         this.setState({
             [e.target.name]: e.target.value
         })
+
+        if (this.formPage1.checkValidity() || this.formPage2.checkValidity()){
+            this.setState({isValidated: true});
+        } else {
+            this.setState({isValidated: false});
+        }
     }
 
     handleSubmit(e){
-        if (this.formPage2.checkValidity()){
-            signup(this.state, this.props.history);
-        }
+        this.setState({isValidated: false})
+        signup(this.state, this.props.history);
     }
 
     handleRadio(e){
@@ -52,47 +58,69 @@ class Signup extends Component {
                 [e.target.name]: e.target.value
             })
         }
+
+        if (this.formPage1.checkValidity() || this.formPage2.checkValidity()){
+            this.setState({isValidated: true});
+        } else {
+            this.setState({isValidated: false});
+        }
     }
 
     render() {
         return (
                 <div className='signup-container'>
-                    <div>
-                        <div>
-                            <Link to='/'><img src='/' alt='back-link'/></Link>
-                        </div>
-                        <h1>Get started with ...</h1>
-                            <div className={this.state.page === 1 ? 'part-1' : 'hidden'}>
-                                <p>It's free!</p>
+                        { this.state.page === 1 ? 
+                            <div className='signup-back-box'>
+                                <Link to='/'><img src={crossIcon} alt='back'/></Link>
+                            </div>
+                        : 
+
+                            <div className='signup-back-box'>
+                            </div>
+                        }
+        
+                        <h1 className='signup-title'>Get started</h1>
+
+                            <div className={this.state.page === 1 ? 'sign-part-1' : 'hidden'}>
+                                <p className='signup-subtitle'>DOGSPACE is free!</p>
                                 <form ref={form => this.formPage1 = form} onSubmit={(e) => {e.preventDefault(); return false}}>
                                     <label>Work email adress</label>
-                                    <input required onChange={this.handleChange} value={this.state.email} type="text" name="email"/>
+                                    <input className='inputText' required onChange={this.handleChange} value={this.state.email} type="text" name="email"/>
                                     <label>Full name</label>
-                                    <input required onChange={this.handleChange} value={this.state.name} type="text" name="name"/>
+                                    <input className='inputText' required onChange={this.handleChange} value={this.state.name} type="text" name="name"/>
                                     <label>Password</label>
-                                    <input required onChange={this.handleChange} value={this.state.password} placeholder="Password"  type="password" name="password"/>
-                                    <button onClick={this.goToNext}>Next</button>
+                                    <input className='inputText' required onChange={this.handleChange} value={this.state.password} placeholder="8 characters or more"  type="password" name="password"/>
+                                    <div className='signup-btn-box'>
+                                        <button onClick={this.goToNext} disabled={this.state.isValidated === false}>Sign up</button>
+                                        <p className='signup-tos'>By signing up, you agree to DOGSPACE's <span>Terms of Service</span></p>
+                                    </div>
                                 </form>
-                                <p>By signing up, you agree to ... <span>Terms of Service</span></p>
                             </div>
                  
-                            <div className={this.state.page === 2 ? 'part-2' : 'hidden'}>
-                                <p>Create your office dog management account!</p>
+                            <div className={this.state.page === 2 ? 'sign-part-2' : 'hidden'}>
+                                <p className='signup-subtitle'>Create your office dog management account!</p>
                                 <form ref={form => this.formPage2 = form} onSubmit={(e) => {e.preventDefault(); return false}}>
                                     <label>Display name</label>
-                                    <input required onChange={this.handleChange} value={this.state.displayName} type="text" name="displayName"/>
+                                    <input className='inputText' required onChange={this.handleChange} value={this.state.displayName} type="text" name="displayName"/>
                                     <label>Phone number</label>
-                                    <input required onChange={this.handleChange} value={this.state.phone} type="text" name="phone"/>
-                                    <label>Choose avatar</label>
-                                    <div>
-                                        <label><input required onChange={this.handleRadio} type='radio' value='/1.png' name='avatar'/><img src='/' alt='avatar1'/></label>
-                                        <label><input onChange={this.handleRadio} type='radio' value='/2.png' name='avatar'/><img src='/' alt='avatar2'/></label>
-                                        <label><input onChange={this.handleRadio} type='radio' value='/3.png' name='avatar'/><img src='/' alt='avatar3'/></label>
+                                    <input className='inputText' required onChange={this.handleChange} value={this.state.phone} type="text" name="phone"/>
+                                    <label id='signup-avatar-label'>Choose avatar</label>
+                                    <div className='signup-avatar-container'>
+                                        <div className='signup-avatar-option'>
+                                            <label><div className='signup-avatar-box'><img src='/' alt='avatar1'/></div><input required onChange={this.handleRadio} type='radio' value='/1.png' name='avatar'/></label> 
+                                        </div>
+                                        <div className='signup-avatar-option'>
+                                            <label><div className='signup-avatar-box'><img src='/' alt='avatar2'/></div><input onChange={this.handleRadio} type='radio' value='/2.png' name='avatar'/></label>
+                                        </div>
+                                        <div className='signup-avatar-option'>
+                                            <label><div className='signup-avatar-box'><img src='/' alt='avatar3'/></div><input onChange={this.handleRadio} type='radio' value='/3.png' name='avatar'/></label>
+                                        </div>
                                     </div>
-                                    <button onClick={this.handleSubmit}>Sign up</button>
+                                    <div className='signup-btn-box'>
+                                        <button onClick={this.handleSubmit} disabled={this.state.isValidated === false}>Done</button>
+                                    </div>
                                 </form>
                             </div>
-                    </div>
                 </div>
         )
     }
