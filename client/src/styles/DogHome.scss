@@ -1,0 +1,86 @@
+.nav {
+    position: absolute;
+    top: 54px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dogprofile-icon {
+    margin: 0 0 0 10px;
+    background-image: url('');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-color: rgb(223, 223, 223);
+    width: 29.7px;
+    height: 27.5px;
+}
+
+.doghome-icon {
+    margin: 0 0 0 20px;
+    background-image: url('');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-color: rgb(223, 223, 223);
+    width: 67.9px;
+    height: 66.8px;
+}
+
+
+.userprofile-icon {
+    background-image: url('../images/shape.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 67.9px;
+    height: 66.8px;
+}
+
+.dogspace-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.no-trackings {
+    margin: 151px 0 0 0;
+    
+    p {
+        width: 335px;
+        height: 20px;
+        font-size: 17px;
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: 0.3px;
+        color: #535353;
+    }
+
+    span {
+        font-family: 'FontsFree-Net-SF-Pro-Rounded-Bold';
+    }
+}
+
+.dogspace-btn-box {
+    width: 89.3%;
+    height: 371px;
+    position: absolute;
+    bottom: 50px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.walk-btn, .cookie-btn, .ice-btn, .dictionary-btn {
+    width: 157px;
+    height: 157px;
+    border-radius: 15px;
+    background-color: #d8d8d8;
+}
+
+
+

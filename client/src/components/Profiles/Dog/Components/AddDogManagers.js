@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
 import axios from "axios";
+import {Link} from 'react-router-dom';
 
 //compontents
 import ListBox from './ListBox';
 import {getUser} from '../../../../utils/auth';
+
+//style
+import '../../../../styles/DogManager.scss';
+import chevronIcon from '../../../../images/light.png';
 
 export default class AddDogManagers extends Component {
     constructor(props){
@@ -63,10 +68,16 @@ export default class AddDogManagers extends Component {
             url: `${process.env.REACT_APP_API}/users/email/${this.searchValue.current.value}`
         })
         .then((user) => {
-            debugger;
+            let managerList = [...this.state.dogManagers];
+            let managerFound = managerList.filter((manager) => {
+                return (user.data === manager)
+            });
+
             if(user.data._id === this.state.user._id){
                 this.setState({isOwner: true});
-            } else if(user.data.dog_manager){
+            }else if(managerFound.length > 0){
+                return;
+            }else if(user.data.dog_manager){
                 let dogFound = user.data.dog_manager.dogs.filter((dog) => {
                     return (dog._id === this.state.dogId)
                 });
@@ -116,7 +127,17 @@ export default class AddDogManagers extends Component {
 
     render() {
         return (
-                <div>
+                <div className='add-manager-container'>
+                    <div className='back-box'>
+                        <Link to={`/dog/${this.state.dogId}/profile`}><img src={chevronIcon} alt='back'/></Link>
+                    </div>
+                    <div className='manager-title'>
+                        <h1>Dog Managers</h1>
+                    </div>
+                    <div className='manager-search-box'>
+                        <input type='text' placeholder="Search Coworker's email" ref={this.searchValue}/>
+                        <div onClick={this.handleSearch} className='search-icon'></div>
+                    </div>
                     { this.state.isOwner ? 
                             <p>That is your own email adress silly!</p>
                         : <></>}
@@ -126,22 +147,23 @@ export default class AddDogManagers extends Component {
                     { this.state.alreadyManager ?
                         <p>User is already a dogmanager of {this.state.dog.name}!</p>
                     : <></>}
-                    
-                    <input type='text' placeholder='Search user email...' ref={this.searchValue}/>
-                    <button onClick={this.handleSearch}>Search</button>
-                    <div>
+                    <div className='manager-list-add'>
                         {this.state.dogManagers.map((manager, index) => {
                             return (
                                 <ListBox
                                     key={index}
                                     id={manager._id}
                                     name={manager.name}
+                                    avatar={manager.avatar}
+                                    displayName={manager.display_name}
                                     deleteManager={() => this.deleteManager(manager._id)}
                                 />
                             )
                         })}  
                     </div>
-                    <button onClick={this.handleSubmit}>Add</button>
+                    {this.state.dogManagers.length > 0 ? 
+                        <button onClick={this.handleSubmit}>Add</button>
+                    : <></>}
                 </div>
         )
     }

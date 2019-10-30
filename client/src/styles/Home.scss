@@ -1,3 +1,9 @@
+ * {
+     a {
+         text-decoration: none;
+     }
+ }
+ 
  .home-container {
     width: 100%;
     height: 100%;
@@ -180,4 +186,72 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+
+.dogspace-box {
+    margin: 0 0 15px 0;
+    width: 335px;
+    height: 54px;
+    border-radius: 27px;
+    border: solid 1.5px #535353;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.dogspace-subbox {
+    margin: 0 0 0 17.5px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.coworker {
+    margin: 0 20px 0 0;
+    width: 100%;
+    position: relative;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #535353;
+}
+
+.owner {
+    margin: 0 40px 0 0;
+    width: 100%;
+    position: relative;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #535353;
+}
+
+.dogspace-img-box {
+    position: fixed;
+    width: 29px;
+    height: 29px;
+    background-color: #939393;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+
+    img {
+        width: 100%;
+    }
+}
+
+.asterix {
+    margin: 0 0 20px 20px;
+    width: 10px;
+    height: 10px;
+    background-color: #e1e1e1;
+    border-radius: 50%;
+    z-index: 1;
+    position: relative;
 }

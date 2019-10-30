@@ -3,8 +3,10 @@ import axios from 'axios';
 import {Link} from 'react-router-dom';
 
 //components
-import Nav from '../../Nav';
 import Tracker from './Components/Tracker';
+
+//style
+import '../../../styles/DogHome.scss';
 
 export default class DogHome extends Component {
     state = {
@@ -24,7 +26,6 @@ export default class DogHome extends Component {
     }
 
     getCookiesToday() {
-        debugger;
         let cookiesTotal = [...this.state.cookiesList];
         let cookies = cookiesTotal.filter((cookie) => {
             let cookieDate = this.getDateString(new Date(cookie.added_at));
@@ -80,12 +81,11 @@ export default class DogHome extends Component {
             url: `${process.env.REACT_APP_API}/dogs/dog/${this.state.dogId}`
         })
         .then((dog) => {
-            debugger;
             this.setState({cookiesList: dog.data.cookies})
             this.setState({poopsList: dog.data.poops})
             this.setState({walksList: dog.data.walks})
 
-            // this.getCookiesToday();
+            this.getCookiesToday();
             this.checkForTrackings();
         })
         .catch((err) => console.log(err.message));
@@ -152,34 +152,37 @@ export default class DogHome extends Component {
     render() {
         return (
             <>
-                <Nav/>
-                <div>
-                    <Link to={`/dog/${this.state.dogId}/profile`}><img src='/' alt='dog-profile'/></Link>
-                    <Link to={`/user/profile`}><img src='/' alt='user-profile'/></Link>
-                    <h1>{this.state.weekDay}</h1>
-                    <h1>{this.state.dateDay}</h1>
-                    {this.state.trackings ? 
-                        <div>
-                            <Tracker
-                                cookieCount={this.state.cookieCountToday}
-                                poopCount={this.state.poopCountToday}
-                                walkCount={this.state.walkCountToday}
-                                walkKm={this.state.walkKmToday}
-                                walkMin={this.state.walkMinToday}
-                            />
-                        </div>
-                     :
-
-                        <div>
-                            <p>No trackings yet today</p>
-                            <p>Start tracking!</p>
-                        </div>
-                    }
+                <div className='nav'>
+                    <Link to={`/dog/${this.state.dogId}/profile`}><div className='dogprofile-icon'></div></Link>
+                    <Link to={`/dog/${this.state.dogId}/home`}><div className='doghome-icon'></div></Link>
+                    <Link to={`/user/profile`}><div className='userprofile-icon'></div></Link>
+                </div>
+                <div className='dogspace-container'>
                     <div>
-                        <Link to={`/dog/${this.state.dogId}/home/walk`}><img src='/' alt='walk'/></Link>
-                        <Link to={`/dog/${this.state.dogId}/home/cookie`}><img src='/' alt='cookie'/></Link>
-                        <Link to={`/dog/${this.state.dogId}/home/ice`}><img src='/' alt='emergency'/></Link>
-                        <Link to={`/dog/${this.state.dogId}/home/dictionary`}><img src='/' alt='dictionary'/></Link>
+                        {this.state.trackings ? 
+                            <div>
+                                <h1>{this.state.weekDay}</h1>
+                                <h1>{this.state.dateDay}</h1>
+                                <Tracker
+                                    cookieCount={this.state.cookieCountToday}
+                                    poopCount={this.state.poopCountToday}
+                                    walkCount={this.state.walkCountToday}
+                                    walkKm={this.state.walkKmToday}
+                                    walkMin={this.state.walkMinToday}
+                                />
+                            </div>
+                        :
+
+                            <div className='no-trackings'>
+                                <p>No trackings yet today. <br/><span>Start tracking!</span></p>
+                            </div>
+                        }
+                        <div className='dogspace-btn-box'>
+                            <Link to={`/dog/${this.state.dogId}/home/walk`}><div className='walk-btn'></div></Link>
+                            <Link to={`/dog/${this.state.dogId}/home/cookie`}><div className='cookie-btn'></div></Link>
+                            <Link to={`/dog/${this.state.dogId}/home/ice`}><div className='ice-btn'></div></Link>
+                            <Link to={`/dog/${this.state.dogId}/home/dictionary`}><div className='dictionary-btn'></div></Link>
+                        </div>
                     </div>
                 </div>
             </>

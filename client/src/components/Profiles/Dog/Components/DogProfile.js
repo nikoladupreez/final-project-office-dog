@@ -5,6 +5,9 @@ import axios from 'axios';
 //components
 import ProfileLink from '../../ProfileLink';
 
+//style
+import '../../../../styles/DogProfile.scss';
+
 export default class DogProfile extends Component {
     state = {
         dog: {},
@@ -39,21 +42,27 @@ export default class DogProfile extends Component {
 
     render() {
         return (
-                    <div>
-                        <Link to={`/dog/${this.state.dogId}/home`}><p>Back</p></Link>
-                        <div>
-                            <img src='/' alt='dog-icon'/>
+                    <div className='dogprofile-container'>
+                        <div className='nav-profile'>
+                            <div className='empty'></div>
+                            <div className='dogprofile-icon-big'></div>
+                            <Link to={`/dog/${this.state.dogId}/home`}><div className='doghome-icon-small'></div></Link>
                         </div>
-                        <div>
-                            <img src={this.state.dog.avatar} alt='dog-avatar'/>
-                            <h1>{this.state.dog.name}</h1>
-                            <h2>{this.state.dog.gender}</h2>
-                            <h2>{this.state.age} y/o</h2>
-                            <h2>{this.state.dog.breed}</h2>
+                        <div className='dog-profile-info-box'>
+                            <div className='dog-profile-img'>
+                                <img src={this.state.dog.avatar} alt='dog-icon'/>
+                            </div>
+                            <div className='dog-profile-info'>
+                                <h2>{this.state.dog.name}</h2>
+                                <h2>{this.state.dog.gender}</h2>
+                                <h2>{this.state.age} y/o</h2>
+                                <h2>{this.state.dog.breed}</h2>
+                            </div>
                         </div>
-                        <div>
-                            <ProfileLink url={`/dog/${this.state.dogId}/profile/guide`} icon='/' title={`${this.state.dog.name}s guide`}/>
-                            <ProfileLink url={`/dog/${this.state.dogId}/profile/managers`} icon='/' title={`${this.state.dog.name}s managers`}/>
+                        <div className='link-container'>
+                            <ProfileLink url={`/dog/${this.state.dogId}/profile/guide`} icon='/' title={`${this.state.dog.name}'s Guide`}/>
+                            <ProfileLink url={`/dog/${this.state.dogId}/profile/managers`} icon='/' title='Dog Managers'/>
+                            <ProfileLink url='/home' icon='/' title='Go to another Dogspace'/>
                         </div>
                     </div>
         )

@@ -33,6 +33,7 @@ const Dog = new mongoose.Schema({
         phone: String
     },
     commands: [{type: mongoose.Schema.Types.ObjectId, ref: "command"}],
+    english: Boolean,
     walks: [{type: mongoose.Schema.Types.ObjectId, ref: "walk"}],
     cookies: [{type: mongoose.Schema.Types.ObjectId, ref: "cookie"}],
     poops: [{type: mongoose.Schema.Types.ObjectId, ref: "poop"}],

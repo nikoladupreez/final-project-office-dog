@@ -65,8 +65,9 @@ export default class AddDogspace extends Component {
         commands: [],
         user: getUser(),
         breedsShown: [],
+        translate: false,
         isValidated: true,
-        page: 3
+        page: 10
     }
 
     getBreedList() {
@@ -114,16 +115,24 @@ export default class AddDogspace extends Component {
     }
 
     handleCheckbox(e){
-        let array = [...this.state[e.target.name]];
-        if(e.target.checked){         
-            array.push(e.target.value)
-            this.setState({[e.target.name]: array})
+        if(e.target.name === 'translation'){
+            if(e.target.checked){
+                this.setState({translation: true});
+            } else {
+                this.setState({translation: false});
+            }
         } else {
-            let arrayNew = array.filter((element) => {
-                return !(element === e.target.value)
-            });
-            this.setState({[e.target.name]: arrayNew});
-        }  
+            let array = [...this.state[e.target.name]];
+            if(e.target.checked){         
+                array.push(e.target.value)
+                this.setState({[e.target.name]: array})
+            } else {
+                let arrayNew = array.filter((element) => {
+                    return !(element === e.target.value)
+                });
+                this.setState({[e.target.name]: arrayNew});
+            }  
+        }
     }
 
     handleSubmit(e) {
@@ -604,8 +613,13 @@ export default class AddDogspace extends Component {
                            })}
                         </form>
                         <div className='dog-translate'>
-                            <label>Translate commands to english</label> 
-                            {/* Switcher */}
+                            <label className='translate-label'>Translate commands to english</label> 
+                            <div class="switch-container">
+                                <label class="switch" for="checkbox">
+                                    <input onChange={this.handleCheckbox} type="checkbox" id="checkbox" name='translation'/>
+                                    <div class="slider round"></div>
+                                </label>
+                            </div>
                         </div>
                         <div className='dog-next-btn-box'>
                             <button onClick={this.handleSubmit} disabled={this.state.isValidated === false}>Next</button>

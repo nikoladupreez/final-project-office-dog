@@ -5,6 +5,9 @@ import axios from 'axios';
 import ProfileLink from '../../ProfileLink';
 import {getUser, logout} from "../../../../utils/auth";
 
+//style
+import '../../../../styles/UserProfile.scss';
+
 export default class UserProfile extends Component {
     constructor(props){
         super(props)
@@ -35,23 +38,27 @@ export default class UserProfile extends Component {
 
     render() {
         return (
-                    <div>
-                        <div>
-                            <button onClick={this.goBack}>Back</button>
-                            <img src='/' alt='user-icon'/>
-                            <div>
-                                <h1>{this.state.user.display_name}</h1>
-                                <p>{this.state.user.firstname} {this.state.user.lastname}</p>
-                                <p>{this.state.user.phone}</p>
-                            </div>
-                            <img src={this.state.user.image_URL} alt='user-img'/>
+                    <div className='userprofile-container'>
+                        <div className='nav-profile'>
+                            <div onClick={this.goBack}className='doghome-icon-small'></div>
+                            <div className='userprofile-icon-big'></div>
+                            <div className='empty'></div>
                         </div>
-                        <div>
-                            <ProfileLink url='/user/edit-profile' icon='/' title='Edit profile'/>
-                            <ProfileLink url='/home' icon='/' title='Dogspaces'/>
-                            <div onClick={this.logoutUser}>
+                        <div className='user-profile-info-box'>
+                            <div className='user-profile-info'>
+                                <h1>{this.state.user.name}</h1>
+                                <h2>{this.state.user.display_name}</h2>
+                                <h2>{this.state.user.phone}</h2>
+                            </div>
+                            <div className='user-profile-img'>
+                                <img src={this.state.user.avatar} alt='user-icon'/>
+                            </div>
+                        </div>
+                        <div className='link-container'>
+                            <ProfileLink url='/user/edit-profile' icon='/' title='Edit Profile'/>
+                            <div onClick={this.logoutUser} className='link-box'>
                                 <img src='/' alt='icon'/>
-                                <h1>Logout</h1>
+                                <h1>Log out</h1>
                             </div>
                         </div>
                     </div>

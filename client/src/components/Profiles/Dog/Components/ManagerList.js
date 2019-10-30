@@ -1,12 +1,17 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
+import crossIcon from '../../../../images/cross.svg';
+
+//style
+import '../../../../styles/DogManager.scss';
 
 export default class ManagerList extends Component {
     state = {
         dogId: this.props.match.params.id,
         dog: {},
-        managerList: []
+        managerList: [],
+        managers: false
     }
 
     componentDidMount() {
@@ -17,27 +22,46 @@ export default class ManagerList extends Component {
         .then((dog) => {
             this.setState({dog: dog.data})
             this.setState({managerList: dog.data.dog_managers})
+            if (dog.data.dog_managers.length > 0){
+                this.setState({managers: true});
+            }
         })
         .catch((err) => console.log(err.message));
     }
 
     render() {
         return (
-            <div>
-                <Link to={`/dog/${this.state.dogId}/profile`}><button>Back</button></Link>
-                <h1>Dog managers</h1>
-                <div>
-                    {this.state.managerList.map((manager, index) => {
-                       return (
-                           <div key={index}>
-                                <img src={manager.image_URL} alt='user'/>
-                                <h2>{manager.name}</h2>
-                                <h3>{manager.phone}</h3>
-                           </div>
-                       )
-                    })}
-                </div>  
-                <Link to={`/dog/${this.state.dogId}/profile/managers/add`}><button>Add dog manager</button></Link>
+            <div className='manager-container'>
+                <div className='back-box'>
+                    <Link to={`/dog/${this.state.dogId}/profile`}><img src={crossIcon} alt='back'/></Link>
+                    <Link to={`/dog/${this.state.dogId}/profile/managers/add`}><div className='edit-btn'></div></Link>
+                </div>
+                <div className='manager-title'>
+                    <h1>Dog managers</h1>
+                </div>
+                {this.state.managers ? 
+                    <div className='manager-list'>
+                        {this.state.managerList.map((manager, index) => {
+                        return (
+                            <div key={index} className='manager-box'>
+                                <div className='manager-img-box'>
+                                    <img src={manager.image_URL} alt='user'/>
+                                </div>
+                                <div className='manager-name-box'>
+                                    <h2>{manager.name}</h2>
+                                    <h3>{manager.display_name}</h3>
+                                    <h3>{manager.phone}</h3>
+                                </div>
+                            </div>
+                        )
+                        })}
+                    </div>  
+                :
+                    <div className='no-managers'>
+                        <p>There are no dog managers yet, add dog managers under edit.</p>
+                    </div>
+
+                }
             </div>
         )
     }
