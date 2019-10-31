@@ -8,9 +8,8 @@ const Cookie = require('../../models/cookie');
 
 // POST route => add new cookies
 router.post('/dog/:id/add', (req, res, next) => {
-   debugger;
    Cookie.create({
-      quantity: req.body.count,
+      quantity: req.body.cookieCount,
       dog: mongoose.Types.ObjectId(req.params.id),
       dog_manager: mongoose.Types.ObjectId(req.body.user._id)
    })

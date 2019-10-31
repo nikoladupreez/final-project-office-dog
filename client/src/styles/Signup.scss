@@ -1,4 +1,8 @@
 .signup-container {
+    background-image: url('../images/background-onboarding.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
     width: 100%;
     height: 100%;
     display: flex;
@@ -12,39 +16,44 @@
 
 .signup-back-box {
     width: 89.4%;
-    margin: 57px 0 30px 0;
-
-    img {
-        width: 21px;
-        height: 22px;
-    }
+    margin: 57px 0 40px 0;
 }
 
 .signup-title {
     margin: 0;
     width: 335px;
-    height: 41px;
+    height: 41px;   
     font-size: 35px;
-    font-weight: normal;
+    font-weight: 500;
     font-stretch: normal;
     font-style: normal;
-    line-height: normal;
+    line-height: 1.17;
     letter-spacing: normal;
-    color: #535353;
+    color: #ffffff;
+}
+
+.dogspace-logo3 {
+    margin: 0 7px 0 0;
+    width: 88px;
+    height: 20px;
+    background-image: url('../images/dogspace-logo.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
 }
 
 .signup-subtitle {
-    margin: 5px 0 10px 0;
-    font-weight: 500;
-    width: 335px;
-    height: 24px;
+    margin: 2px 0 19px 0;
+    height: 28px;
     font-size: 20px;
     font-weight: 500;
     font-stretch: normal;
     font-style: normal;
-    line-height: normal;
+    line-height: 1.4;
     letter-spacing: normal;
-    color: #535353;
+    color: #d4ebf9;
+    display: flex;
+    align-items: center;
 }
 
 .hidden {
@@ -68,29 +77,59 @@
             font-family: 'FontsFree-Net-SF-Pro-Rounded-Bold';
             font-stretch: normal;
             font-style: normal;
-            line-height: normal;
-            letter-spacing: normal;
-            color: #535353;
+            line-height: 1.14;
+            letter-spacing: 0.3px;
+            color: #ffffff;
         }
     }
 
     .signup-tos {
-        margin: 20px 0 0 0;
-        width: 335px;
+        margin: 34px 0 0 0;
         height: 16px;
+        font-family: 'FontsFree-Net-SF-Pro-Rounded-Thin';
         font-size: 14px;
         font-weight: 300;
         font-stretch: normal;
         font-style: normal;
-        line-height: normal;
+        line-height: 1.14;
         letter-spacing: normal;
-        text-align: center;
-        color: #535353;
+        text-align: right;
+        color: #ffffff;
     }
 
     span {
         font-family: 'FontsFree-Net-SF-Pro-Rounded-Bold';
+        color: #ff9582;
     }
+}
+
+.signup-subtitle2 {
+    margin: 5px 0 25px 0;
+    height: 56px;
+    font-size: 20px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.4;
+    letter-spacing: normal;
+    color: #d4ebf9;
+    display: flex;
+    align-items: center;
+}
+
+.subtitle-container {
+    display: flex;
+    align-items: flex-start;
+}
+
+.dogspace-logo4 {
+    margin: 12px 0 0 6px;
+    width: 71px;
+    height: 16px;
+    background-image: url('../images/dogspace-logo.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
 }
 
 .sign-part-2 {
@@ -99,20 +138,21 @@
     width: 89.3%;
 
     form {
-        margin: 30px 0 0 0;
+        margin: 16px 0 0 0;
         display: flex;
         flex-direction: column;
 
 
         label {
             margin: 30px 0 10px 0;
-            font-size: 14px;
             font-family: 'FontsFree-Net-SF-Pro-Rounded-Bold';
+            font-size: 14px;
+            font-weight: bold;
             font-stretch: normal;
             font-style: normal;
-            line-height: normal;
-            letter-spacing: normal;
-            color: #535353;
+            line-height: 1.14;
+            letter-spacing: 0.3px;
+            color: #ffffff;
         }
     }
 }
@@ -120,10 +160,11 @@
 .inputText {
     padding: 0 0 0 20px;
     margin: 0;
-    width: 310px;
+    width: 335px;
     height: 50px;
     border-radius: 10px;
-    border: solid 1.5px #939393;
+    border: solid 2.5px #b2dcf4;
+    background-color: #ffffff;
     font-size: 18px;
     font-weight: 500;
     font-stretch: normal;
@@ -141,18 +182,19 @@
     align-items: center;
 
     button {
-        width: 183px;
-        height: 54px;
+        width: 162.4px;
+        height: 45.6px;
         border-radius: 27px;
-        background-color: #535353;
+        box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.25);
+        background-color: #a2d5f2;
         font-size: 18px;
         font-weight: 600;
         font-stretch: normal;
         font-style: normal;
-        line-height: normal;
-        letter-spacing: 0.5px;
+        line-height: 1.17;
+        letter-spacing: normal;
         text-align: center;
-        color: #ffffff;
+        color: #191919;
     };
 
     button:disabled {

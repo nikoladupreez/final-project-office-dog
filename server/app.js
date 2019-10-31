@@ -77,6 +77,8 @@ app.use('/api/auth', require("./routes/api/auth"));
 app.use('/api/dogs', require("./routes/api/dogs")); 
 app.use('/api/users', require("./routes/api/users"));
 app.use('/api/cookies', require("./routes/api/cookies"));
+app.use('/api/poops', require("./routes/api/poops"));
+app.use('/api/walks', require("./routes/api/walks"));
 
 
 module.exports = app;

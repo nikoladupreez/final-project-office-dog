@@ -16,8 +16,8 @@ export default class ConfirmAdd extends Component {
             <div className='add-dog-box'>
                 <div className='confirm-img'></div>
                 <p>The office dog guide is finished! Let’s start the office dog management!</p>
-                <div className='btn-box'>
-                    <Link to={`/dog/${this.state.dog._id}/home`}><button>GO TO DOGSPACE OF {this.state.dog.name}</button></Link>
+                <div className='btn-box' id='confirm-btn-box'>
+                    <Link to={`/dog/${this.state.dog._id}/home`}><button id='confirm-btn'>Go to {this.state.dog.name}'s dogspace</button></Link>
                 </div>
             </div>
         )

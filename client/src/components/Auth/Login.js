@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import {Link} from 'react-router-dom';
-import crossIcon from '../../images/cross.svg';
 
 //components
 import {login} from "../../utils/auth";
@@ -35,11 +34,11 @@ export default class Login extends Component {
         return (
                 <div className='login-container'>
                     <div className='login-back-box'>
-                        <Link to='/'><img src={crossIcon} alt='back'/></Link>
+                        <Link to='/'><div className='close-icon'></div></Link>
                     </div>
-                    <img className='login-logo' src='/' alt='logo'/>
+                    <div className='login-illustration'></div>
                     <div className='login-box'>
-                        <h1>Sign in to DOGSPACE </h1>
+                        <h1>Sign in to <div className='dogspace-logo2'></div></h1>
                         <h2>Enter your details below</h2>
                         <form onSubmit={(e) => {e.preventDefault(); return false}}>
                             <label className='login-email-label'>Email address</label>

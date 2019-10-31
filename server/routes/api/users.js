@@ -50,12 +50,11 @@ router.get('/:id', (req, res, next) => {
 
 // POST route => edit user info
 router.post('/:id/edit', (req, res, next) => {
-  User.update({id: req.params.id}, {
-        firstname: req.body.firstname,
-        lastname: req.body.lastname,
-        display_name: req.body.display,
-        phone: req.body.phone
-        // image_URL:
+  User.updateOne({_id: req.params.id}, {
+        name: req.body.name,
+        display_name: req.body.displayName,
+        phone: req.body.phone,
+        avatar: req.body.avatar
       })
       .then(user => {
         res.json(user);

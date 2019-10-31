@@ -30,7 +30,7 @@ export default class Dictionary extends Component {
             <div className='dictionary-container'>
                  <div className='back-box'>
                         <Link to={`/dog/${this.state.dogId}/home`}><img src={crossIcon} alt='back'/></Link>
-                        <Link to={`/dog/${this.state.dogId}/home/dictionary-edit`}><div className='edit-btn'></div></Link>
+                        <Link to={`/dog/${this.state.dogId}/home/dictionary/edit`}><div className='edit-btn'></div></Link>
                 </div>
                 <div className='dictionary-title'>
                     <h1>Commands</h1>

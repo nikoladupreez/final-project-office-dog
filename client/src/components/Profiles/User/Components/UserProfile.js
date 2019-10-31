@@ -24,7 +24,9 @@ export default class UserProfile extends Component {
             method: "GET",
             url: `${process.env.REACT_APP_API}/users/${this.state.user._id}`
         })
-        .then((user) => this.setState({userPopulated: user}))
+        .then((user) => {
+            this.setState({userPopulated: user.data})
+        })
         .catch((err) => console.log(err.message));
     }
 
@@ -46,16 +48,16 @@ export default class UserProfile extends Component {
                         </div>
                         <div className='user-profile-info-box'>
                             <div className='user-profile-info'>
-                                <h1>{this.state.user.name}</h1>
-                                <h2>{this.state.user.display_name}</h2>
-                                <h2>{this.state.user.phone}</h2>
+                                <h1>{this.state.userPopulated.name}</h1>
+                                <h2>{this.state.userPopulated.display_name}</h2>
+                                <h2>{this.state.userPopulated.phone}</h2>
                             </div>
                             <div className='user-profile-img'>
-                                <img src={this.state.user.avatar} alt='user-icon'/>
+                                <img src={this.state.userPopulated.avatar} alt='user-icon'/>
                             </div>
                         </div>
                         <div className='link-container'>
-                            <ProfileLink url='/user/edit-profile' icon='/' title='Edit Profile'/>
+                            <ProfileLink url='/user/profile/edit' icon='/' title='Edit Profile'/>
                             <div onClick={this.logoutUser} className='link-box'>
                                 <img src='/' alt='icon'/>
                                 <h1>Log out</h1>

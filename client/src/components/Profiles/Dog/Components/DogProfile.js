@@ -60,6 +60,7 @@ export default class DogProfile extends Component {
                             </div>
                         </div>
                         <div className='link-container'>
+                            <ProfileLink url={`/dog/${this.state.dogId}/profile/edit`} icon='/' title={`Edit ${this.state.dog.name}'s Profile`}/>
                             <ProfileLink url={`/dog/${this.state.dogId}/profile/guide`} icon='/' title={`${this.state.dog.name}'s Guide`}/>
                             <ProfileLink url={`/dog/${this.state.dogId}/profile/managers`} icon='/' title='Dog Managers'/>
                             <ProfileLink url='/home' icon='/' title='Go to another Dogspace'/>

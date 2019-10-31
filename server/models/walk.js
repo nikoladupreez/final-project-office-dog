@@ -7,7 +7,7 @@ const Walk = new mongoose.Schema({
     path: [Array],  //Array with coordinates
     dog: {type: mongoose.Types.ObjectId, ref: "dog"},
     dog_manager: {type: mongoose.Types.ObjectId, ref: "user"}, 
-    poops: [{type: mongoose.Types.ObjectId, ref: "poop"}]
+    poops: Number
 });
 
 module.exports = mongoose.model('walk', Walk);

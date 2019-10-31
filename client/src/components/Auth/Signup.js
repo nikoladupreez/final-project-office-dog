@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
-import crossIcon from '../../images/cross.svg';
 
 //style
 import '../../styles/Signup.scss';
@@ -71,7 +70,7 @@ class Signup extends Component {
                 <div className='signup-container'>
                         { this.state.page === 1 ? 
                             <div className='signup-back-box'>
-                                <Link to='/'><img src={crossIcon} alt='back'/></Link>
+                                <Link to='/'><div className='close-icon'></div></Link>
                             </div>
                         : 
 
@@ -82,7 +81,7 @@ class Signup extends Component {
                         <h1 className='signup-title'>Get started</h1>
 
                             <div className={this.state.page === 1 ? 'sign-part-1' : 'hidden'}>
-                                <p className='signup-subtitle'>DOGSPACE is free!</p>
+                                <p className='signup-subtitle'><div className='dogspace-logo3'></div> is free!</p>
                                 <form ref={form => this.formPage1 = form} onSubmit={(e) => {e.preventDefault(); return false}}>
                                     <label>Work email adress</label>
                                     <input className='inputText' required onChange={this.handleChange} value={this.state.email} type="text" name="email"/>
@@ -98,7 +97,9 @@ class Signup extends Component {
                             </div>
                  
                             <div className={this.state.page === 2 ? 'sign-part-2' : 'hidden'}>
-                                <p className='signup-subtitle'>Create your office dog management account!</p>
+                                <div className='subtitle-container'>
+                                    <p className='signup-subtitle2'>Create your office dog a <br/> account!</p><div className='dogspace-logo4'></div>
+                                </div>
                                 <form ref={form => this.formPage2 = form} onSubmit={(e) => {e.preventDefault(); return false}}>
                                     <label>Display name</label>
                                     <input className='inputText' required onChange={this.handleChange} value={this.state.displayName} type="text" name="displayName"/>

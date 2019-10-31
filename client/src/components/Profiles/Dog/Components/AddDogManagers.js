@@ -68,9 +68,8 @@ export default class AddDogManagers extends Component {
             url: `${process.env.REACT_APP_API}/users/email/${this.searchValue.current.value}`
         })
         .then((user) => {
-            let managerList = [...this.state.dogManagers];
-            let managerFound = managerList.filter((manager) => {
-                return (user.data === manager)
+            let managerFound = dogManagers.filter((manager) => {
+                return (user.data._id === manager._id)
             });
 
             if(user.data._id === this.state.user._id){

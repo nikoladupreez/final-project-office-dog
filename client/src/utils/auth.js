@@ -44,7 +44,10 @@ export const loggedIn = function(){
     }
 
 export const setUser = function(user){
+    debugger;
+    if(user && user._id){
         localStorage.setItem('user', JSON.stringify(user));
+    }
     }
 
 export const getUser = function(){

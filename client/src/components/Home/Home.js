@@ -55,10 +55,11 @@ export default class Home extends Component {
                         <Link to='/user/profile'><img src={userIcon} alt='user-profile'/></Link>
                     </div>
                     <div className={!this.userHasDogs() && !this.userManagesDogs() ? 'dog-container' : 'hidden'}>
+                        <h1 className='oeps'>Whoops!</h1>
                         <div className='sample-dogspace-box'>
                             <div className='sample-dogspace-subbox'>
                                 <div className='sample-dogspace-img'></div>
-                                <h1>Dogspace</h1>
+                                <h1 className='sample'>Dogspace</h1>
                             </div>
                         </div>
                         <p>You're not connected to a dogspace yet, ask the dogowner to add you! </p>
@@ -102,9 +103,9 @@ export default class Home extends Component {
                             <div className='home-or-line'></div>
                         </div>
                         <div className='home-create-dog-box'>
-                            <h1>Create dogspace!</h1>
+                            <h1>Create a dogspace!</h1>
                             <p>Are you an office dog owner and want to start using Dogspace? Create one here!</p>
-                            <Link to='/add-dog'><button><div className='add-dogspace-box'><div className='add-dogspace-img'></div>Create dogspace</div></button></Link>
+                            <Link to='/add-dog'><button><div className='add-dogspace-box'><div className='add-dogspace-img'><div className='asterix'></div></div>Create dogspace</div></button></Link>
                         </div>
                     </div>      
             </div>

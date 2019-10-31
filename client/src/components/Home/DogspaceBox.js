@@ -12,7 +12,7 @@ export default function DogspaceBox(props) {
                         <img src={props.avatar} alt='dog'/>
                     </div>
                     { props.owner === 'true' ? 
-                        <div className='asterix'></div>
+                        <div className='asterix-owner'></div>
                      : <></> }
                     <h1 className={props.owner === 'true' ? 'owner' : 'coworker'}>{props.name}</h1>
                 </div>

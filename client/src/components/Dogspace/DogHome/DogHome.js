@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
+import Modal from 'react-bootstrap/Modal';
+import {getUser} from "../../../utils/auth";
 
 //components
 import Tracker from './Components/Tracker';
@@ -9,8 +11,21 @@ import Tracker from './Components/Tracker';
 import '../../../styles/DogHome.scss';
 
 export default class DogHome extends Component {
+    constructor(props){
+        super(props)
+        this.handleShowCookie = this.handleShowCookie.bind(this);
+        this.handleCloseCookie = this.handleCloseCookie.bind(this);
+        this.handleShowICE = this.handleShowICE.bind(this);
+        this.handleCloseICE = this.handleCloseICE.bind(this);
+        this.increaseCount = this.increaseCount.bind(this);
+        this.decreaseCount = this.decreaseCount.bind(this);
+        this.handleSubmitCookies = this.handleSubmitCookies.bind(this);
+    }
+
     state = {
         dogId: this.props.match.params.id,
+        dog: {},
+        user: getUser(),
         dateToday: "",
         weekDay: '',
         dateDay: 0,
@@ -22,7 +37,12 @@ export default class DogHome extends Component {
         poopCountToday: 0,
         walkCountToday: 0,
         walkKmToday: 0,
-        walkMinToday: 0
+        walkMinToday: 0,
+        cookieCount: 0,
+        showCookie: false,
+        setShowCookie: false,
+        showICE: false,
+        setShowICE: false
     }
 
     getCookiesToday() {
@@ -84,9 +104,9 @@ export default class DogHome extends Component {
             this.setState({cookiesList: dog.data.cookies})
             this.setState({poopsList: dog.data.poops})
             this.setState({walksList: dog.data.walks})
-
+            this.setState({dog: dog.data})
             this.getCookiesToday();
-            this.checkForTrackings();
+            // this.checkForTrackings();
         })
         .catch((err) => console.log(err.message));
     }
@@ -149,6 +169,55 @@ export default class DogHome extends Component {
         }
     }
 
+    handleShowCookie() {
+        this.setState({setShowCookie: true})
+        this.setState({showCookie: true})
+    }
+
+    handleCloseCookie() {
+        this.setState({setShowCookie: false})
+        this.setState({showCookie: false})
+    }
+
+    increaseCount() {
+        let count = this.state.cookieCount;
+        let countNew = count + 1;
+        this.setState({cookieCount: countNew});
+    }
+
+    decreaseCount() {
+        if (this.state.cookieCount > 0){
+            let count = this.state.cookieCount;
+            let countNew = count - 1;
+            this.setState({cookieCount: countNew});
+        }
+    }
+
+    handleShowICE() {
+        this.setState({setShowICE: true})
+        this.setState({showICE: true})
+    }
+
+    handleCloseICE() {
+        this.setState({setShowICE: false})
+        this.setState({showICE: false})
+    }
+
+    handleSubmitCookies() {
+        axios({
+            method: "POST",
+            url: `${process.env.REACT_APP_API}/cookies/dog/${this.state.dogId}/add`,
+            headers: { 'content-type': 'application/json' },
+            data: JSON.stringify(this.state)
+        })
+        .then((res) => {
+            this.setState({cookieCount: 0});
+            this.handleCloseCookie();
+            // this.componentDidMount();
+        })
+        .catch((err) => console.log(err.message));
+    }
+
     render() {
         return (
             <>
@@ -179,10 +248,97 @@ export default class DogHome extends Component {
                         }
                         <div className='dogspace-btn-box'>
                             <Link to={`/dog/${this.state.dogId}/home/walk`}><div className='walk-btn'></div></Link>
-                            <Link to={`/dog/${this.state.dogId}/home/cookie`}><div className='cookie-btn'></div></Link>
-                            <Link to={`/dog/${this.state.dogId}/home/ice`}><div className='ice-btn'></div></Link>
+                            <div onClick={this.handleShowCookie} className='cookie-btn'></div>
+                            <div onClick={this.handleShowICE} className='ice-btn'></div>
                             <Link to={`/dog/${this.state.dogId}/home/dictionary`}><div className='dictionary-btn'></div></Link>
+                            
                         </div>
+                        <Modal
+                            show={this.state.showCookie}
+                            onHide={this.handleCloseCookie}
+                            centered='true'
+                            dialogClassName="modal-90w"
+                            aria-labelledby="cookie-modal"
+                            style={{maxWidth: '90%', width: '90%', margin: '0 0 0 18px'}}
+                        >
+                            <Modal.Header closeButton id='modal-header'>
+                                <Modal.Title id="cookie-title">
+                                    Cookie <br/> Counter
+                                </Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body id='cookie-body' style={{margin: '0 0 0 -3px'}}>
+                                <div className='cookie-container'>
+                                    <div className='cookie-box'>
+                                        <img src='/' alt='cookie'/>
+                                    </div>
+                                    <div className='cookie-count-box'>
+                                        <img onClick={this.decreaseCount} src='/' alt='min'/>
+                                        <div className='cookie-count'>
+                                            <p>{this.state.cookieCount}</p>
+                                        </div>
+                                        <img  onClick={this.increaseCount} src='/' alt='plus'/>
+                                    </div>
+                                    <div className='cookie-btn-box'>
+                                        <button onClick={this.handleSubmitCookies}>Add</button>
+                                    </div>
+                                </div>
+                            </Modal.Body>
+                        </Modal>
+
+                    {!this.state.dog.owner ? 
+                        <h1>Loading...</h1>
+                    :
+                        <Modal
+                            show={this.state.showICE}
+                            onHide={this.handleCloseICE}
+                            dialogClassName="modal-90w"
+                            centered='true'
+                            aria-labelledby="ice-modal"
+                            style={{maxWidth: '90%', width: '90%', margin: '0 0 0 18px', borderRadius: "5px"}}
+                        >
+                            <Modal.Header closeButton id='modal-header'>
+                            <Link to={`/dog/${this.state.dogId}/home/ice/edit`}><div className='edit-btn'></div></Link>
+                            <Modal.Title id="ice-title">
+                                Emergency <br/> Card
+                            </Modal.Title>
+                            </Modal.Header>
+                                <Modal.Body id='ice-body' style={{margin: '0 0 0 -15px'}}>
+                                    <div className='ice-info-container'>
+                                        <div className='ambulance-box'>
+                                            <h1>Dutch Animal Ambulance</h1>
+                                            <Link to='tell:09000245'><p>0900 0245</p></Link>
+                                        </div>
+                                        <div className='box-text box4'>
+                                                <p>{this.state.dog.name}<br/>
+                                                   {this.state.dog.breed}<br/>
+                                                   {this.state.dog.birthday}<br/>
+                                                   {this.state.dog.gender}</p>
+                                        </div>
+                                        <h1 className='ice-label'>Contact Owner {this.state.dog.name}</h1>
+                                        <div className='box-text box2'>
+                                                <p>{this.state.dog.owner.name}<br/>
+                                                <Link to={`tell:{this.state.dog.owner.phone}`}>{this.state.dog.owner.phone}</Link></p>
+                                        </div>
+                                        <h1 className='ice-label'>Emergency contact 1</h1>
+                                        <div className='box-text box2'>
+                                            <p>{this.state.dog.ice_1.name}<br/>
+                                            <Link to={`tell:${this.state.dog.ice_1.phone}`}>{this.state.dog.ice_1.phone}</Link></p>
+                                        </div>
+                                        <h1 className='ice-label'>Emergency contact 2</h1>
+                                        <div className='box-text box2'>
+                                            <p>{this.state.dog.ice_2.name}<br/>
+                                            <Link to={`tell:${this.state.dog.ice_2.phone}`}>{this.state.dog.ice_2.phone}</Link></p>
+                                        </div>
+                                        <h1 className='ice-label'>Veterinary</h1>
+                                        <div className='box-text box3'>
+                                            <p>{this.state.dog.vet.name}<br/>
+                                            {this.state.dog.vet.company}<br/>
+                                            <Link to={`tell:${this.state.dog.vet.phone}`}>{this.state.dog.vet.phone}</Link></p>
+                                        </div>
+                                </div>
+                            </Modal.Body>
+                        </Modal>
+                        }
                     </div>
                 </div>
             </>

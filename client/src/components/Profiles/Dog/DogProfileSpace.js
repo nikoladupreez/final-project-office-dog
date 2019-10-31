@@ -5,6 +5,7 @@ import {Route, Switch} from 'react-router-dom';
 import DogProfile from './Components/DogProfile';
 import DogProfileEdit from '../Dog/Components/DogProfileEdit';
 import DogGuide from './Components/DogGuide';
+import DogGuideEdit from './Components/DogGuideEdit';
 import DogManagerSpace from './DogManagerSpace';
 
 export default class DogProfileSpace extends Component {
@@ -13,6 +14,7 @@ export default class DogProfileSpace extends Component {
                 <Switch>
                     <Route exact path='/dog/:id/profile/edit' component={DogProfileEdit}/>
                     <Route exact path='/dog/:id/profile/guide' component={DogGuide}/>
+                    <Route exact path='/dog/:id/profile/guide/edit' component={DogGuideEdit}/>
                     <Route path='/dog/:id/profile/managers' component={DogManagerSpace}/>
                     <Route exact path='/dog/:id/profile' component={DogProfile}/>
                 </Switch>

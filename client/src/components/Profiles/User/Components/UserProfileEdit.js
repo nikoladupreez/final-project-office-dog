@@ -1,24 +1,40 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
 import axios from 'axios';
-import qs from "querystring";
+import crossIcon from '../../../../images/cross.svg';
 
 //components
 import {getUser} from "../../../../utils/auth";
+
+//style
+import '../../../../styles/UserProfile.scss';
 
 export default class UserProfileEdit extends Component {
     constructor(props){
         super(props)
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleRadio = this.handleRadio.bind(this);
     }
 
     state = {
         user: getUser(),
-        image: this.state.user.image_URL,
-        firstname: this.state.user.firstname,
-        lastname: this.state.user.lastname,
-        display: this.state.user.display_name,
-        phone: this.state.user.phone
+        avatar: "",
+        name: "",
+        displayName: "",
+        phone: "",
+        avatarList: ["/one", "/three"],
+        nonChosenAvatars: []
+    }
+
+    componentDidMount() {
+        this.setState({
+            avatar: this.state.user.avatar,
+            name: this.state.user.name,
+            displayName: this.state.user.display_name,
+            phone: this.state.user.phone
+        })
+        this.sortAvatars();
     }
 
     handleChange(e) {
@@ -31,34 +47,68 @@ export default class UserProfileEdit extends Component {
         e.preventDefault();
         axios({
             method: "POST",
-            url: `${process.env.REACT_APP_API}/users/${this.state.user.id}/edit`,
-            headers: { 'content-type': 'application/x-www-form-urlencoded' },
-            data: qs.stringify(this.state),
+            url: `${process.env.REACT_APP_API}/users/${this.state.user._id}/edit`,
+            headers: { 'content-type': 'application/json' },
+            data: JSON.stringify(this.state),
         })
         .then((res) => {
-            this.props.history.push({pathname: '/user/profile'}); 
+            this.props.history.goBack();
         })
         .catch((err) => {
             console.log(err.message);
         })
     }
 
+    handleRadio(e){
+        if(e.target.checked){
+            this.setState({
+                [e.target.name]: e.target.value
+            })
+        }
+    }
+
+    sortAvatars() {
+        let chosenAvatar = this.state.avatar;
+        let avatarList = [...this.state.avatarList];
+        let nonChosenAvatars = avatarList.filter((avatar) => {
+            return !(chosenAvatar === avatar);
+        });
+
+        this.setState({nonChosenAvatars: nonChosenAvatars});
+    }
+
     render () {
         return (
-            <div>
-                <form>
-                    <div>
-                        <img src={this.state.image} alt='user-img'/>
+            <div className='edit-userprofile-container'>
+                    <div className='back-box'>
+                        <Link to='/home'><img src={crossIcon} alt='back'/></Link>
                     </div>
-                    <imput type='file' value={this.state.image} name='image'/>
-                    <div>
-                        <h1>Name</h1>
-                        <h2>{this.state.firstname} {this.state.lastname}</h2>
-                        <input onChange={this.handleChange}type='text' placeholder='Firstname' value={this.state.firstname}/>
-                        <h1>Display name</h1>
-                        <h2>{this.state.display}</h2>
-                        <h1>Phone nr</h1>
-                        <h2>{this.state.phone}</h2>
+                    <div className='edit-user-title'>
+                        <h1>Edit Profile</h1>
+                    </div>
+                <form onSubmit={(e) => {e.preventDefault(); return false}}>
+                    <div className='avatar-option-box'>
+                        <div className='avatar-small-container'>
+                            {this.state.nonChosenAvatars.map((avatar, index) => {
+                                return (
+                                        <div className='avatar-small-box' key={index}>
+                                            <label><div className='avatar-small'><img src={avatar} alt='avatar'/></div><input onChange={this.handleRadio} className='avatar-small-input' type='radio' name='avatar'/></label>
+                                        </div>
+                                )
+                            })}
+                        </div>
+                        <div className='avatar-big-box'>
+                            <label className='avatar-big-label'><div className='avatar-big'><img src={this.state.avatar} alt='avatar-user'/></div><input checked value={this.state.avatar} onChange={this.handleRadio} className='avatar-big-input' type='radio' name='avatar'/></label>
+                        </div>
+                    </div>
+                    <label className='label-profile'>Full name</label>
+                    <input className='text-input-profile' onChange={this.handleChange} name='name' placeholder={this.state.name}/>
+                    <label className='label-profile'>Display name</label>
+                    <input className='text-input-profile' onChange={this.handleChange} name='displayName' placeholder={this.state.displayName}/>
+                    <label className='label-profile'>Phone number</label>
+                    <input className='text-input-profile' onChange={this.handleChange} name='phone' placeholder={this.state.phone}/>
+                    <div className='btn-box'>
+                        <button onClick={this.handleSubmit}>Save changes</button>
                     </div>
                 </form>
             </div>
