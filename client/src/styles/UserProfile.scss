@@ -5,6 +5,10 @@
 }
 
 .userprofile-container {
+    background-image: url('../images/background-orange.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
     height: 100vh;
     overflow: hidden;
 }
@@ -24,9 +28,13 @@
 }
 
 .userprofile-icon-big {
-    width: 71.1px;
-    height: 65.8px;
-    background-color: rgb(221, 219, 219);
+    background-image: url('../images/dogmanager.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    border-radius: 33px;
+    width: 70px;
+    height: 70px;
 }
 
 .doghome-icon-small {
@@ -72,27 +80,29 @@
 
     h1 {
         margin: 0;
-        height: 20px;
-        font-size: 14px;
-        font-weight: 600;
+        width: 203px;
+        font-size: 18px;
+        font-weight: bold;
         font-stretch: normal;
         font-style: normal;
-        line-height: normal;
-        letter-spacing: -0.34px;
-        color: #535353;
+        line-height: 1.5;
+        letter-spacing: 0.3px;
+        text-align: right;
+        color: #c3e4f6;
     }
 
     h2 {
         margin: 0;
-        height: 20px;
         font-family: 'FontsFree-Net-SFProText-Regular-1';
+        width: 203px;
         font-size: 14px;
         font-weight: normal;
         font-stretch: normal;
         font-style: normal;
-        line-height: normal;
-        letter-spacing: -0.34px;
-        color: #535353;
+        line-height: 1.5;
+        letter-spacing: normal;
+        text-align: right;
+        color: #ffffff;
     }
 }
 

@@ -220,7 +220,7 @@ export default class DogHome extends Component {
 
     render() {
         return (
-            <>
+            <div className='doghome-container'>
                 <div className='nav'>
                     <Link to={`/dog/${this.state.dogId}/profile`}><div className='dogprofile-icon'></div></Link>
                     <Link to={`/dog/${this.state.dogId}/home`}><div className='doghome-icon'></div></Link>
@@ -341,7 +341,7 @@ export default class DogHome extends Component {
                         }
                     </div>
                 </div>
-            </>
+            </div>
         )
     }
 }

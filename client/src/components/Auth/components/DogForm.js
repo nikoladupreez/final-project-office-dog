@@ -64,7 +64,7 @@ export default class AddDogspace extends Component {
         user: getUser(),
         breedsShown: [],
         translate: false,
-        isValidated: false,
+        isValidated: true,
         page:1,
         loading: true
     }
@@ -104,7 +104,7 @@ export default class AddDogspace extends Component {
     handleDateChange = (date) => {
         this.getDogAge(date) 
         this.setState({birthday: date});
-        this.checkValidation()
+        // this.checkValidation()
     };
 
     handleChange(e) {
@@ -113,7 +113,7 @@ export default class AddDogspace extends Component {
         } else {
             this.setState({[e.target.name]: e.target.value})
         }
-        this.checkValidation()
+        // this.checkValidation()
     }
 
     handleCheckbox(e){
@@ -135,7 +135,7 @@ export default class AddDogspace extends Component {
                 this.setState({[e.target.name]: arrayNew});
             }  
         }
-        this.checkValidation()
+        // this.checkValidation()
     }
 
     handleSubmit(e) {
@@ -185,7 +185,7 @@ export default class AddDogspace extends Component {
             default:
                 break; 
         }
-        this.checkValidation()
+        // this.checkValidation()
     }
 
     goBack() {
@@ -210,14 +210,14 @@ export default class AddDogspace extends Component {
             this.setState({page: newPageNr});
         } else {
             this.setState({page: newPageNr});
-            this.setState({isValidated: false})
+            // this.setState({isValidated: false})
         }
     }
 
     selectBreed = (breedName) => {  
         this.setState({breed: breedName});
         console.log(this.state.breed)
-        this.checkValidation()
+        // this.checkValidation()
     }
 
     deleteBreed() {
@@ -341,51 +341,54 @@ export default class AddDogspace extends Component {
         this.setState({age: age});
     }
 
-    checkValidation(){
-        switch(this.state.page){
-            case 1:
-                if(this.state.name){
-                    this.setState({isValidated: true});
-                }
-                break;
-            case 2:
-                this.setState({isValidated: true});
-                break;
-            case 3:
-                if(this.state.birthday){
-                    this.setState({isValidated: true});
-                }
-                break;
-            case 4:
-                if(this.state.gender){
-                    this.setState({isValidated: true});
-                }
-                break;
-            case 5:
-                if(this.state.avatar){
-                    this.setState({isValidated: true});
-                }
-                break;
-            case 7:
-                if(this.state.foodBrand && this.state.foodFreq && this.state.foodGrams && this.state.cookiesAvgFreq){
-                    this.setState({isValidated: true});
-                }
-                break;
-            case 8:
-                if(this.state.walkAvgFreq && this.state.walkAvgKm && this.state.walkAvgMinutes && this.state.poopAvgFreq){
-                    this.setState({isValidated: true});
-                }
-                break;
-            case 9:
-                if(this.state.ice1Name && this.state.ice1Phone && this.statet.vetName && this.state.vetPhone)if(this.state.name){
-                    this.setState({isValidated: true});
-                }
-                break;
-            default:
-                this.setState({isValidated: true});
-                break;
-        }
-    }
+    // checkValidation(){
+    //     switch(this.state.page){
+    //         case 1:
+    //             if(this.state.name){
+    //                 this.setState({isValidated: true});
+    //             }
+    //             break;
+    //         case 2:
+    //             this.setState({isValidated: true});
+    //             break;
+    //         case 3:
+    //             if(this.state.birthday){
+    //                 this.setState({isValidated: true});
+    //             }
+    //             break;
+    //         case 4:
+    //             if(this.state.gender){
+    //                 this.setState({isValidated: true});
+    //             }
+    //             break;
+    //         case 5:
+    //             if(this.state.avatar){
+    //                 this.setState({isValidated: true});
+    //             }
+    //             break;
+    //         case 6:
+    //             this.setState({isValidated: true});
+    //             break;
+    //         case 7:
+    //             if(this.state.foodBrand && this.state.foodFreq && this.state.foodGrams && this.state.cookiesAvgFreq){
+    //                 this.setState({isValidated: true});
+    //             }
+    //             break;
+    //         case 8:
+    //             if(this.state.walkAvgFreq && this.state.walkAvgKm && this.state.walkAvgMinutes && this.state.poopAvgFreq){
+    //                 this.setState({isValidated: true});
+    //             }
+    //             break;
+    //         case 9:
+    //             if(this.state.ice1Name && this.state.ice1Phone && this.statet.vetName && this.state.vetPhone)if(this.state.name){
+    //                 this.setState({isValidated: true});
+    //             }
+    //             break;
+    //         default:
+    //             this.setState({isValidated: true});
+    //             break;
+    //     }
+    // }
 
     render() {
         return (

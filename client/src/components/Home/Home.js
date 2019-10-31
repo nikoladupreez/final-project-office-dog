@@ -52,7 +52,7 @@ export default class Home extends Component {
         return (
             <div className='home-container'>
                     <div className='home-user-box'>
-                        <Link to='/user/profile'><img src={userIcon} alt='user-profile'/></Link>
+                        <Link to='/user/profile'><div className='user-icon'></div></Link>
                     </div>
                     <div className={!this.userHasDogs() && !this.userManagesDogs() ? 'dog-container' : 'hidden'}>
                         <h1 className='oeps'>Whoops!</h1>
