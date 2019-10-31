@@ -57,9 +57,8 @@ export default class UserProfile extends Component {
                             </div>
                         </div>
                         <div className='link-container'>
-                            <ProfileLink url='/user/profile/edit' icon='/' title='Edit Profile'/>
+                            <ProfileLink url='/user/profile/edit' title='Edit Profile' id='link-box-user'/>
                             <div onClick={this.logoutUser} className='link-box'>
-                                <img src='/' alt='icon'/>
                                 <h1>Log out</h1>
                             </div>
                         </div>

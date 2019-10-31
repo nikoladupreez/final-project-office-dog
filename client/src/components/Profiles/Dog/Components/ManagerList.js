@@ -33,7 +33,7 @@ export default class ManagerList extends Component {
         return (
             <div className='manager-container'>
                 <div className='back-box'>
-                    <Link to={`/dog/${this.state.dogId}/profile`}><img src={crossIcon} alt='back'/></Link>
+                    <Link to={`/dog/${this.state.dogId}/profile`}><div className='close-icon'></div></Link>
                     <Link to={`/dog/${this.state.dogId}/profile/managers/add`}><div className='edit-btn'></div></Link>
                 </div>
                 <div className='manager-title'>

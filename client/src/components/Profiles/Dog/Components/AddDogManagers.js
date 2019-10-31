@@ -154,15 +154,16 @@ export default class AddDogManagers extends Component {
                                     id={manager._id}
                                     name={manager.name}
                                     avatar={manager.avatar}
+                                    phone={manager.phone}
                                     displayName={manager.display_name}
                                     deleteManager={() => this.deleteManager(manager._id)}
                                 />
                             )
                         })}  
                     </div>
-                    {this.state.dogManagers.length > 0 ? 
-                        <button onClick={this.handleSubmit}>Add</button>
-                    : <></>}
+                        {this.state.dogManagers.length > 0 ? 
+                            <button onClick={this.handleSubmit}>Add</button>
+                        : <></>}
                 </div>
         )
     }

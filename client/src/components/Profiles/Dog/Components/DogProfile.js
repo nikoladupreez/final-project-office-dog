@@ -53,17 +53,17 @@ export default class DogProfile extends Component {
                                 <img src={this.state.dog.avatar} alt='dog-icon'/>
                             </div>
                             <div className='dog-profile-info'>
-                                <h2>{this.state.dog.name}</h2>
-                                <h2>{this.state.dog.gender}</h2>
-                                <h2>{this.state.age} y/o</h2>
+                                <h1>{this.state.dog.name}</h1>
                                 <h2>{this.state.dog.breed}</h2>
+                                <h2>{this.state.dog.gender}</h2>
+                                <h2>{this.state.age} years old</h2>
                             </div>
                         </div>
                         <div className='link-container'>
-                            <ProfileLink url={`/dog/${this.state.dogId}/profile/edit`} icon='/' title={`Edit ${this.state.dog.name}'s Profile`}/>
-                            <ProfileLink url={`/dog/${this.state.dogId}/profile/guide`} icon='/' title={`${this.state.dog.name}'s Guide`}/>
-                            <ProfileLink url={`/dog/${this.state.dogId}/profile/managers`} icon='/' title='Dog Managers'/>
-                            <ProfileLink url='/home' icon='/' title='Go to another Dogspace'/>
+                            <ProfileLink id='link-box-dog' url={`/dog/${this.state.dogId}/profile/edit`} title={`Edit ${this.state.dog.name}'s Profile`}/>
+                            <ProfileLink id='link-box-dog' url={`/dog/${this.state.dogId}/profile/guide`} title={`${this.state.dog.name}'s Guide`}/>
+                            <ProfileLink id='link-box-dog' url={`/dog/${this.state.dogId}/profile/managers`} title='Dog Managers'/>
+                            <ProfileLink id='link-box-dog' url='/home' icon='/' title='Go to another Dogspace'/>
                         </div>
                     </div>
         )
