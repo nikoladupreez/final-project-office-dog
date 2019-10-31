@@ -13,7 +13,7 @@ router.post('/dog/:id/add', (req, res, next) => {
       distance_meters: req.body.meters,
       path: req.body.path,
       dog: mongoose.Types.ObjectId(req.params.id),
-      dog_manager: mongoose.Types.ObjectId(req.body.user._id),
+      dog_manager: mongoose.Types.ObjectId(req.body.userId),
       poops: req.body.poopCount
    })
    .then((walk) => {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from "axios";
-import {getUser, setUser} from "../../../../utils/auth";
+import {getUser} from "../../../../utils/auth";
 import 'date-fns';
 import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
@@ -43,7 +43,7 @@ export default class DogProfileEdit extends Component {
         age: 0,
         gender: "",
         avatar: "",
-        user: getUser(),
+        userId: getUser()._id,
         page: 1,
         loading: true
     }
@@ -102,7 +102,6 @@ export default class DogProfileEdit extends Component {
     }
 
     handleSubmit(e) {
-        let user = this.state.user;
         this.setBirthday();
 
         axios({
@@ -112,19 +111,7 @@ export default class DogProfileEdit extends Component {
             data: JSON.stringify(this.state)
         })
         .then((dog) => {
-            if(!user.owner){
-                axios({
-                    method: "GET",
-                    url: `${process.env.REACT_APP_API}/users/${user._id}`
-                })
-                .then((updatedUser) => {
-                    setUser(updatedUser.data);
-                    this.props.history.push({pathname: `/dog/${this.state.dogId}/profile`, state: dog.data}); 
-                })
-                .catch((err) => console.log(err.message));
-            } else {
-                this.props.history.push({pathname: `/dog/${this.state.dogId}/profile`, state: dog.data}); 
-            }
+           this.props.history.push({pathname: `/dog/${this.state.dogId}/profile`, state: dog.data}); 
         })
         .catch((err) => console.log(err.message));
     }

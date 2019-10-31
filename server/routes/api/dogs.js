@@ -46,8 +46,9 @@ router.post('/add-dog', (req, res, next) => {
       });
     }
 
-    let user = req.body.user;
-    if(!user) res.status(400).json({message: "Owner missing!"})
+    let userId = req.body.userId;
+    let ownerId = req.body.ownerId;
+    if(!userId) res.status(400).json({message: "Owner missing!"})
 
     Dog.create({
       name: req.body.name,
@@ -82,13 +83,13 @@ router.post('/add-dog', (req, res, next) => {
         phone: req.body.vetPhone
       },
       commands: commandObjectIds,
-      owner: mongoose.Types.ObjectId(user._id),
+      owner: mongoose.Types.ObjectId(userId),
       })
       .then((dog) => {
-        if(!user.owner){
+        if(!ownerId){
           Owner.create({dogs:[mongoose.Types.ObjectId(dog.id)]})
                .then((owner) => {
-                  User.update({_id: user._id}, {owner: mongoose.Types.ObjectId(owner.id)})
+                  User.update({_id: mongoose.Types.ObjectId(userId)}, {owner: mongoose.Types.ObjectId(owner.id)})
                       .then((updatedUser) => {
                         res.json(dog);
                       })
@@ -98,7 +99,8 @@ router.post('/add-dog', (req, res, next) => {
                   res.status(500).json({ message:'Something went wrong with creating the owner.', error: err});
               });   
         } else {
-          Owner.updateOne({id: user.owner.id}, {$push: {dogs: dog}})
+          debugger;
+          Owner.updateOne({_id: mongoose.Types.ObjectId(ownerId)}, {$push: {dogs: dog}})
                .then((updatedOwner) => {
                   res.json(dog);
                })
@@ -131,14 +133,9 @@ router.post('/add-dog', (req, res, next) => {
   });
 
 
-  const createDogManager = async (dog) => {
-    return await DogManager.create({dogs: [mongoose.Types.ObjectId(dog.id)]});
-  }
-
   // POST route => to add managers to specific dogspace
   router.post('/dog/:id/add-managers', (req, res, next) => {
     let usersArray = req.body; //users with managerId populated
-    debugger;
     Dog.findById(req.params.id)
        .then((dog) => {
           usersArray.forEach((user) => {
@@ -179,15 +176,3 @@ router.post('/add-dog', (req, res, next) => {
 
   module.exports = router;
 
-  // if(!user.dog_manager){
-  //   createDogManager(dog);
-  // } 
-
-  // DogManager.update({id: user.dog_manager.id}, {$push: {dogs: dog}})
-  //           .then((manager) => {
-  //              Dog.update({id: dog.id}, {$push: {dog_managers: user}})
-  //                 .catch((err) => res.json(err.message));
-  //           })
-  //           .catch((err) => {
-  //             res.status(500).json({message: "Something went wrong with updating the manager", error: err});
-  //           })

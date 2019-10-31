@@ -11,10 +11,20 @@ import {
 
 //style
 import '../../../styles/AddDog.scss';
+import dog1 from '../../../images/akita.svg';
+import dog2 from '../../../images/bulldog.svg';
+import dog3 from '../../../images/corgi.svg';
+import dog4 from '../../../images/frenchdog.svg';
+import dog5 from '../../../images/husky.svg';
+import dog6 from '../../../images/retriever.svg';
+import dog7 from '../../../images/rotweiler.svg';
+import dog8 from '../../../images/samson.svg';
+import dog9 from '../../../images/shepherd.svg';
 
 export default class AddDogspace extends Component {
     constructor(props){
         super(props);
+        this.handleRadio = this.handleRadio.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleCheckbox = this.handleCheckbox.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -34,6 +44,7 @@ export default class AddDogspace extends Component {
         this.formPage10 = React.createRef();
         this.breedList = [];
         this.commandList = [];
+        this.user = getUser();
     }
 
     state = {
@@ -61,11 +72,12 @@ export default class AddDogspace extends Component {
         vetCompany: "",
         vetPhone: "",
         commands: [],
-        user: getUser(),
-        breedsShown: [],
         translate: false,
-        isValidated: true,
-        page:1,
+        userId: getUser()._id,
+        ownerId: getUser().owner,
+        breedsShown: [],
+        isValidated: false,
+        page: 1,
         loading: true
     }
 
@@ -104,7 +116,7 @@ export default class AddDogspace extends Component {
     handleDateChange = (date) => {
         this.getDogAge(date) 
         this.setState({birthday: date});
-        // this.checkValidation()
+        this.checkValidation()
     };
 
     handleChange(e) {
@@ -113,7 +125,7 @@ export default class AddDogspace extends Component {
         } else {
             this.setState({[e.target.name]: e.target.value})
         }
-        // this.checkValidation()
+        this.checkValidation()
     }
 
     handleCheckbox(e){
@@ -135,11 +147,21 @@ export default class AddDogspace extends Component {
                 this.setState({[e.target.name]: arrayNew});
             }  
         }
-        // this.checkValidation()
+        this.checkValidation()
+    }
+
+    handleRadio(e){
+        if(e.target.checked){
+            this.setState({
+                [e.target.name]: e.target.value
+            })
+        }
+
+        this.setState({isValidated: true});
     }
 
     handleSubmit(e) {
-        let user = this.state.user;
+        let user = getUser();
         this.setBirthday();
 
         axios({
@@ -155,7 +177,8 @@ export default class AddDogspace extends Component {
                     url: `${process.env.REACT_APP_API}/users/${user._id}`
                 })
                 .then((updatedUser) => {
-                    setUser(updatedUser.data);
+                    user.owner = updatedUser.data.owner.id;
+                    setUser(user);
                     this.props.history.push({pathname: '/add-dog/confirm', state: res.data}); 
                 })
                 .catch((err) => console.log(err.message));
@@ -185,16 +208,21 @@ export default class AddDogspace extends Component {
             default:
                 break; 
         }
-        // this.checkValidation()
+        this.setState({isValidated: true})
     }
 
     goBack() {
        if(this.state.page === 1){
             this.props.history.go(-1);
-       } else {
+       } else if (this.state.page === 4){
            let page = this.state.page;
            let pageNew = page - 1;
            this.setState({page: pageNew});
+           this.setState({isValidated: true})
+       } else {
+            let page = this.state.page;
+            let pageNew = page - 1;
+            this.setState({page: pageNew});
        }
     }
 
@@ -204,20 +232,22 @@ export default class AddDogspace extends Component {
             this.setState({page: newPageNr});
         } else if (this.state.page === 3 && this.state.age){
             this.setState({page: newPageNr});
+            this.setState({isValidated: false})
         } else if (this.state.page === 4 && this.state.gender){
             this.setState({page: newPageNr});
+            this.setState({isValidated: false})
         } else if (this.state.page === 8 && this.state.walkAvgFreq){
             this.setState({page: newPageNr});
+            this.setState({isValidated: false})
         } else {
             this.setState({page: newPageNr});
-            // this.setState({isValidated: false})
+            this.setState({isValidated: false})
         }
     }
 
     selectBreed = (breedName) => {  
         this.setState({breed: breedName});
-        console.log(this.state.breed)
-        // this.checkValidation()
+        this.checkValidation()
     }
 
     deleteBreed() {
@@ -264,6 +294,7 @@ export default class AddDogspace extends Component {
             default:
                 break;
         }
+        this.checkValidation()
     }
 
     decreaseNumber(target) {
@@ -320,10 +351,11 @@ export default class AddDogspace extends Component {
             default:
                 break;
         }
+        this.checkValidation()
     }
 
     setBirthday(){
-        if(this.state.age){
+        if(this.state.age && !this.state.birthday){
             let age = this.state.age;
             let today = new Date();
             let year = today.getFullYear();
@@ -341,54 +373,52 @@ export default class AddDogspace extends Component {
         this.setState({age: age});
     }
 
-    // checkValidation(){
-    //     switch(this.state.page){
-    //         case 1:
-    //             if(this.state.name){
-    //                 this.setState({isValidated: true});
-    //             }
-    //             break;
-    //         case 2:
-    //             this.setState({isValidated: true});
-    //             break;
-    //         case 3:
-    //             if(this.state.birthday){
-    //                 this.setState({isValidated: true});
-    //             }
-    //             break;
-    //         case 4:
-    //             if(this.state.gender){
-    //                 this.setState({isValidated: true});
-    //             }
-    //             break;
-    //         case 5:
-    //             if(this.state.avatar){
-    //                 this.setState({isValidated: true});
-    //             }
-    //             break;
-    //         case 6:
-    //             this.setState({isValidated: true});
-    //             break;
-    //         case 7:
-    //             if(this.state.foodBrand && this.state.foodFreq && this.state.foodGrams && this.state.cookiesAvgFreq){
-    //                 this.setState({isValidated: true});
-    //             }
-    //             break;
-    //         case 8:
-    //             if(this.state.walkAvgFreq && this.state.walkAvgKm && this.state.walkAvgMinutes && this.state.poopAvgFreq){
-    //                 this.setState({isValidated: true});
-    //             }
-    //             break;
-    //         case 9:
-    //             if(this.state.ice1Name && this.state.ice1Phone && this.statet.vetName && this.state.vetPhone)if(this.state.name){
-    //                 this.setState({isValidated: true});
-    //             }
-    //             break;
-    //         default:
-    //             this.setState({isValidated: true});
-    //             break;
-    //     }
-    // }
+    checkValidation(){
+        switch(this.state.page){
+            case 1:
+                if(this.state.name){
+                    this.setState({isValidated: true});
+                }
+                break;
+            case 2:
+                this.setState({isValidated: true});
+                break;
+            case 3:
+                this.setState({isValidated: true});
+                break;
+            case 4:
+                if(this.state.gender){
+                    this.setState({isValidated: true});
+                }
+                break;
+            case 5:
+                if(this.state.avatar){
+                    this.setState({isValidated: true});
+                }
+                break;
+            case 6:
+                this.setState({isValidated: true});
+                break;
+            case 7:
+                if(this.state.foodBrand && this.state.foodFreq && this.state.foodGrams && this.state.cookiesAvgFreq){
+                    this.setState({isValidated: true});
+                }
+                break;
+            case 8:
+                if(this.state.walkAvgFreq && this.state.walkAvgKm && this.state.walkAvgMinutes && this.state.poopAvgFreq){
+                    this.setState({isValidated: true});
+                }
+                break;
+            case 9:
+                if(this.state.ice1Name && this.state.ice1Phone && this.state.vetName && this.state.vetPhone)if(this.state.name){
+                    this.setState({isValidated: true});
+                }
+                break;
+            default:
+                this.setState({isValidated: true});
+                break;
+        }
+    }
 
     render() {
         return (
@@ -412,7 +442,7 @@ export default class AddDogspace extends Component {
 
                     <div className={this.state.page === 2 ? 'dog-part-2' : 'hidden'}>
                         <div className='dog-breed-label'>
-                            <label>What is the breed of {this.state.name}?</label>
+                            <label>What breed is {this.state.name}?</label>
                             <input type='text' name='breed-search' onChange={this.handleSearch} placeholder='Search'/>
                         </div>
                         {this.state.loading ? <h1>Loading...</h1> : 
@@ -428,7 +458,7 @@ export default class AddDogspace extends Component {
                                 : 
                                     <div className='dog-breed-list'>
                                         {this.state.breedsShown.map((breed, index) => {
-                                            return (
+                                                return (
                                                 <div key={index} onClick={() => {this.selectBreed(breed.name)}} className='dog-breed-box'>
                                                     <h2>{breed.name}</h2>
                                                 </div>
@@ -446,7 +476,7 @@ export default class AddDogspace extends Component {
                         <MuiPickersUtilsProvider utils={DateFnsUtils} className='datepicker'>
                             <Grid container justify="space-around">
                                 <KeyboardDatePicker
-                                enableToolbar
+                                enabletoolbar='true'
                                 variant="inline"
                                 format="dd-MM-yyyy"
                                 margin="normal"
@@ -479,8 +509,8 @@ export default class AddDogspace extends Component {
                     <div className={this.state.page === 4 ? 'dog-part-4' : 'hidden'}>
                         <label>What is {this.state.name}'s <br/> gender?</label>
                         <div className='gender-btn-box'>
-                            <button className='male' onClick={() => {this.handleSelect('male')}}>male</button>
-                            <button className='female' onClick={() => {this.handleSelect('female')}}>female</button>
+                            <button className={this.state.gender === 'Male' ? 'male' : 'nothing'} onClick={() => {this.handleSelect('Male')}}>male</button>
+                            <button className={this.state.gender === 'Female' ? 'female' : 'nothing'} onClick={() => {this.handleSelect('Female')}}>female</button>
                         </div>
                         <div className='dog-next-btn-box'>
                             <button onClick={() => {this.goToNext()}} disabled={this.state.isValidated === false}>Next</button>
@@ -492,31 +522,31 @@ export default class AddDogspace extends Component {
                             <h1>Choose an avatar <br/> for {this.state.name}</h1>
                             <div className='dog-avatar-container'>
                                     <div className='dog-avatar-option'>
-                                        <label><div className='dog-avatar-box'><img src='/' alt='avatar1'/></div><input required onChange={this.handleRadio} type='radio' value='/1.png' name='avatar'/></label> 
+                                        <label><div className='dog-avatar-box'><img src={dog1} alt='avatar1'/></div><input required onChange={this.handleRadio} type='radio' value={dog1} name='avatar'/></label> 
                                     </div>
                                     <div className='dog-avatar-option'>
-                                        <label><div className='dog-avatar-box'><img src='/' alt='avatar2'/></div><input required onChange={this.handleRadio} type='radio' value='/1.png' name='avatar'/></label> 
+                                        <label><div className='dog-avatar-box'><img src={dog2}  alt='avatar2'/></div><input required onChange={this.handleRadio} type='radio' value={dog2} name='avatar'/></label> 
                                     </div>
                                     <div className='dog-avatar-option'>
-                                        <label><div className='dog-avatar-box'><img src='/' alt='avatar3'/></div><input required onChange={this.handleRadio} type='radio' value='/1.png' name='avatar'/></label> 
+                                        <label><div className='dog-avatar-box'><img src={dog3}  alt='avatar3'/></div><input required onChange={this.handleRadio} type='radio' value={dog3} name='avatar'/></label> 
                                     </div>
                                     <div className='dog-avatar-option'>
-                                        <label><div className='dog-avatar-box'><img src='/' alt='avatar4'/></div><input required onChange={this.handleRadio} type='radio' value='/1.png' name='avatar'/></label> 
+                                        <label><div className='dog-avatar-box'><img src={dog4}  alt='avatar4'/></div><input required onChange={this.handleRadio} type='radio' value={dog4} name='avatar'/></label> 
                                     </div>
                                     <div className='dog-avatar-option'>
-                                        <label><div className='dog-avatar-box'><img src='/' alt='avatar5'/></div><input required onChange={this.handleRadio} type='radio' value='/1.png' name='avatar'/></label> 
+                                        <label><div className='dog-avatar-box'><img src={dog5}  alt='avatar5'/></div><input required onChange={this.handleRadio} type='radio' value={dog5} name='avatar'/></label> 
                                     </div>
                                     <div className='dog-avatar-option'>
-                                        <label><div className='dog-avatar-box'><img src='/' alt='avatar6'/></div><input required onChange={this.handleRadio} type='radio' value='/1.png' name='avatar'/></label> 
+                                        <label><div className='dog-avatar-box'><img src={dog6}  alt='avatar6'/></div><input required onChange={this.handleRadio} type='radio' value={dog6} name='avatar'/></label> 
                                     </div>
                                     <div className='dog-avatar-option'>
-                                        <label><div className='dog-avatar-box'><img src='/' alt='avatar7'/></div><input required onChange={this.handleRadio} type='radio' value='/1.png' name='avatar'/></label> 
+                                        <label><div className='dog-avatar-box'><img src={dog7}  alt='avatar7'/></div><input required onChange={this.handleRadio} type='radio' value={dog7} name='avatar'/></label> 
                                     </div>
                                     <div className='dog-avatar-option'>
-                                        <label><div className='dog-avatar-box'><img src='/' alt='avatar8'/></div><input required onChange={this.handleRadio} type='radio' value='/1.png' name='avatar'/></label> 
+                                        <label><div className='dog-avatar-box'><img src={dog8}  alt='avatar8'/></div><input required onChange={this.handleRadio} type='radio' value={dog8}name='avatar'/></label> 
                                     </div>
                                     <div className='dog-avatar-option'>
-                                        <label><div className='dog-avatar-box'><img src='/' alt='avatar9'/></div><input required onChange={this.handleRadio} type='radio' value='/1.png' name='avatar'/></label> 
+                                        <label><div className='dog-avatar-box'><img src={dog9}  alt='avatar9'/></div><input required onChange={this.handleRadio} type='radio' value={dog9}name='avatar'/></label> 
                                     </div>
                             </div>
                             <div className='dog-next-btn-box'>
@@ -537,7 +567,7 @@ export default class AddDogspace extends Component {
                                 <div className='dog-chapter'><div className='chapter-icon dictionary'></div><p>Commands dictionary</p></div>
                             </div>
                             <div className='dog-next-btn-box'>
-                                <button onClick={() => {this.goToNext(this.formPage5)}} disabled={this.state.isValidated === false}>Create guide</button>
+                                <button onClick={() => {this.goToNext(this.formPage5)}}>Create guide</button>
                             </div>
                         </div>
                     </div>
@@ -545,8 +575,7 @@ export default class AddDogspace extends Component {
                     <div className={this.state.page === 7 ? 'dog-part-7' : 'hidden'}>
                         <form ref={form => this.formPage7 = form} onSubmit={(e) => {e.preventDefault(); return false}}>
                             <div className='dog-chapter-title-box'>
-                                <div className='chapter-icon-big diet-big'></div>
-                                <h1>Dietery info</h1>
+                                <h1>Dietery information</h1>
                             </div>
                            <label>Food brand {this.state.name} eats</label>
                            <input className='foodbrand' required onChange={this.handleChange} value={this.state.foodBrand} placeholder="Food brand" type="text" name="foodBrand"/>
@@ -581,46 +610,41 @@ export default class AddDogspace extends Component {
 
                     <div className={this.state.page === 8 ? 'dog-part-8' : 'hidden'}>
                             <div className='dog-chapter-title-box'>
-                                <div className='chapter-icon-big activity-big'></div>
                                 <h1>Activity info</h1>
                             </div>
                            <label className='walk-label'>How much do you usually walk {this.state.name}?</label>
                            <div className='activity-box'>
-                                <div className='empty'></div>
                                 <div className='activity-amount-box'>
                                         <div className='activity-amount-control min' onClick={() => {this.decreaseNumber('walkFreq')}}></div>
                                         <div className='activity-amount'><p>{this.state.walkAvgFreq}</p></div>
                                         <div className='activity-amount-control plus' onClick={() => {this.increaseNumber('walkFreq')}}></div>
                                 </div>
-                                <p>times <br/> a day</p>
+                                <p>times a day</p>
                            </div>
                            <div className='activity-box'>
-                                <div className='empty'></div>
                                 <div className='activity-amount-box'>
                                         <div className='activity-amount-control min' onClick={() => {this.decreaseNumber('walkKm')}}></div>
                                         <div className='activity-amount'><p>{this.state.walkAvgKm}</p></div>
                                         <div className='activity-amount-control plus' onClick={() => {this.increaseNumber('walkKm')}}></div>
                                 </div>
-                                <p>km <br/> a day</p>
+                                <p>km a day</p>
                            </div>
                            <div className='activity-box'>
-                                <div className='empty'></div>
                                 <div className='activity-amount-box'>
                                         <div className='activity-amount-control min' onClick={() => {this.decreaseNumber('walkMinutes')}}></div>
                                         <div className='activity-amount'><p>{this.state.walkAvgMinutes}</p></div>
                                         <div className='activity-amount-control plus' onClick={() => {this.increaseNumber('walkMinutes')}}></div>
                                 </div>
-                                <p>minutes <br/> a day</p>
+                                <p>minutes a day</p>
                            </div>
                            <label className='poop-label'>How much does {this.state.name} poop?</label>
                            <div className='activity-box'>
-                                <div className='empty'></div>
                                 <div className='activity-amount-box'>
                                         <div className='activity-amount-control min' onClick={() => {this.decreaseNumber('poopFreq')}}></div>
                                         <div className='activity-amount'><p>{this.state.poopAvgFreq}</p></div>
                                         <div className='activity-amount-control plus' onClick={() => {this.increaseNumber('poopFreq')}}></div>
                                 </div>
-                                <p>poops <br/> a day</p>
+                                <p>poops a day</p>
                            </div>
                            <div className='dog-next-btn-box'>
                                 <button id='food-next-btn' onClick={() => {this.goToNext()}} disabled={this.state.isValidated === false}>Next</button>
@@ -630,7 +654,6 @@ export default class AddDogspace extends Component {
                     <div className={this.state.page === 9 ? 'dog-part-9' : 'hidden'}>
                         <div className='dog-part-9-chapter'>
                             <div className='dog-chapter-title-box'>
-                                    <div className='chapter-icon-big emergency-big'/>
                                     <h1>Emergency card</h1>
                             </div>
                         </div>
@@ -638,8 +661,8 @@ export default class AddDogspace extends Component {
                            <label>Dutch Animal Ambulance</label>
                            <p className='ambulance-nr'>0900 0245</p>
                            <label>{this.state.name}'s Owner</label>
-                           <p className='owner-info'>{this.state.user.name}</p>
-                           <p className='owner-info'>{this.state.user.phone}</p>
+                           <p className='owner-info'>{this.user.name}</p>
+                           <p className='owner-info'>{this.user.phone}</p>
                            <label>Emergency contact 1</label>
                            <input className='ice-contact-info' required onChange={this.handleChange} value={this.state.ice1Name} placeholder="Name" type="text" name="ice1Name"/>
                            <input className='ice-contact-info' required onChange={this.handleChange} value={this.state.ice1Phone} placeholder="Phone number" type="text" name="ice1Phone"/>
@@ -658,7 +681,6 @@ export default class AddDogspace extends Component {
 
                     <div className={this.state.page === 10 ? 'dog-part-10' : 'hidden'}>
                         <div className='dog-chapter-title-box'>
-                            <div className='chapter-icon-big dictionary-big'></div>
                             <h1>Commands</h1>
                         </div>
                         <h2>Pick the commands {this.state.name} knows so your coworkers can start communicate! </h2>
@@ -667,7 +689,7 @@ export default class AddDogspace extends Component {
                                return (
                                    <div key={index} className='dog-command-option-box'>
                                         <div className='dog-command-option'>
-                                            <label><div className='dog-command-box'>{command.commando}</div><input key={index} onChange={this.handleCheckbox} value={command._id} type="checkbox" name="commands"/></label>
+                                            <label><div className='dog-command-box'><p>{command.commando}</p></div><input key={index} onChange={this.handleCheckbox} value={command._id} type="checkbox" name="commands"/></label>
                                         </div>
                                    </div>
                                )

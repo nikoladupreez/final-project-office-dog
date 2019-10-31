@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from "axios";
-import {getUser, setUser} from "../../../../utils/auth";
+import {getUser} from "../../../../utils/auth";
 
 //style
 import '../../../../styles/AddDog.scss';
@@ -31,7 +31,7 @@ export default class DogGuideEdit extends Component {
         walkAvgMinutes: 0,
         poopAvgFreq: 0,
         cookiesAvgFreq: 0,
-        user: getUser(),
+        userId: getUser()._id,
         page: 7,
         loading: true
     }
@@ -63,8 +63,6 @@ export default class DogGuideEdit extends Component {
     }
 
     handleSubmit(e) {
-        let user = this.state.user;
-
         axios({
             method: "POST",
             url: `${process.env.REACT_APP_API}/dogs/edit/dog-guide`,
@@ -72,19 +70,7 @@ export default class DogGuideEdit extends Component {
             data: JSON.stringify(this.state)
         })
         .then((dog) => {
-            if(!user.owner){
-                axios({
-                    method: "GET",
-                    url: `${process.env.REACT_APP_API}/users/${user._id}`
-                })
-                .then((updatedUser) => {
-                    setUser(updatedUser.data);
-                    this.props.history.push({pathname: `/dog/${this.state.dogId}/profile/guide`, state: dog.data}); 
-                })
-                .catch((err) => console.log(err.message));
-            } else {
-                this.props.history.push({pathname: `/dog/${this.state.dogId}/profile/guide`, state: dog.data}); 
-            }
+            this.props.history.push({pathname: `/dog/${this.state.dogId}/profile/guide`, state: dog.data}); 
         })
         .catch((err) => console.log(err.message));
     }

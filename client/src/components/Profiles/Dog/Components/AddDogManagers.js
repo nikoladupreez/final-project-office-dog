@@ -23,7 +23,7 @@ export default class AddDogManagers extends Component {
         dog: {},
         dogId: this.props.match.params.id,
         dogManagers: [],
-        user: getUser(),
+        userId: getUser()._id,
         users: [],
         isOwner: false,
         notFound: false,

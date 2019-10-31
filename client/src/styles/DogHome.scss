@@ -22,9 +22,9 @@
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-    background-color: rgb(223, 223, 223);
-    width: 29.7px;
-    height: 27.5px;
+    background-image: url('../images/dogspace.svg');
+    width: 44px;
+    height: 44px;
 }
 
 .doghome-icon {
@@ -39,7 +39,7 @@
 
 
 .userprofile-icon {
-    background-image: url('../images/dogmanager.png');
+    background-image: url('../images/dogmanager.svg');
     background-repeat: no-repeat;
     background-position: center;
     width: 44px;
@@ -89,7 +89,35 @@
     width: 157px;
     height: 157px;
     border-radius: 15px;
-    background-color: #d8d8d8;
+    background-color: #ffffff;
+}
+
+.walk-btn {
+    background-image: url('../images/undraw-directions-x-53-j.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+.cookie-btn {
+    background-image: url('../images/undraw-cookie-love-ulvn.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+.ice-btn {
+    background-image: url('../images/undraw-notify-88-a-4-1.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+.dictionary-btn {
+    background-image: url('../images/undraw-book-lover-mkck.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
 }
 
 #modal-header {

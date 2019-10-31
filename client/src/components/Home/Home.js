@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
-import userIcon from '../../images/shape.svg';
 
 //components
 import DogspaceBox from './DogspaceBox';
@@ -14,7 +13,7 @@ export default class Home extends Component {
     state = {
         myDogList: [],
         coworkerDogList: [],
-        user: getUser(),
+        userId: getUser()._id,
         userPopulated: {},
     }
 
@@ -37,7 +36,7 @@ export default class Home extends Component {
     componentDidMount() {
         axios({
             method: "GET",
-            url: `${process.env.REACT_APP_API}/users/${this.state.user._id}`
+            url: `${process.env.REACT_APP_API}/users/${this.state.userId}`
         })
         .then((user) => {
             this.setState({userPopulated: user.data});

@@ -12,7 +12,7 @@ router.post('/dog/:id/add', (req, res, next) => {
    Poop.create({
       quantity: req.body.poopCount,
       dog: mongoose.Types.ObjectId(req.params.id),
-      dog_manager: mongoose.Types.ObjectId(req.body.user._id)
+      dog_manager: mongoose.Types.ObjectId(req.body.userId)
    })
    .then((poop) => {
          Dog.update({_id: req.params.id}, {$push: {poops: poop}})

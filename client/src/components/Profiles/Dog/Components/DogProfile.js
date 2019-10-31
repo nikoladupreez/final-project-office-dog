@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 import axios from 'axios';
 
 //components
-import ProfileLink from '../../ProfileLink';
+import ProfileLinkDog from '../../ProfileLinkDog';
 
 //style
 import '../../../../styles/DogProfile.scss';
@@ -55,15 +55,15 @@ export default class DogProfile extends Component {
                             <div className='dog-profile-info'>
                                 <h1>{this.state.dog.name}</h1>
                                 <h2>{this.state.dog.breed}</h2>
-                                <h2>{this.state.dog.gender}</h2>
                                 <h2>{this.state.age} years old</h2>
+                                <h2>{this.state.dog.gender}</h2>
                             </div>
                         </div>
                         <div className='link-container'>
-                            <ProfileLink id='link-box-dog' url={`/dog/${this.state.dogId}/profile/edit`} title={`Edit ${this.state.dog.name}'s Profile`}/>
-                            <ProfileLink id='link-box-dog' url={`/dog/${this.state.dogId}/profile/guide`} title={`${this.state.dog.name}'s Guide`}/>
-                            <ProfileLink id='link-box-dog' url={`/dog/${this.state.dogId}/profile/managers`} title='Dog Managers'/>
-                            <ProfileLink id='link-box-dog' url='/home' icon='/' title='Go to another Dogspace'/>
+                            <ProfileLinkDog id='link-box-dog' url={`/dog/${this.state.dogId}/profile/edit`} title={`Edit ${this.state.dog.name}'s Profile`}/>
+                            <ProfileLinkDog id='link-box-dog' url={`/dog/${this.state.dogId}/profile/guide`} title={`${this.state.dog.name}'s Guide`}/>
+                            <ProfileLinkDog id='link-box-dog' url={`/dog/${this.state.dogId}/profile/managers`} title='Dog Managers'/>
+                            <ProfileLinkDog id='link-box-dog' url='/home' icon='/' title='Go to another Dogspace'/>
                         </div>
                     </div>
         )

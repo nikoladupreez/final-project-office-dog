@@ -18,7 +18,7 @@ export default class UserProfileEdit extends Component {
     }
 
     state = {
-        user: getUser(),
+        userId: getUser()._id,
         avatar: "",
         name: "",
         displayName: "",
@@ -28,11 +28,13 @@ export default class UserProfileEdit extends Component {
     }
 
     componentDidMount() {
+        let user = getUser();
+
         this.setState({
-            avatar: this.state.user.avatar,
-            name: this.state.user.name,
-            displayName: this.state.user.display_name,
-            phone: this.state.user.phone
+            avatar: user.avatar,
+            name: user.name,
+            displayName: user.display_name,
+            phone: user.phone
         })
         this.sortAvatars();
     }
@@ -47,7 +49,7 @@ export default class UserProfileEdit extends Component {
         e.preventDefault();
         axios({
             method: "POST",
-            url: `${process.env.REACT_APP_API}/users/${this.state.user._id}/edit`,
+            url: `${process.env.REACT_APP_API}/users/${this.state.userId}/edit`,
             headers: { 'content-type': 'application/json' },
             data: JSON.stringify(this.state),
         })
@@ -101,7 +103,7 @@ export default class UserProfileEdit extends Component {
                             <label className='avatar-big-label'><div className='avatar-big'><img src={this.state.avatar} alt='avatar-user'/></div><input checked value={this.state.avatar} onChange={this.handleRadio} className='avatar-big-input' type='radio' name='avatar'/></label>
                         </div>
                     </div>
-                    <label className='label-profile'>Full name</label>
+                    <label className='label-profile'>Name</label>
                     <input className='text-input-profile' onChange={this.handleChange} name='name' placeholder={this.state.name}/>
                     <label className='label-profile'>Display name</label>
                     <input className='text-input-profile' onChange={this.handleChange} name='displayName' placeholder={this.state.displayName}/>

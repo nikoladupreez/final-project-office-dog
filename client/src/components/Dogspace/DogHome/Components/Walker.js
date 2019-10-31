@@ -23,7 +23,7 @@ export default class Walker extends Component {
 
     state = {
         dogId: this.props.match.params.id,
-        user: getUser(),
+        userId: getUser()._id,
         dog: {},
         poopCount: 0,
         cookieCount: 0,

@@ -1,5 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="15" height="24" viewBox="0 0 15 24">
-    <text fill="#535353" fill-rule="evenodd" font-family="SFProText-Semibold, SF Pro Text" font-size="34" font-weight="500" letter-spacing="-.816" transform="matrix(-1 0 0 1 18 -10)">
-        <tspan x=".28" y="32">􀆊</tspan>
-    </text>
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+    <g fill="#D4EBF9" fill-rule="evenodd">
+        <path d="M14.621 11.44l7.94-7.94a1.5 1.5 0 0 0-2.122-2.12l-9 9a1.5 1.5 0 0 0 0 2.12l9 9a1.5 1.5 0 0 0 2.122-2.12l-7.94-7.94z"/>
+        <path d="M10.379 11.44L2.439 3.5a1.5 1.5 0 0 1 2.122-2.12l9 9a1.5 1.5 0 0 1 0 2.12l-9 9a1.5 1.5 0 0 1-2.122-2.12l7.94-7.94z"/>
+    </g>
 </svg>

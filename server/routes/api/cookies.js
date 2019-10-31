@@ -11,7 +11,7 @@ router.post('/dog/:id/add', (req, res, next) => {
    Cookie.create({
       quantity: req.body.cookieCount,
       dog: mongoose.Types.ObjectId(req.params.id),
-      dog_manager: mongoose.Types.ObjectId(req.body.user._id)
+      dog_manager: mongoose.Types.ObjectId(req.body.userId)
    })
    .then((cookie) => {
          Dog.update({_id: req.params.id}, {$push: {cookies: cookie}})

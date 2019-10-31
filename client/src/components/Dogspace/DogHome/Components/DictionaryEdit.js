@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import axios from "axios";
-import {getUser, setUser} from "../../../../utils/auth";
 
 //style
 import '../../../../styles/AddDog.scss';
@@ -19,7 +18,6 @@ export default class DictionaryEdit extends Component {
     state = {
         dog: {},
         commands: [],
-        user: getUser(),
         translate: false,
         page: 10,
         loading: true
@@ -82,8 +80,6 @@ export default class DictionaryEdit extends Component {
     }
 
     handleSubmit(e) {
-        let user = this.state.user;
-
         axios({
             method: "POST",
             url: `${process.env.REACT_APP_API}/dogs/edit-dictionary`,
@@ -91,19 +87,7 @@ export default class DictionaryEdit extends Component {
             data: JSON.stringify(this.state)
         })
         .then((res) => {
-            if(!user.owner){
-                axios({
-                    method: "GET",
-                    url: `${process.env.REACT_APP_API}/users/${user._id}`
-                })
-                .then((updatedUser) => {
-                    setUser(updatedUser.data);
-                    this.props.history.push({pathname: `/dog/${this.state.dogId}/home/dictionary`, state: res.data}); 
-                })
-                .catch((err) => console.log(err.message));
-            } else {
-                this.props.history.push({pathname: `/dog/${this.state.dogId}/home/dictionary`, state: res.data}); 
-            }
+            this.props.history.push({pathname: `/dog/${this.state.dogId}/home/dictionary`, state: res.data}); 
         })
         .catch((err) => console.log(err.message));
     }

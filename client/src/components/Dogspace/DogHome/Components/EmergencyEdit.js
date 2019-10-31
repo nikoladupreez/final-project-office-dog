@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import axios from "axios";
-import {getUser, setUser} from "../../../../utils/auth";
 
 
 //style
@@ -24,7 +23,6 @@ export default class IceEdit extends Component {
         vetName: "",
         vetCompany: "",
         vetPhone: "",
-        user: getUser(),
         page: 9,
         loading: true
     }
@@ -54,8 +52,6 @@ export default class IceEdit extends Component {
     }
 
     handleSubmit(e) {
-        let user = this.state.user;
-
         axios({
             method: "POST",
             url: `${process.env.REACT_APP_API}/dogs/edit/dog-guide`,
@@ -63,19 +59,7 @@ export default class IceEdit extends Component {
             data: JSON.stringify(this.state)
         })
         .then((dog) => {
-            if(!user.owner){
-                axios({
-                    method: "GET",
-                    url: `${process.env.REACT_APP_API}/users/${user._id}`
-                })
-                .then((updatedUser) => {
-                    setUser(updatedUser.data);
-                    this.props.history.push({pathname: `/dog/${this.state.dogId}/home`, state: dog.data}); 
-                })
-                .catch((err) => console.log(err.message));
-            } else {
-                this.props.history.push({pathname: `/dog/${this.state.dogId}/home`, state: dog.data}); 
-            }
+            this.props.history.push({pathname: `/dog/${this.state.dogId}/home`, state: dog.data}); 
         })
         .catch((err) => console.log(err.message));
     }

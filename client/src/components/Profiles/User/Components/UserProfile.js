@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 //components
-import ProfileLink from '../../ProfileLink';
+import ProfileLinkUser from '../../ProfileLinkUser';
 import {getUser, logout} from "../../../../utils/auth";
 
 //style
@@ -13,7 +13,7 @@ export default class UserProfile extends Component {
         super(props)
         this.state = {
             userPopulated: {},
-            user: getUser()
+            userId: getUser()._id
         }
         this.logoutUser = this.logoutUser.bind(this);
         this.goBack = this.goBack.bind(this);
@@ -22,7 +22,7 @@ export default class UserProfile extends Component {
     componentDidMount() {
         axios({
             method: "GET",
-            url: `${process.env.REACT_APP_API}/users/${this.state.user._id}`
+            url: `${process.env.REACT_APP_API}/users/${this.state.userId}`
         })
         .then((user) => {
             this.setState({userPopulated: user.data})
@@ -57,8 +57,8 @@ export default class UserProfile extends Component {
                             </div>
                         </div>
                         <div className='link-container'>
-                            <ProfileLink url='/user/profile/edit' title='Edit Profile' id='link-box-user'/>
-                            <div onClick={this.logoutUser} className='link-box'>
+                            <ProfileLinkUser url='/user/profile/edit' title='Edit Profile' id='link-box-user'/>
+                            <div onClick={this.logoutUser} className='link-box link-box-user'>
                                 <h1>Log out</h1>
                             </div>
                         </div>

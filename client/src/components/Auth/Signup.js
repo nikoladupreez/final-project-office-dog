@@ -3,9 +3,13 @@ import {Link} from 'react-router-dom';
 
 //style
 import '../../styles/Signup.scss';
+import woman from '../../images/woman.png';
+import mix from '../../images/rotweiler.png';
+import man from '../../images/rotweiler.jpg';
 
 //components
 import {signup} from "../../utils/auth";
+
 
 class Signup extends Component {
     constructor(props){
@@ -85,7 +89,7 @@ class Signup extends Component {
                                 <form ref={form => this.formPage1 = form} onSubmit={(e) => {e.preventDefault(); return false}}>
                                     <label>Work email adress</label>
                                     <input className='inputText' required onChange={this.handleChange} value={this.state.email} type="text" name="email"/>
-                                    <label>Full name</label>
+                                    <label>Name</label>
                                     <input className='inputText' required onChange={this.handleChange} value={this.state.name} type="text" name="name"/>
                                     <label>Password</label>
                                     <input className='inputText' required onChange={this.handleChange} value={this.state.password} placeholder="8 characters or more"  type="password" name="password"/>

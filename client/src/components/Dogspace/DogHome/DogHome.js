@@ -25,7 +25,7 @@ export default class DogHome extends Component {
     state = {
         dogId: this.props.match.params.id,
         dog: {},
-        user: getUser(),
+        userId: getUser()._id,
         dateToday: "",
         weekDay: '',
         dateDay: 0,
