@@ -6,19 +6,21 @@ const axios = Axios.create({
     baseURL: process.env.REACT_APP_API
 });
 
-export const login = function({email, password}, navigate) {
-        return axios({
-            method: "POST",
-            url: "auth/login",
-            headers: { 'content-type': 'application/x-www-form-urlencoded' },
-            data: qs.stringify({username: email, password}),
-        })
-        .then((res)=> {
-            setUser(res.data)
-            navigate.push("/home");
-        })
-        .catch((err) => {
-            console.log(err.message);
+export const login = function({email, password}, navigate, ) {
+        return new Promise((resolve, reject) => {
+            axios({
+                method: "POST",
+                url: "auth/login",
+                headers: { 'content-type': 'application/x-www-form-urlencoded' },
+                data: qs.stringify({username: email, password}),
+            })
+            .then((res)=> {
+                setUser(res.data)
+                resolve();
+            })
+            .catch((err) => {
+                reject({message: err.message});
+            })
         })
     }
 

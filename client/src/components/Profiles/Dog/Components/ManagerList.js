@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
-import crossIcon from '../../../../images/cross.svg';
 
 //style
 import '../../../../styles/DogManager.scss';
@@ -45,7 +44,7 @@ export default class ManagerList extends Component {
                         return (
                             <div key={index} className='manager-box'>
                                 <div className='manager-img-box'>
-                                    <img src={manager.image_URL} alt='user'/>
+                                    <img src={manager.avatar} alt='user'/>
                                 </div>
                                 <div className='manager-name-box'>
                                     <h2>{manager.name}</h2>

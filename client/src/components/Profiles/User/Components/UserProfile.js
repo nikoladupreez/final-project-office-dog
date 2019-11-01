@@ -43,7 +43,6 @@ export default class UserProfile extends Component {
                     <div className='userprofile-container'>
                         <div className='nav-profile'>
                             <div onClick={this.goBack}className='doghome-icon-small'></div>
-                            <div className='userprofile-icon-big'></div>
                             <div className='empty'></div>
                         </div>
                         <div className='user-profile-info-box'>

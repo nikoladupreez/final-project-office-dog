@@ -15,7 +15,7 @@ router.post('/dog/:id/add', (req, res, next) => {
       dog_manager: mongoose.Types.ObjectId(req.body.userId)
    })
    .then((poop) => {
-         Dog.update({_id: req.params.id}, {$push: {poops: poop}})
+         Dog.update({_id: mongoose.Types.ObjectId(req.params.id)}, {$push: {poops: poop}})
             .then((dog) => {
                res.json(dog);
             })

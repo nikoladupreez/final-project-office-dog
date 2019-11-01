@@ -4,7 +4,6 @@ import {Link} from 'react-router-dom';
 
 //style
 import '../../../../styles/Dictionary.scss';
-import crossIcon from '../../../../images/cross.svg';
 
 export default class Dictionary extends Component {
     state = {
@@ -30,7 +29,7 @@ export default class Dictionary extends Component {
             <div className='dictionary-container'>
                  <div className='back-box'>
                         <Link to={`/dog/${this.state.dogId}/home`}><div className='back-icon'></div></Link>
-                        <Link to={`/dog/${this.state.dogId}/home/dictionary/edit`}><div id='edit-btn'></div></Link>
+                        {/* <Link to={`/dog/${this.state.dogId}/home/dictionary/edit`}><div id='edit-btn'></div></Link> */}
                 </div>
                 <div className='dictionary-title'>
                     <h1>Commands</h1>

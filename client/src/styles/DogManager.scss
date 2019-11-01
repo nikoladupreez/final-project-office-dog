@@ -175,6 +175,10 @@
     height: 47px;
     width: 51px;
     background-color:#b2dcf4;
+    background-image: url('../images/search-icon.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 35px 35px;
     border-radius: 10px;
     z-index: 2;
 }
@@ -201,5 +205,35 @@
     margin: 120px 0 0 0;
     width: 100%;
     overflow: scroll;
+}
+
+#error {
+    border: 3px red solid;
+}
+
+.error-box {
+    margin: 85px 0 0 27px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.error-message {
+    margin: 0;
+    color: red;
+    font-size: 15px;
+}
+
+#error-btn {
+    background-color: red;
+}
+
+.search-error-box {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.hidden {
+    display: none;
 }
 

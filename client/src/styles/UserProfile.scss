@@ -38,9 +38,14 @@
 }
 
 .doghome-icon-small {
-    width: 30.4px;
-    height: 29.9px;
-    background-color: rgb(221, 219, 219);
+    margin: 0 15px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-image: url('../images/profile.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
 }
 
 .user-profile-info-box {

@@ -17,7 +17,7 @@ router.post('/dog/:id/add', (req, res, next) => {
       poops: req.body.poopCount
    })
    .then((walk) => {
-         Dog.update({_id: req.params.id}, {$push: {walks: walk}})
+         Dog.update({_id: mongoose.Types.ObjectId(req.params.id)}, {$push: {walks: walk}})
             .then((dog) => {
                res.json(dog);
             })

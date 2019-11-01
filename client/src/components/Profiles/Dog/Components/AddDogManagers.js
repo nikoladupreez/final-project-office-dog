@@ -17,6 +17,7 @@ export default class AddDogManagers extends Component {
         this.handleSearch = this.handleSearch.bind(this);
         this.searchValue = React.createRef();
         this.getUser = this.getUser.bind(this);
+        this.removeError = this.removeError.bind(this);
     }
 
     state = {
@@ -27,7 +28,8 @@ export default class AddDogManagers extends Component {
         users: [],
         isOwner: false,
         notFound: false,
-        alreadyManager: false
+        alreadyManager: false,
+        error: false
     }
 
     getUser(email){
@@ -57,12 +59,18 @@ export default class AddDogManagers extends Component {
         this.getDog();
     }
 
+    removeError() {
+        if(this.state.error){
+            this.setState({error: false});
+            this.setState({notFound: false});
+            this.setState({alreadyManager: false});
+            this.setState({isOwner: false});
+        }
+    }
+
     handleSearch(e) {
         let dogManagers = [...this.state.dogManagers];
-        this.setState({notFound: false});
-        this.setState({alreadyManager: false});
-        this.setState({isOwner: false});
-        debugger;
+    
         axios({
             method: "GET",
             url: `${process.env.REACT_APP_API}/users/email/${this.searchValue.current.value}`
@@ -74,6 +82,7 @@ export default class AddDogManagers extends Component {
 
             if(user.data._id === this.state.userId){
                 this.setState({isOwner: true});
+                this.setState({error: true});
             }else if(managerFound.length > 0){
                 return;
             }else if(user.data.dog_manager){
@@ -82,6 +91,7 @@ export default class AddDogManagers extends Component {
                 });
                 if (dogFound.length > 0){
                     this.setState({alreadyManager: true});
+                    this.setState({error: true});
                 } else {
                     dogManagers.push(user.data);
                     this.setState({dogManagers: dogManagers});
@@ -94,6 +104,7 @@ export default class AddDogManagers extends Component {
         .catch((err) => {
             if(err.response && err.response.status === 404){
                 this.setState({notFound: true});
+                this.setState({error: true});
             } else {
                 console.log(err.message);
             }
@@ -133,19 +144,16 @@ export default class AddDogManagers extends Component {
                     <div className='manager-title'>
                         <h1>Dog Managers</h1>
                     </div>
-                    <div className='manager-search-box'>
-                        <input type='text' placeholder="Search Coworker's email" ref={this.searchValue}/>
-                        <div onClick={this.handleSearch} className='search-icon'></div>
+                    <div className='search-error-box'>
+                            <div className='manager-search-box'>
+                                <input id={this.state.error ? 'error' : ''} onChange={this.removeError}type='text' placeholder="Search Coworker's email" ref={this.searchValue}/>
+                                <div id={this.state.error ? 'error-btn' : ''} onClick={this.handleSearch} className='search-icon'></div>
+                            </div>
+                            <div className={this.state.isOwner ? 'error-box' : 'hidden'}><p className={this.state.isOwner ? 'error-message error-owner' : 'hidden'}>Silly, that's yours!</p></div>
+                            <div className={this.state.notFound ? 'error-box' : 'hidden'}><p className={this.state.notFound ? 'error-message error-not-found' : 'hidden'}>User not found!</p></div>
+                            <div className={this.state.alreadyManager ? 'error-box' : 'hidden'}><p className={this.state.alreadyManager ? 'error-message error-dogmanager' : 'hidden'}>Already a dog manager!</p></div>
                     </div>
-                    { this.state.isOwner ? 
-                            <p>That is your own email adress silly!</p>
-                        : <></>}
-                    { this.state.notFound ? 
-                        <p>User is not found in the database!</p>
-                    : <></>}
-                    { this.state.alreadyManager ?
-                        <p>User is already a dogmanager of {this.state.dog.name}!</p>
-                    : <></>}
+
                     <div className='manager-list-add'>
                         {this.state.dogManagers.map((manager, index) => {
                             return (

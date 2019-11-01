@@ -70,18 +70,23 @@ export default class DogHome extends Component {
     getPoopsToday() {
         let poopsTotal = [...this.state.poopsList];
         let poops = poopsTotal.filter((poop) => {
-            let poopDate = this.getDateString(poop.added_at);
+            let poopDate = this.getDateString(new Date(poop.added_at));
             return (poopDate === this.state.dateToday)
         })
 
-        this.setState({poopCountToday: poops.length});
-        this.calculatePercentageForType(poops.length, 'poop')
+        let poopCount = 0;
+        poops.forEach((poop) => {
+            poopCount = poopCount + poop.quantity;
+        })
+
+        this.setState({poopCountToday: poopCount});
+        this.calculatePercentageForType(poopCount, 'poop')
     }
 
     getWalksToday() {
         let walksTotal = [...this.state.walksList];
         let walks = walksTotal.filter((walk) => {
-            let walkDate = this.getDateString(walk.added_at);
+            let walkDate = this.getDateString(new Date(walk.added_at));
             return (walkDate === this.state.dateToday)
         })
 
@@ -142,6 +147,7 @@ export default class DogHome extends Component {
             this.getPoopsToday();
             this.getWalksToday();
             this.getDogAge();
+
             this.checkForTrackings();
         })
         .catch((err) => console.log(err.message));
@@ -247,9 +253,9 @@ export default class DogHome extends Component {
             data: JSON.stringify(this.state)
         })
         .then((res) => {
-            this.setState({cookieCount: 0});
             this.handleCloseCookie();
-            // this.componentDidMount();
+            this.componentDidMount();
+            this.setState({cookieCount: 0});
         })
         .catch((err) => console.log(err.message));
     }
@@ -321,7 +327,6 @@ export default class DogHome extends Component {
                             <Modal.Body id='cookie-body' style={{margin: '0 0 0 -3px'}}>
                                 <div className='cookie-container'>
                                     <div className='cookie-box'>
-                                        <img src='/' alt='cookie'/>
                                     </div>
                                     <div className='cookie-count-box'>
                                         <div onClick={this.decreaseCount} className='control-cookie min'></div>
@@ -338,7 +343,10 @@ export default class DogHome extends Component {
                         </Modal>
 
                     {!this.state.dog.owner ? 
-                        <h1>Loading...</h1>
+                        <div className='loader-doghome'>
+                            {/* <h1>Fetching tennis balls...</h1> */}
+                        </div>
+        
                     :
                         <Modal
                             show={this.state.showICE}

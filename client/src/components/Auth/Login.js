@@ -16,7 +16,9 @@ export default class Login extends Component {
     }
     state = {
         email: "",
-        password: ""
+        password: "",
+        error: null
+
     }
 
     handleChange(e) {
@@ -27,7 +29,13 @@ export default class Login extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        login(this.state, this.props.history);
+        login(this.state)
+            .then( () => {
+                this.props.history.push("/home");
+            })
+            .catch((err) => {
+                this.setState({error: err.message})
+            });
     }
 
     render() {

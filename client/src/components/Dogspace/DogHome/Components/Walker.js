@@ -24,9 +24,8 @@ export default class Walker extends Component {
         dogId: this.props.match.params.id,
         userId: getUser()._id,
         dog: {},
-        poopCount: 8,
-        cookieCount: 5,
-        walkCount: 0,
+        poopCount: 0,
+        cookieCount: 0,
         kmCount: 0,
         minCount: 0,
         seconds: 0,
@@ -40,15 +39,15 @@ export default class Walker extends Component {
     }
 
     componentDidMount() {
-        // axios({
-        //     method: "GET",
-        //     url: `${process.env.REACT_APP_API}/dogs/dog/${this.state.dogId}`
-        // })
-        // .then((dog) => {
-        //     this.setState({dog: dog.data})
-        //     this.setState({commandList: dog.data.commands});
-        // })
-        // .catch((err) => console.log(err.message));
+        axios({
+            method: "GET",
+            url: `${process.env.REACT_APP_API}/dogs/dog/${this.state.dogId}`
+        })
+        .then((dog) => {
+            this.setState({dog: dog.data})
+            this.setState({commandList: dog.data.commands});
+        })
+        .catch((err) => console.log(err.message));
     }
 
     handleShowCommands() {
@@ -110,52 +109,52 @@ export default class Walker extends Component {
     }
 
     submitCookies() {
-        axios({
-            method: "POST",
-            url: `${process.env.REACT_APP_API}/cookies/dog/${this.state.dogId}/add`,
-            headers: { 'content-type': 'application/json' },
-            data: JSON.stringify(this.state)
-        })
-        .then((res) => {
-            this.setState({cookieCount: 0});
-        })
-        .catch((err) => console.log(err.message));
+        return (
+            axios({
+                method: "POST",
+                url: `${process.env.REACT_APP_API}/cookies/dog/${this.state.dogId}/add`,
+                headers: { 'content-type': 'application/json' },
+                data: JSON.stringify(this.state)
+            })
+        )
     }
 
     submitPoops() {
-        debugger;
-        axios({
-            method: "POST",
-            url: `${process.env.REACT_APP_API}/poops/dog/${this.state.dogId}/add`,
-            headers: { 'content-type': 'application/json' },
-            data: JSON.stringify(this.state)
-        })
-        .then((res) => {
-            this.setState({poopCount: 0});
-        })
-        .catch((err) => console.log(err.message));
+        return (
+            axios({
+                method: "POST",
+                url: `${process.env.REACT_APP_API}/poops/dog/${this.state.dogId}/add`,
+                headers: { 'content-type': 'application/json' },
+                data: JSON.stringify(this.state)
+            })
+        )
     }
 
     submitWalk() {
-        axios({
-            method: "POST",
-            url: `${process.env.REACT_APP_API}/walks/dog/${this.state.dogId}/add`,
-            headers: { 'content-type': 'application/json' },
-            data: JSON.stringify(this.state)
-        })
-        .then((res) => {
-            this.setState({kmCount: 0});
-            this.setState({minCount: 0});
-        })
-        .catch((err) => console.log(err.message));
+      return (
+            axios({
+                method: "POST",
+                url: `${process.env.REACT_APP_API}/walks/dog/${this.state.dogId}/add`,
+                headers: { 'content-type': 'application/json' },
+                data: JSON.stringify(this.state)
+            })
+      )
     }
 
     handleSubmit() {
-        this.submitCookies();
-        this.submitPoops();
-        this.submitWalk();
+        Promise.all([this.submitCookies(), this.submitPoops(), this.submitWalk()])
+        .then((res) => {
+            debugger;
+            this.setState({poopCount: 0});
+            this.setState({cookieCount: 0});
+            this.setState({kmCount: 0});
+            this.setState({minCount: 0});
 
-        this.props.history.push(`/dog/${this.state.dogId}/home`);
+            this.props.history.push(`/dog/${this.state.dogId}/home`);
+        })
+        .catch((err) => {
+
+        })     
     }
 
     render() {
@@ -223,34 +222,34 @@ export default class Walker extends Component {
                                 </Modal.Title>
                                 </Modal.Header>
                                     <Modal.Body id='ice-body' style={{margin: '0 0 0 -15px'}}>
-                                        <div className='ice-info-container'>
-                                            <div className='ambulance-box'>
-                                                <h1>Dutch Animal Ambulance</h1>
-                                                <Link to='tell:09000245'><p>0900 0245</p></Link>
-                                            </div>
-                                            <div className='box-text box4'>
+                                            <div className='ice-info-container'>
+                                                <div className='ambulance-box'>
+                                                    <h1 className='ice-label'>Dutch Animal Ambulance</h1>
+                                                    <Link to='tell:09000245'><p>0900 0245</p></Link>
+                                                </div>
+                                            <div className='box-text box4 dog-ice'>
                                                     <p>{this.state.dog.name}<br/>
                                                     {this.state.dog.breed}<br/>
                                                     {this.state.dog.birthday}<br/>
                                                     {this.state.dog.gender}</p>
                                             </div>
                                             <h1 className='ice-label'>Contact Owner {this.state.dog.name}</h1>
-                                            <div className='box-text box2'>
+                                            <div className='box-text box2 dog-ice'>
                                                     <p>{this.state.dog.owner.name}<br/>
                                                     <Link to={`tell:${this.state.dog.owner.phone}`}>{this.state.dog.owner.phone}</Link></p>
                                             </div>
                                             <h1 className='ice-label'>Emergency contact 1</h1>
-                                            <div className='box-text box2'>
+                                            <div className='box-text box2 ice-ice'>
                                                 <p>{this.state.dog.ice_1.name}<br/>
                                                 <Link to={`tell:${this.state.dog.owner.phone}`}>{this.state.dog.ice_1.phone}</Link></p>
                                             </div>
                                             <h1 className='ice-label'>Emergency contact 2</h1>
-                                            <div className='box-text box2'>
+                                            <div className='box-text box2 ice-ice'>
                                                 <p>{this.state.dog.ice_2.name}<br/>
                                                 <Link to={`tell:${this.state.dog.ice_2.phone}`}>{this.state.dog.ice_2.phone}</Link></p>
                                             </div>
                                             <h1 className='ice-label'>Veterinary</h1>
-                                            <div className='box-text box3'>
+                                            <div className='box-text box3 vet-ice'>
                                                 <p>{this.state.dog.vet.name}<br/>
                                                 {this.state.dog.vet.company}<br/>
                                                 <Link to={`tell:${this.state.dog.vet.phone}`}>{this.state.dog.vet.phone}</Link></p>
