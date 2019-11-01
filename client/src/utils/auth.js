@@ -9,7 +9,7 @@ const axios = Axios.create({
 export const login = function({email, password}, navigate) {
         return axios({
             method: "POST",
-            url: "/api/auth/login",
+            url: "auth/login",
             headers: { 'content-type': 'application/x-www-form-urlencoded' },
             data: qs.stringify({username: email, password}),
         })
