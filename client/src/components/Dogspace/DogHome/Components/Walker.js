@@ -40,15 +40,15 @@ export default class Walker extends Component {
     }
 
     componentDidMount() {
-        axios({
-            method: "GET",
-            url: `${process.env.REACT_APP_API}/dogs/dog/${this.state.dogId}`
-        })
-        .then((dog) => {
-            this.setState({dog: dog.data})
-            this.setState({commandList: dog.data.commands});
-        })
-        .catch((err) => console.log(err.message));
+        // axios({
+        //     method: "GET",
+        //     url: `${process.env.REACT_APP_API}/dogs/dog/${this.state.dogId}`
+        // })
+        // .then((dog) => {
+        //     this.setState({dog: dog.data})
+        //     this.setState({commandList: dog.data.commands});
+        // })
+        // .catch((err) => console.log(err.message));
     }
 
     handleShowCommands() {
