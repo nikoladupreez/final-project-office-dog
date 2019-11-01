@@ -1,14 +1,6 @@
 #!/usr/bin/env node
 
 const http = require('http');
-const https = require('https');
-const fs = require('fs');
-
-
-var options = {
-  key: fs.readFileSync('key.pem'),
-  cert: fs.readFileSync('cert.pem')
-};
 
 let app = require('../app');
 
@@ -49,15 +41,9 @@ const setErrorChecker = (server, port) => {
 }
 
 let server = http.createServer(app);
-let secureServer = https.createServer(options, app);
 
 setErrorChecker(server, process.env.PORT);
-setErrorChecker(secureServer, process.env.HTTPS_PORT);
 
 server.listen(process.env.PORT, () => {
   console.log(`Listening on http://localhost:${process.env.PORT}`);
-});
-
-secureServer.listen(process.env.HTTPS_PORT, () => {
-  console.log(`Listening on https://localhost:${process.env.HTTPS_PORT}`);
 });
