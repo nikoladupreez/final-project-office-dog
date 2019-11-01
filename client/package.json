@@ -20,11 +20,11 @@
     "react-scripts": "3.2.0"
   },
   "scripts": {
-    "start-react-scripts": "react-scripts start --https --host 0.0.0.0",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "client": "cd ../client && npm run start-react-scripts",
+    "client": "cd ../client && npm start",
     "server": "cd ../server && npm run dev-inspect",
     "start-dev": "concurrently \"npm run server\" \"npm run client\""
   },
@@ -42,5 +42,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "proxy": "http://localhost:9000"
 }

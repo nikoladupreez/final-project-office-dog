@@ -1,44 +1,63 @@
 #!/usr/bin/env node
 
 const http = require('http');
+const https = require('https');
+const fs = require('fs');
+
+
+var options = {
+  key: fs.readFileSync('key.pem'),
+  cert: fs.readFileSync('cert.pem')
+};
 
 let app = require('../app');
 
 // catch 404 and render a not-found.hbs template
 app.use((req, res, next) => {
-  res.status(404);
+  res.status(404);
 });
 
 app.use((err, req, res, next) => {
-  // always log the error
-  console.error('ERROR', req.method, req.path, err);
+  // always log the error
+  console.error('ERROR', req.method, req.path, err);
 
-  // only render if the error ocurred before sending the response
-  if (!res.headersSent) {
-    res.status(500);
-  }
+  // only render if the error ocurred before sending the response
+  if (!res.headersSent) {
+    res.status(500);
+  }
 });
+
+
+const setErrorChecker = (server, port) => {
+  server.on('error', error => {
+    if (error.syscall !== 'listen') { throw error }
+    
+    // handle specific listen errors with friendly messages
+    switch (error.code) {
+      case 'EACCES':
+        console.error(`Port ${port} requires elevated privileges`);
+        process.exit(1);
+        break;
+      case 'EADDRINUSE':
+        console.error(`Port ${port} is already in use`);
+        process.exit(1);
+        break;
+      default:
+        throw error;
+    }
+  });
+}
 
 let server = http.createServer(app);
+let secureServer = https.createServer(options, app);
 
-server.on('error', error => {
-  if (error.syscall !== 'listen') { throw error }
-
-  // handle specific listen errors with friendly messages
-  switch (error.code) {
-    case 'EACCES':
-      console.error(`Port ${process.env.PORT} requires elevated privileges`);
-      process.exit(1);
-      break;
-    case 'EADDRINUSE':
-      console.error(`Port ${process.env.PORT} is already in use`);
-      process.exit(1);
-      break;
-    default:
-      throw error;
-  }
-});
+setErrorChecker(server, process.env.PORT);
+setErrorChecker(secureServer, process.env.HTTPS_PORT);
 
 server.listen(process.env.PORT, () => {
-  console.log(`Listening on http://localhost:${process.env.PORT}`);
+  console.log(`Listening on http://localhost:${process.env.PORT}`);
+});
+
+secureServer.listen(process.env.HTTPS_PORT, () => {
+  console.log(`Listening on https://localhost:${process.env.HTTPS_PORT}`);
 });

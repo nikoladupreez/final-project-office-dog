@@ -47,7 +47,6 @@ app.use(require('node-sass-middleware')({
       
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
-app.use(express.static(path.join(__dirname, 'public')));
 app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 
 // Session settings:
@@ -80,5 +79,12 @@ app.use('/api/cookies', require("./routes/api/cookies"));
 app.use('/api/poops', require("./routes/api/poops"));
 app.use('/api/walks', require("./routes/api/walks"));
 
-
+//production mode
+if(process.env.NODE_ENV === 'production') {  
+    app.use(express.static(path.join(__dirname, '../client/build')));  
+    app.get('*', (req, res) => {    
+      res.sendfile(path.join(__dirname,'../client/build/index.html'));  
+    })
+  }
+  
 module.exports = app;
