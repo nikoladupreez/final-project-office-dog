@@ -1,13 +1,16 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
-import crossIcon from '../../../../images/cross.svg';
 
 //components
 import {getUser} from "../../../../utils/auth";
 
 //style
 import '../../../../styles/UserProfile.scss';
+import woman from '../../../../images/woman.png';
+import mix from '../../../../images/mix.png';
+import man from '../../../../images/man.png';
+
 
 export default class UserProfileEdit extends Component {
     constructor(props){
@@ -23,7 +26,7 @@ export default class UserProfileEdit extends Component {
         name: "",
         displayName: "",
         phone: "",
-        avatarList: ["/one", "/three"],
+        avatarList: [man, mix, woman],
         nonChosenAvatars: []
     }
 
@@ -83,7 +86,7 @@ export default class UserProfileEdit extends Component {
         return (
             <div className='edit-userprofile-container'>
                     <div className='back-box'>
-                        <Link to='/home'><img src={crossIcon} alt='back'/></Link>
+                        <Link to='/home'><div className='back-icon'></div></Link>
                     </div>
                     <div className='edit-user-title'>
                         <h1>Edit Profile</h1>
@@ -110,7 +113,7 @@ export default class UserProfileEdit extends Component {
                     <label className='label-profile'>Phone number</label>
                     <input className='text-input-profile' onChange={this.handleChange} name='phone' placeholder={this.state.phone}/>
                     <div className='btn-box'>
-                        <button onClick={this.handleSubmit}>Save changes</button>
+                        <button onClick={this.handleSubmit}>Save</button>
                     </div>
                 </form>
             </div>

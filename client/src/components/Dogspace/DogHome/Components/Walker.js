@@ -4,7 +4,6 @@ import axios from 'axios';
 import Modal from 'react-bootstrap/Modal';
 import {getUser} from '../../../../utils/auth';
 
-import crossIcon from '../../../../images/cross.svg';
 import '../../../../styles/Walker.scss';
 
 export default class Walker extends Component {
@@ -25,8 +24,9 @@ export default class Walker extends Component {
         dogId: this.props.match.params.id,
         userId: getUser()._id,
         dog: {},
-        poopCount: 0,
-        cookieCount: 0,
+        poopCount: 8,
+        cookieCount: 5,
+        walkCount: 0,
         kmCount: 0,
         minCount: 0,
         seconds: 0,
@@ -81,6 +81,10 @@ export default class Walker extends Component {
             let countNew = count + 1;
             this.setState({poopCount: countNew});
         }
+    }
+
+    startTracking() {
+      
     }
 
     calculateDistance(){
@@ -156,15 +160,16 @@ export default class Walker extends Component {
 
     render() {
         return (
-            <div>
+            <div className='walker-container'>
                     <div className='back-box'>
-                        <Link to={`/dog/${this.state.dogId}/home`}><img src={crossIcon} alt='back'/></Link>
+                        <Link to={`/dog/${this.state.dogId}/home`}><div className='back-icon'></div></Link>
                     </div>
                     <div className='manager-title'>
                         <h1>Walks</h1>
                     </div>
                     <div className='map'>
                         <div className='map-top'>
+                            <div onClick={this.startTracking}className='start-icon'></div>
                             <div onClick={() => {this.increaseCount('poop')}}className='poop-icon'></div>
                         </div>
                         <div className='map-middle'>

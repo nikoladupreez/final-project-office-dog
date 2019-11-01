@@ -4,8 +4,8 @@ import {Link} from 'react-router-dom';
 //style
 import '../../styles/Signup.scss';
 import woman from '../../images/woman.png';
-import mix from '../../images/rotweiler.png';
-import man from '../../images/rotweiler.jpg';
+import mix from '../../images/mix.png';
+import man from '../../images/man.png';
 
 //components
 import {signup} from "../../utils/auth";
@@ -112,13 +112,13 @@ class Signup extends Component {
                                     <label id='signup-avatar-label'>Choose avatar</label>
                                     <div className='signup-avatar-container'>
                                         <div className='signup-avatar-option'>
-                                            <label><div className='signup-avatar-box'><img src='/' alt='avatar1'/></div><input required onChange={this.handleRadio} type='radio' value='/1.png' name='avatar'/></label> 
+                                            <label><div className='signup-avatar-box'><img src={man} alt='avatar1'/></div><input required onChange={this.handleRadio} type='radio' value={man} name='avatar'/></label> 
                                         </div>
                                         <div className='signup-avatar-option'>
-                                            <label><div className='signup-avatar-box'><img src='/' alt='avatar2'/></div><input onChange={this.handleRadio} type='radio' value='/2.png' name='avatar'/></label>
+                                            <label><div className='signup-avatar-box'><img src={mix} alt='avatar2'/></div><input onChange={this.handleRadio} type='radio' value={mix} name='avatar'/></label>
                                         </div>
                                         <div className='signup-avatar-option'>
-                                            <label><div className='signup-avatar-box'><img src='/' alt='avatar3'/></div><input onChange={this.handleRadio} type='radio' value='/3.png' name='avatar'/></label>
+                                            <label><div className='signup-avatar-box'><img src={woman} alt='avatar3'/></div><input onChange={this.handleRadio} type='radio' value={woman} name='avatar'/></label>
                                         </div>
                                     </div>
                                     <div className='signup-btn-box'>

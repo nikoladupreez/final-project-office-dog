@@ -9,7 +9,7 @@ const axios = Axios.create({
 export const login = function({email, password}, navigate) {
         return axios({
             method: "POST",
-            url: "/auth/login",
+            url: "auth/login",
             headers: { 'content-type': 'application/x-www-form-urlencoded' },
             data: qs.stringify({username: email, password}),
         })
@@ -25,7 +25,7 @@ export const login = function({email, password}, navigate) {
 export const signup = function({email, password, name, displayName, phone, avatar}, navigate) {
         return axios({
             method: "POST",
-            url: "/auth/signup",
+            url: "auth/signup",
             headers: { 'content-type': 'application/x-www-form-urlencoded' },
             data: qs.stringify({email, password, name, displayName, phone, avatar}),
         })
@@ -58,7 +58,7 @@ export const logout = function(navigate){
         debugger;
        return axios({
             method: "POST",
-            url: "/auth/logout"
+            url: "auth/logout"
         })
         .then((res)=> {
             localStorage.removeItem('user');

@@ -20,11 +20,14 @@ export default class DogHome extends Component {
         this.increaseCount = this.increaseCount.bind(this);
         this.decreaseCount = this.decreaseCount.bind(this);
         this.handleSubmitCookies = this.handleSubmitCookies.bind(this);
+        this.getDogAge = this.getDogAge.bind(this);
+        this.calculatePercentage = this.calculatePercentage.bind(this)
     }
 
     state = {
         dogId: this.props.match.params.id,
         dog: {},
+        age: 0,
         userId: getUser()._id,
         dateToday: "",
         weekDay: '',
@@ -36,6 +39,9 @@ export default class DogHome extends Component {
         cookieCountToday: 0,
         poopCountToday: 0,
         walkCountToday: 0,
+        walkPercentage: 0,
+        poopPercentage: 0,
+        cookiePercentage: 0,
         walkKmToday: 0,
         walkMinToday: 0,
         cookieCount: 0,
@@ -58,6 +64,7 @@ export default class DogHome extends Component {
         })
 
         this.setState({cookieCountToday: cookieCount});
+        this.calculatePercentageForType(cookieCount, 'cookie')
     }
 
     getPoopsToday() {
@@ -68,6 +75,7 @@ export default class DogHome extends Component {
         })
 
         this.setState({poopCountToday: poops.length});
+        this.calculatePercentageForType(poops.length, 'poop')
     }
 
     getWalksToday() {
@@ -91,6 +99,31 @@ export default class DogHome extends Component {
         this.setState({walkCountToday: walks.length});
         this.setState({walkKmToday: km});
         this.setState({walkMinToday: minutes});
+        this.calculatePercentageForType(walks.length, 'walk')
+    }
+
+    calculatePercentage(count, average, scale){
+        return Math.round((count * 100)/(average + (average * scale)));
+    }
+
+
+    calculatePercentageForType(count, type) {
+        switch(type){
+            case 'walk':
+                let walkPercent = this.calculatePercentage(count, this.state.dog.walk_info.avg_frequency, 0);
+                this.setState({walkPercentage: walkPercent});
+                break;
+            case 'poop':
+                let poopPercent = this.calculatePercentage(count, this.state.dog.poop_avg_frequency, 0);
+                this.setState({poopPercentage: poopPercent});
+                break;
+            case 'cookie':
+                let cookiePercent = this.calculatePercentage(count, this.state.dog.cookies_avg_frequency, 0.25)
+                this.setState({cookiePercentage: cookiePercent});
+                break;
+            default:
+                break;
+        }
     }
 
     componentDidMount() {
@@ -106,7 +139,10 @@ export default class DogHome extends Component {
             this.setState({walksList: dog.data.walks})
             this.setState({dog: dog.data})
             this.getCookiesToday();
-            // this.checkForTrackings();
+            this.getPoopsToday();
+            this.getWalksToday();
+            this.getDogAge();
+            this.checkForTrackings();
         })
         .catch((err) => console.log(err.message));
     }
@@ -218,31 +254,47 @@ export default class DogHome extends Component {
         .catch((err) => console.log(err.message));
     }
 
+    getDogAge() {
+        let today = new Date();
+        let yearToday = today.getFullYear();
+
+        let dog = {...this.state.dog};
+        let birthday = dog.birthday;
+        let birthYear = parseInt(birthday.slice(0,4));
+   
+        let age = yearToday - birthYear;
+        this.setState({age: age});
+    }
+
     render() {
         return (
             <div className='doghome-container'>
                 <div className='nav'>
                     <Link to={`/dog/${this.state.dogId}/profile`}><div className='dogprofile-icon'></div></Link>
-                    <Link to={`/dog/${this.state.dogId}/home`}><div className='doghome-icon'></div></Link>
                     <Link to={`/user/profile`}><div className='userprofile-icon'></div></Link>
                 </div>
                 <div className='dogspace-container'>
-                    <div>
+                    <div className='trackings-container'>
                         {this.state.trackings ? 
-                            <div>
-                                <h1>{this.state.weekDay}</h1>
-                                <h1>{this.state.dateDay}</h1>
+                            <div className='trackings-box'>
+                                <h1 className='dog-day'>{this.state.dog.name}'s Day</h1>
                                 <Tracker
                                     cookieCount={this.state.cookieCountToday}
                                     poopCount={this.state.poopCountToday}
                                     walkCount={this.state.walkCountToday}
                                     walkKm={this.state.walkKmToday}
                                     walkMin={this.state.walkMinToday}
+                                    walkPercentage={this.state.walkPercentage}
+                                    poopPercentage={this.state.poopPercentage}
+                                    cookiePercentage={this.state.cookiePercentage}
                                 />
                             </div>
                         :
 
                             <div className='no-trackings'>
+                                <div className='no-tracking-name'>
+                                    <h1 className='dog-day'>{this.state.dog.name}'s Day</h1>
+                                </div>
                                 <p>No trackings yet today. <br/><span>Start tracking!</span></p>
                             </div>
                         }
@@ -272,11 +324,11 @@ export default class DogHome extends Component {
                                         <img src='/' alt='cookie'/>
                                     </div>
                                     <div className='cookie-count-box'>
-                                        <img onClick={this.decreaseCount} src='/' alt='min'/>
+                                        <div onClick={this.decreaseCount} className='control-cookie min'></div>
                                         <div className='cookie-count'>
                                             <p>{this.state.cookieCount}</p>
                                         </div>
-                                        <img  onClick={this.increaseCount} src='/' alt='plus'/>
+                                        <div onClick={this.increaseCount} className='control-cookie plus'></div>
                                     </div>
                                     <div className='cookie-btn-box'>
                                         <button onClick={this.handleSubmitCookies}>Add</button>
@@ -297,7 +349,7 @@ export default class DogHome extends Component {
                             style={{maxWidth: '90%', width: '90%', margin: '0 0 0 18px', borderRadius: "5px"}}
                         >
                             <Modal.Header closeButton id='modal-header'>
-                            <Link to={`/dog/${this.state.dogId}/home/ice/edit`}><div className='edit-btn'></div></Link>
+                            {/* <Link to={`/dog/${this.state.dogId}/home/ice/edit`}><div className='edit-btn'></div></Link> */}
                             <Modal.Title id="ice-title">
                                 Emergency <br/> Card
                             </Modal.Title>
@@ -305,32 +357,32 @@ export default class DogHome extends Component {
                                 <Modal.Body id='ice-body' style={{margin: '0 0 0 -15px'}}>
                                     <div className='ice-info-container'>
                                         <div className='ambulance-box'>
-                                            <h1>Dutch Animal Ambulance</h1>
+                                            <h1 className='ice-label'>Dutch Animal Ambulance</h1>
                                             <Link to='tell:09000245'><p>0900 0245</p></Link>
                                         </div>
-                                        <div className='box-text box4'>
+                                        <div className='box-text box4 dog-ice'>
                                                 <p>{this.state.dog.name}<br/>
                                                    {this.state.dog.breed}<br/>
-                                                   {this.state.dog.birthday}<br/>
+                                                   {this.state.age} years old<br/>
                                                    {this.state.dog.gender}</p>
                                         </div>
                                         <h1 className='ice-label'>Contact Owner {this.state.dog.name}</h1>
-                                        <div className='box-text box2'>
+                                        <div className='box-text box2 dog-ice'>
                                                 <p>{this.state.dog.owner.name}<br/>
                                                 <Link to={`tell:{this.state.dog.owner.phone}`}>{this.state.dog.owner.phone}</Link></p>
                                         </div>
                                         <h1 className='ice-label'>Emergency contact 1</h1>
-                                        <div className='box-text box2'>
+                                        <div className='box-text box2 ice-ice'>
                                             <p>{this.state.dog.ice_1.name}<br/>
                                             <Link to={`tell:${this.state.dog.ice_1.phone}`}>{this.state.dog.ice_1.phone}</Link></p>
                                         </div>
                                         <h1 className='ice-label'>Emergency contact 2</h1>
-                                        <div className='box-text box2'>
+                                        <div className='box-text box2 ice-ice'>
                                             <p>{this.state.dog.ice_2.name}<br/>
                                             <Link to={`tell:${this.state.dog.ice_2.phone}`}>{this.state.dog.ice_2.phone}</Link></p>
                                         </div>
                                         <h1 className='ice-label'>Veterinary</h1>
-                                        <div className='box-text box3'>
+                                        <div className='box-text box3 vet-ice'>
                                             <p>{this.state.dog.vet.name}<br/>
                                             {this.state.dog.vet.company}<br/>
                                             <Link to={`tell:${this.state.dog.vet.phone}`}>{this.state.dog.vet.phone}</Link></p>

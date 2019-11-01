@@ -82,6 +82,7 @@ router.post('/add-dog', (req, res, next) => {
         company: req.body.vetCompany,
         phone: req.body.vetPhone
       },
+      english: req.body.translate,
       commands: commandObjectIds,
       owner: mongoose.Types.ObjectId(userId),
       })

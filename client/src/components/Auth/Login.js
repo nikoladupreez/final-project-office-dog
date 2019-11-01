@@ -36,7 +36,6 @@ export default class Login extends Component {
                     <div className='login-back-box'>
                         <Link to='/'><div className='close-icon'></div></Link>
                     </div>
-                    <div className='login-illustration'></div>
                     <div className='login-box'>
                         <h1>Sign in to <div className='dogspace-logo2'></div></h1>
                         <h2>Enter your details below</h2>

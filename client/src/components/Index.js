@@ -12,9 +12,10 @@ export default function Index() {
                         <div className='dogspace-logo'></div>
                         <h2>Office dog management</h2>
                     </div>
-                    <div className='index-illustration'></div>
-                    <Link to='/login'><button>Sign in</button></Link>
-                    <p>Don't have an account?  <Link to='/signup'><span>Signup</span></Link></p>
+                    <div className='index-illustration'>
+                        <Link to='/login'><button>Sign in</button></Link>
+                        <p>Don't have an account?  <Link to='/signup'><span>Signup</span></Link></p>
+                    </div>
                 </div>
             </div>
         )

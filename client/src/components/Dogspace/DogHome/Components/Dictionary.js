@@ -29,18 +29,17 @@ export default class Dictionary extends Component {
         return (
             <div className='dictionary-container'>
                  <div className='back-box'>
-                        <Link to={`/dog/${this.state.dogId}/home`}><img src={crossIcon} alt='back'/></Link>
-                        <Link to={`/dog/${this.state.dogId}/home/dictionary/edit`}><div className='edit-btn'></div></Link>
+                        <Link to={`/dog/${this.state.dogId}/home`}><div className='back-icon'></div></Link>
+                        <Link to={`/dog/${this.state.dogId}/home/dictionary/edit`}><div id='edit-btn'></div></Link>
                 </div>
                 <div className='dictionary-title'>
                     <h1>Commands</h1>
                 </div>
-                <div>
+                <div className='commands'>
                     {this.state.commandList.map((command, index) => {
                         return (
                             <div className='command-box' key={index}>
                                 <h1>{command.commando}</h1>
-                                <h3>{command.pronounce}</h3>
                                 {this.state.dog.english ?
                                     <h2>{command.translation}</h2>
                                  :<></>}

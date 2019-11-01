@@ -109,7 +109,15 @@
 }
 
 .edit-userprofile-container {
+    position: absolute;
+    top: 0;
+    opacity: 0.8;
     width: 100%;
+    height: 100%;
+    background-image: url('../images/background-orange.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
 
     form {
         width: 100%;
@@ -120,24 +128,23 @@
 
 .label-profile {
     margin: 32px 0 10px 20px;
-    width: 167.5px;
-    height: 16px;
-    font-size: 14px;
     font-family: 'FontsFree-Net-SF-Pro-Rounded-Bold';
+    font-size: 14px;
     font-stretch: normal;
     font-style: normal;
-    line-height: normal;
-    letter-spacing: normal;
-    color: #535353;
+    line-height: 1.14;
+    letter-spacing: 0.3px;
+    color: #ffffff;
 }
 
 .text-input-profile {
         margin: 0 0 0 20px;
         padding: 0 0 0 20px;
-        width: 315px;
+        width: 335px;
         height: 48px;
         border-radius: 10px;
-        border: solid 1.5px #939393;
+        border: solid 2.5px #b2dcf4;
+        background-color: #ffffff;
         font-family: 'FontsFree-Net-SFProText-Regular-1';
         font-size: 18px;
         font-weight: 600;
@@ -157,16 +164,14 @@
 
     h1 {
         margin: 0;
-        width: 335px;
-        height: 41px;
         font-size: 35px;
-        font-weight: normal;
+        font-weight: 500;
         font-stretch: normal;
         font-style: normal;
-        line-height: normal;
+        line-height: 1.17;
         letter-spacing: normal;
         text-align: center;
-        color: #535353;
+        color: #ffffff;
     }
 }
 
@@ -245,6 +250,8 @@
     width: 111px;
     height: 111px;
     background-color: #d8d8d8;
+    border: 3px solid white;
+    box-shadow: 0 4px 5px 1px rgba(0, 0, 0, 0.5);
     overflow: hidden;
     border-radius: 50%;
     display: flex;
@@ -266,18 +273,19 @@
     align-items: center;
 
     button {
-        width: 237px;
-        height: 54px;
+        width: 164px;
+        height: 45.6px;
         border-radius: 27px;
-        background-color: #e1e1e1;
+        box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.25);
+        background-color: #a2d5f2;
         font-size: 18px;
         font-weight: 600;
         font-stretch: normal;
         font-style: normal;
-        line-height: normal;
-        letter-spacing: 0.5px;
+        line-height: 1.17;
+        letter-spacing: normal;
         text-align: center;
-        color: #ffffff;
+        color: #191919;
     }
 }
 

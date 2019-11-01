@@ -62,7 +62,7 @@ export default class AddDogManagers extends Component {
         this.setState({notFound: false});
         this.setState({alreadyManager: false});
         this.setState({isOwner: false});
-
+        debugger;
         axios({
             method: "GET",
             url: `${process.env.REACT_APP_API}/users/email/${this.searchValue.current.value}`
@@ -72,7 +72,7 @@ export default class AddDogManagers extends Component {
                 return (user.data._id === manager._id)
             });
 
-            if(user.data._id === this.state.user._id){
+            if(user.data._id === this.state.userId){
                 this.setState({isOwner: true});
             }else if(managerFound.length > 0){
                 return;

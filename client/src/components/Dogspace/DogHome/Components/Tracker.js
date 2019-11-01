@@ -1,24 +1,24 @@
 import React from 'react';
+import { Progress } from 'reactstrap';
+import '../../../../styles/Tracker.scss';
 
-export default function Tracker(props) {
-    return (
-        <div>
-            <div>
-                <div>
-                    <h1>Walks:</h1>
-                    <p>{props.walkCount}</p>
+
+export default function Tracker(props){
+        return (
+            <div className='tracker-container'>
+                    <div className='walks-container trackings'>
+                        <h1>walks</h1>
+                    <Progress animated color="info" max='100' value={props.walkPercentage}>{props.walkCount}</Progress>
+                    </div>
+                <div className='poops-container trackings'>
+                    <h1>poops</h1>
+                    <Progress animated color="info" max='100' value={props.poopPercentage}>{props.poopCount}</Progress>
                 </div>
-                <p><span>{props.walkKm}</span> km</p>
-                <p><span>{props.walkMin}</span> min</p>
+                <div className='cookies-container trackings'>
+                    <h1>cookies</h1>
+                    <Progress animated color="info" max='100' value={props.cookiePercentage}>{props.cookieCount}</Progress>
+
+                </div>
             </div>
-            <div>
-                <h1>Poops:</h1>
-                <p>{props.poopCount}</p>
-            </div>
-            <div>
-                <h1>Cookies:</h1>
-                <p>{props.cookieCount}</p>
-            </div>
-        </div>
-    )
+        )
 }

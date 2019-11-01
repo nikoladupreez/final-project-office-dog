@@ -1,21 +1,25 @@
 {
-  "name": "final-project",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cd ./server && npm start"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/nikoladupreez/final-project-office-dog.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/nikoladupreez/final-project-office-dog/issues"
-  },
-  "homepage": "https://github.com/nikoladupreez/final-project-office-dog#readme"
-}
+    "name": "final-project",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "engines": { 
+      "node": "11.7.0" 
+    },
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "start": "cd ./server && npm start",
+      "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client  && npm install --prefix server && npm run build --prefix client"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/nikoladupreez/final-project-office-dog.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+      "url": "https://github.com/nikoladupreez/final-project-office-dog/issues"
+    },
+    "homepage": "https://github.com/nikoladupreez/final-project-office-dog#readme"
+  }

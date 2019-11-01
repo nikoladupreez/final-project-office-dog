@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
-import crossIcon from '../../../../images/cross.svg';
 
 //style
 import '../../../../styles/DogGuide.scss';
@@ -32,13 +31,14 @@ export default class DogGuide extends Component {
         return (
             <div className='dogguide-container'>
                 { this.state.dog ? 
-                    <>
-                        <div className='back-box'>
-                            <Link to={`/dog/${this.state.dogId}/profile`}><img src={crossIcon} alt='back'/></Link>
-                            <Link to={`/dog/${this.state.dogId}/profile/guide/edit`}><img src={crossIcon} alt='back'/></Link>
-                        </div>
-                        <div className='dogguide-title'>
-                            <h1>{this.state.dog.name}s Guide</h1>
+                    <>  <div className='top-container'>
+                            <div className='back-box'>
+                                <Link to={`/dog/${this.state.dogId}/profile`}><div className='close-icon'></div></Link>
+                                {/* <Link to={`/dog/${this.state.dogId}/profile/guide/edit`}><img src={crossIcon} alt='back'/></Link> */}
+                            </div>
+                            <div className='dogguide-title'>
+                                <h1>{this.state.dog.name}'s Guide</h1>
+                            </div>
                         </div>
                         <div className='guide-scroll'>
                             <div className='guide-title-box'>

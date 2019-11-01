@@ -509,8 +509,8 @@ export default class AddDogspace extends Component {
                     <div className={this.state.page === 4 ? 'dog-part-4' : 'hidden'}>
                         <label>What is {this.state.name}'s <br/> gender?</label>
                         <div className='gender-btn-box'>
-                            <button className={this.state.gender === 'Male' ? 'male' : 'nothing'} onClick={() => {this.handleSelect('Male')}}>male</button>
-                            <button className={this.state.gender === 'Female' ? 'female' : 'nothing'} onClick={() => {this.handleSelect('Female')}}>female</button>
+                            <button className='male' onClick={() => {this.handleSelect('Male')}}>male</button>
+                            <button className='female' onClick={() => {this.handleSelect('Female')}}>female</button>
                         </div>
                         <div className='dog-next-btn-box'>
                             <button onClick={() => {this.goToNext()}} disabled={this.state.isValidated === false}>Next</button>

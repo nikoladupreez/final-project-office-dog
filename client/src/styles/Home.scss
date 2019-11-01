@@ -7,7 +7,7 @@
  .home-container {
     background-image: url('../images/background-onboarding-normal.svg');
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: cover;
     background-position: center;
     width: 100%;
     height: 100%;
@@ -164,14 +164,6 @@
     }
 }
 
-.add-dogspace-img {
-    margin: 0 60px 0 0;
-    width: 29px;
-    height: 29px;
-    background-color: #ffffff;
-    border-radius: 50%;
-}
-
 .add-dogspace-box {
     margin: 0 0 0 10px;
     width: 77%;
@@ -216,7 +208,8 @@
     width: 335px;
     height: 51px;
     border-radius: 28px;
-    background-color: #ff7e67;
+    opacity: 0.50;
+    background-color: #c56e5f;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -284,7 +277,10 @@
     width: 12px;
     height: 10px;
     border: solid 0.2px #979797;
-    background-color: #1d75a7;
+    background-image: url('../images/astrix.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
     border-radius: 50%;
     z-index: 1;
     position: relative;
@@ -295,10 +291,24 @@
     width: 10px;
     height: 10px;
     border: solid 0.2px #979797;
-    background-color: #1d75a7;
+    background-image: url('../images/astrix.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
     border-radius: 50%;
     z-index: 1;
     position: relative;
+}
+
+.add-dogspace-img {
+    margin: 0 60px 0 0;
+    width: 29px;
+    height: 29px;
+    background-color: #ffffff;
+    background-image: url('../images/plus-dark.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 50%;
 }
 
 .oeps {
