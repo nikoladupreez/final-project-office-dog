@@ -15,13 +15,18 @@
         background-repeat: no-repeat;
         background-position: center;
         background-size: cover;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
 
         button {
-            margin: 475px 0 32px 20px;
+            margin: 475px 0 32px;
             width: 335px;
             height: 51px;
             border-radius: 28px;
             box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.25);
+            border: none;
             background-color: #a2d5f2;
             font-size: 18px;
             font-weight: 600;
@@ -34,7 +39,6 @@
         }
     
         p {
-            margin: 0 0 0 85px;
             width: 201px;
             height: 16px;
             font-size: 14px;

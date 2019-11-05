@@ -45,7 +45,10 @@ export default class Login extends Component {
                         <Link to='/'><div className='close-icon'></div></Link>
                     </div>
                     <div className='login-box'>
-                        <h1>Sign in to <div className='dogspace-logo2'></div></h1>
+                        <div className='sign-title-box'>
+                            <h1>Sign in to</h1>
+                            <div className='dogspace-logo2'></div>
+                        </div>
                         <h2>Enter your details below</h2>
                         <form onSubmit={(e) => {e.preventDefault(); return false}}>
                             <label className='login-email-label'>Email address</label>

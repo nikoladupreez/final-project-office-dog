@@ -85,7 +85,10 @@ class Signup extends Component {
                         <h1 className='signup-title'>Get started</h1>
 
                             <div className={this.state.page === 1 ? 'sign-part-1' : 'hidden'}>
-                                <p className='signup-subtitle'><div className='dogspace-logo3'></div> is free!</p>
+                                <div className='dogspace-free'>
+                                    <div className='dogspace-logo3'></div>
+                                    <p className='signup-subtitle'>is free!</p>
+                                </div>
                                 <form ref={form => this.formPage1 = form} onSubmit={(e) => {e.preventDefault(); return false}}>
                                     <label>Work email adress</label>
                                     <input className='inputText' required onChange={this.handleChange} value={this.state.email} type="text" name="email"/>

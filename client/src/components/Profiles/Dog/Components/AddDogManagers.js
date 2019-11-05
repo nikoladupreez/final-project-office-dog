@@ -154,22 +154,26 @@ export default class AddDogManagers extends Component {
                             <div className={this.state.alreadyManager ? 'error-box' : 'hidden'}><p className={this.state.alreadyManager ? 'error-message error-dogmanager' : 'hidden'}>Already a dog manager!</p></div>
                     </div>
 
-                    <div className='manager-list-add'>
-                        {this.state.dogManagers.map((manager, index) => {
-                            return (
-                                <ListBox
-                                    key={index}
-                                    id={manager._id}
-                                    name={manager.name}
-                                    avatar={manager.avatar}
-                                    phone={manager.phone}
-                                    displayName={manager.display_name}
-                                    deleteManager={() => this.deleteManager(manager._id)}
-                                />
-                            )
-                        })}  
-                    </div>
-                        {this.state.dogManagers.length > 0 ? 
+                    {this.state.dogManagers ?
+
+                        <div className='manager-list-add'>
+                            {this.state.dogManagers.map((manager, index) => {
+                                return (
+                                    <ListBox
+                                        key={index}
+                                        id={manager._id}
+                                        name={manager.name}
+                                        avatar={manager.avatar}
+                                        phone={manager.phone}
+                                        displayName={manager.display_name}
+                                        deleteManager={() => this.deleteManager(manager._id)}
+                                    />
+                                )
+                            })}  
+                        </div>
+                    : <></>}
+                    
+                        {this.state.dogManagers && this.state.dogManagers.length > 0 ? 
                             <button onClick={this.handleSubmit}>Add</button>
                         : <></>}
                 </div>

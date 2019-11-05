@@ -24,27 +24,28 @@ import dog9 from '../../../images/shepherd.svg';
 export default class AddDogspace extends Component {
     constructor(props){
         super(props);
-        this.handleRadio = this.handleRadio.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.handleCheckbox = this.handleCheckbox.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.selectBreed = this.selectBreed.bind(this);
-        this.deleteBreed = this.deleteBreed.bind(this);
-        this.increaseNumber = this.increaseNumber.bind(this);
-        this.decreaseNumber = this.decreaseNumber.bind(this);
-        this.goBack = this.goBack.bind(this);
-        this.getDogAge = this.getDogAge.bind(this);
-        this.formPage1 = React.createRef();
-        this.formPage3 = React.createRef();
-        this.formPage4 = React.createRef();
-        this.formPage5 = React.createRef();
-        this.formPage7 = React.createRef();
-        this.formPage8 = React.createRef();
-        this.formPage9 = React.createRef();
-        this.formPage10 = React.createRef();
-        this.breedList = [];
-        this.commandList = [];
-        this.user = getUser();
+        this.handleRadio        = this.handleRadio.bind(this);
+        this.handleChange       = this.handleChange.bind(this);
+        this.handleCheckbox     = this.handleCheckbox.bind(this);
+        this.handleSubmit       = this.handleSubmit.bind(this);
+        this.handleSearch       = this.handleSearch.bind(this);
+        this.selectBreed        = this.selectBreed.bind(this);
+        this.deleteBreed        = this.deleteBreed.bind(this);
+        this.increaseNumber     = this.increaseNumber.bind(this);
+        this.decreaseNumber     = this.decreaseNumber.bind(this);
+        this.goBack             = this.goBack.bind(this);
+        this.getDogAge          = this.getDogAge.bind(this);
+        this.formPage1          = React.createRef();
+        this.formPage3          = React.createRef();
+        this.formPage4          = React.createRef();
+        this.formPage5          = React.createRef();
+        this.formPage7          = React.createRef();
+        this.formPage8          = React.createRef();
+        this.formPage9          = React.createRef();
+        this.formPage10         = React.createRef();
+        this.breedList          = [];
+        this.commandList        = [];
+        this.user               = getUser();
     }
 
     state = {
