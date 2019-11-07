@@ -137,6 +137,7 @@ router.post('/add-dog', (req, res, next) => {
   // POST route => to add managers to specific dogspace
   router.post('/dog/:id/add-managers', (req, res, next) => {
     let usersArray = req.body; //users with managerId populated
+    debugger;
     Dog.findById(req.params.id)
        .then((dog) => {
           usersArray.forEach((user) => {
