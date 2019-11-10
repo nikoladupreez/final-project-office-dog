@@ -366,11 +366,13 @@ export default class AddDogspace extends Component {
     }
 
     getDogAge(dogBirthday) {
-        let today = new Date();
-        let yearToday = today.getFullYear();
-        let birthYear = dogBirthday.getFullYear();
-   
-        let age = yearToday - birthYear;
+        let age = 0;
+        if (dogBirthday) {
+            let today = new Date();
+            let yearToday = today.getFullYear();
+            let birthYear = dogBirthday.getFullYear();
+            age = yearToday - birthYear;
+        }   
         this.setState({age: age});
     }
 
