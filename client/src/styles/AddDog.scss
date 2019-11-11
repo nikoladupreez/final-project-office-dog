@@ -325,6 +325,14 @@
     background-color: #cecece;
 }
 
+.MuiPickersToolbar-toolbar {
+    background-color: #f7b178;
+}
+
+.MuiPickersDay-daySelected {
+    background-color: #f7b178;
+}
+
 #date-picker-inline {
     color: white;
     width: 250px;
@@ -394,7 +402,6 @@
 .age-control {
     width: 32px;
     height: 32px;
-    background-color: #939393;
     border-radius: 50%;
 }
 
@@ -402,6 +409,14 @@
     background-image: url('../images/min-light.svg');
     background-repeat: no-repeat;
     background-position: center;
+}
+
+#active {
+    background-color: #f7b178;
+}
+
+#disabled {
+    background-color: #939393;
 }
 
 .age-plus {
@@ -459,12 +474,6 @@
     }
 }
 
-.dog-next-btn-box {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .dog-part-4 {
     margin: 100px 0 0 0;
     display: flex;
@@ -509,6 +518,10 @@
 }
 
 .dog-next-btn-box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
     button {
         width: 159.8px;
         height: 45.6px;
@@ -524,14 +537,18 @@
         text-align: center;
         color: #191919;
     }
+
+    button:disabled {
+        background-color: #939393;
+    }
 }
 
-.male {
+#male {
     background-color: #3483b0;
     border: none;
 }
 
-.female {
+#female {
     background-color: #ff6f91;
     border: none;
 }
@@ -911,12 +928,12 @@
     }
 }
 
-.human-no {
+#human-no {
     background-color: #e31616;
     opacity: 0.8;
 }
 
-.human-yes {
+#human-yes {
     background-color: #56db46;
     opacity: 0.8;
 }
@@ -939,7 +956,7 @@
         color: #191919;
 }
 
-#food-nxt-btn:disabled {
+#food-next-btn:disabled {
     background-color: #cecece;
 }
 
@@ -1098,7 +1115,7 @@
             font-style: normal;
             line-height: normal;
             letter-spacing: -0.43px;
-            color: #535353;
+            color: #191919;
         }
 
         input::placeholder {

@@ -34,15 +34,8 @@ export default class AddDogspace extends Component {
         this.increaseNumber     = this.increaseNumber.bind(this);
         this.decreaseNumber     = this.decreaseNumber.bind(this);
         this.goBack             = this.goBack.bind(this);
+        this.goToNext           = this.goToNext.bind(this);
         this.getDogAge          = this.getDogAge.bind(this);
-        this.formPage1          = React.createRef();
-        this.formPage3          = React.createRef();
-        this.formPage4          = React.createRef();
-        this.formPage5          = React.createRef();
-        this.formPage7          = React.createRef();
-        this.formPage8          = React.createRef();
-        this.formPage9          = React.createRef();
-        this.formPage10         = React.createRef();
         this.breedList          = [];
         this.commandList        = [];
         this.user               = getUser();
@@ -60,11 +53,13 @@ export default class AddDogspace extends Component {
         foodFreq: 1,
         foodGrams: 0,
         foodHuman: "",
+        cookiesAvgFreq: 0,
+        foodInfo: false,
         walkAvgFreq: 0,
         walkAvgKm: 0,
         walkAvgMinutes: 0,
         poopAvgFreq: 0,
-        cookiesAvgFreq: 0,
+        walkInfo: false,
         ice1Name: "",
         ice1Phone: "",
         ice2Name: "",
@@ -72,13 +67,13 @@ export default class AddDogspace extends Component {
         vetName: "",
         vetCompany: "",
         vetPhone: "",
+        iceInfo: false,
         commands: [],
         translate: false,
         userId: getUser()._id,
         ownerId: getUser().owner,
         breedsShown: [],
-        isValidated: false,
-        page: 1,
+        page: 10,
         loading: true
     }
 
@@ -117,7 +112,6 @@ export default class AddDogspace extends Component {
     handleDateChange = (date) => {
         this.getDogAge(date) 
         this.setState({birthday: date});
-        this.checkValidation()
     };
 
     handleChange(e) {
@@ -126,15 +120,26 @@ export default class AddDogspace extends Component {
         } else {
             this.setState({[e.target.name]: e.target.value})
         }
-        this.checkValidation()
+
+        if(this.state.foodFreq && this.state.foodGrams && this.state.foodBrand && this.state.foodHuman && this.state.cookiesAvgFreq){
+            this.setState({foodInfo: true});
+        } else {
+            this.setState({foodInfo: false});
+        }
+
+        if(this.state.ice1Name && this.state.ice1Phone && this.state.vetName && this.state.vetCompany && this.state.vetPhone){
+            this.setState({iceInfo: true});
+        } else {
+            this.setState({iceInfo: false});
+        }
     }
 
     handleCheckbox(e){
         if(e.target.name === 'translation'){
             if(e.target.checked){
-                this.setState({translation: true});
+                this.setState({translate: true});
             } else {
-                this.setState({translation: false});
+                this.setState({translate: false});
             }
         } else {
             let array = [...this.state[e.target.name]];
@@ -148,7 +153,6 @@ export default class AddDogspace extends Component {
                 this.setState({[e.target.name]: arrayNew});
             }  
         }
-        this.checkValidation()
     }
 
     handleRadio(e){
@@ -157,13 +161,10 @@ export default class AddDogspace extends Component {
                 [e.target.name]: e.target.value
             })
         }
-
-        this.setState({isValidated: true});
     }
 
     handleSubmit(e) {
         let user = getUser();
-        this.setBirthday();
 
         axios({
             method: "POST",
@@ -205,11 +206,13 @@ export default class AddDogspace extends Component {
                 break;
             case 7:
                 this.setState({foodHuman: selection});
+                if(this.state.foodFreq && this.state.foodGrams && this.state.foodBrand && this.state.cookiesAvgFreq){
+                    this.setState({foodInfo: true});
+                }
                 break;
             default:
                 break; 
         }
-        this.setState({isValidated: true})
     }
 
     goBack() {
@@ -219,7 +222,6 @@ export default class AddDogspace extends Component {
            let page = this.state.page;
            let pageNew = page - 1;
            this.setState({page: pageNew});
-           this.setState({isValidated: true})
        } else {
             let page = this.state.page;
             let pageNew = page - 1;
@@ -227,28 +229,24 @@ export default class AddDogspace extends Component {
        }
     }
 
-    goToNext(form){
+    goToNext(){
         let newPageNr = this.state.page + 1;
         if (this.state.page === 2 && this.state.breed){
             this.setState({page: newPageNr});
         } else if (this.state.page === 3 && this.state.age){
+            this.setBirthday();
             this.setState({page: newPageNr});
-            this.setState({isValidated: false})
         } else if (this.state.page === 4 && this.state.gender){
             this.setState({page: newPageNr});
-            this.setState({isValidated: false})
         } else if (this.state.page === 8 && this.state.walkAvgFreq){
             this.setState({page: newPageNr});
-            this.setState({isValidated: false})
         } else {
             this.setState({page: newPageNr});
-            this.setState({isValidated: false})
         }
     }
 
-    selectBreed = (breedName) => {  
+    selectBreed(breedName) {  
         this.setState({breed: breedName});
-        this.checkValidation()
     }
 
     deleteBreed() {
@@ -276,26 +274,42 @@ export default class AddDogspace extends Component {
                 let walkFreq = this.state.walkAvgFreq;
                 let newWalkFreq = walkFreq + 1
                 this.setState({walkAvgFreq: newWalkFreq});
+                if(this.state.walkAvgKm && this.state.walkAvgMinutes && this.state.poopAvgFreq){
+                    this.setState({walkInfo: true});
+                }
                 break;
             case 'walkKm':
                 let walkKm = this.state.walkAvgKm;
                 let newWalkKm = walkKm + 1
                 this.setState({walkAvgKm: newWalkKm});
+                if(this.state.walkAvgFreq && this.state.walkAvgMinutes && this.state.poopAvgFreq){
+                    this.setState({walkInfo: true});
+                } 
                 break;
             case 'walkMinutes':
                 let walkMin = this.state.walkAvgMinutes;
                 let newWalkMin = walkMin + 1
                 this.setState({walkAvgMinutes: newWalkMin});
+                if(this.state.walkAvgFreq && this.state.walkAvgKm && this.state.poopAvgFreq){
+                    this.setState({walkInfo: true});
+                } 
                 break;
             case 'poopFreq':
                 let poopFreq = this.state.poopAvgFreq;
                 let newPoopFreq = poopFreq + 1
                 this.setState({poopAvgFreq: newPoopFreq});
+                if(this.state.walkAvgFreq && this.state.walkAvgKm && this.state.walkAvgMinutes){
+                    this.setState({walkInfo: true});
+                } 
                 break;
             default:
                 break;
         }
-        this.checkValidation()
+
+       
+       if(this.state.foodFreq && this.state.foodGrams && this.state.foodBrand && this.state.foodHuman && this.state.cookiesAvgFreq){
+            this.setState({foodInfo: true});
+        }
     }
 
     decreaseNumber(target) {
@@ -352,10 +366,15 @@ export default class AddDogspace extends Component {
             default:
                 break;
         }
-        this.checkValidation()
+
+        if(!this.state.walkAvgFreq || !this.state.walkAvgKm || !this.state.walkAvgMinutes || !this.state.poopAvgFreq){
+            this.setState({walkInfo: false});
+        } else if(!this.state.foodFreq || !this.state.foodGrams || !this.state.foodBrand || !this.state.foodHuman || !this.state.cookiesAvgFreq){
+            this.setState({foodInfo: false});
+        }
     }
 
-    setBirthday(){
+    setBirthday() {
         if(this.state.age && !this.state.birthday){
             let age = this.state.age;
             let today = new Date();
@@ -374,53 +393,6 @@ export default class AddDogspace extends Component {
         this.setState({age: age});
     }
 
-    checkValidation(){
-        switch(this.state.page){
-            case 1:
-                if(this.state.name){
-                    this.setState({isValidated: true});
-                }
-                break;
-            case 2:
-                this.setState({isValidated: true});
-                break;
-            case 3:
-                this.setState({isValidated: true});
-                break;
-            case 4:
-                if(this.state.gender){
-                    this.setState({isValidated: true});
-                }
-                break;
-            case 5:
-                if(this.state.avatar){
-                    this.setState({isValidated: true});
-                }
-                break;
-            case 6:
-                this.setState({isValidated: true});
-                break;
-            case 7:
-                if(this.state.foodBrand && this.state.foodFreq && this.state.foodGrams && this.state.cookiesAvgFreq){
-                    this.setState({isValidated: true});
-                }
-                break;
-            case 8:
-                if(this.state.walkAvgFreq && this.state.walkAvgKm && this.state.walkAvgMinutes && this.state.poopAvgFreq){
-                    this.setState({isValidated: true});
-                }
-                break;
-            case 9:
-                if(this.state.ice1Name && this.state.ice1Phone && this.state.vetName && this.state.vetPhone)if(this.state.name){
-                    this.setState({isValidated: true});
-                }
-                break;
-            default:
-                this.setState({isValidated: true});
-                break;
-        }
-    }
-
     render() {
         return (
                 <div className='add-dog-container'>
@@ -431,11 +403,11 @@ export default class AddDogspace extends Component {
                         <div className='add-dog-illustration1'></div>
                         <div className='dog-part-1-box'>
                             <p>This office dogspace onboarding exists of 2 parts: general information and some personalized guide building. Let’s start with some general info:</p>
-                            <form ref={form => this.formPage1 = form} onSubmit={(e) => {e.preventDefault(); return false}}>
+                            <form onSubmit={(e) => {e.preventDefault(); return false}}>
                                 <label>What is your dog's name?</label>
                                 <input required onChange={this.handleChange} value={this.state.name} placeholder="Takkie" type="text" name="name"/>
                                 <div className='dog-btn-box'>
-                                    <button onClick={() => {this.goToNext(this.formPage1)}} disabled={this.state.isValidated === false}>Next</button>
+                                    <button onClick={this.goToNext} disabled={!this.state.name}>Next</button>
                                 </div>
                             </form>
                         </div>
@@ -452,9 +424,9 @@ export default class AddDogspace extends Component {
                                     <div className='dog-breed-select-box'>
                                         <div className='dog-breed-selected'>
                                             <h2>{this.state.breed}</h2>
-                                            <div className='delete-icon' onClick={this.deleteBreed}></div>
+                                            <div className='close-icon' onClick={this.deleteBreed}></div>
                                         </div>
-                                        <button onClick={() => {this.goToNext()}} disabled={this.state.isValidated === false}>Next</button>
+                                        <button onClick={this.goToNext} disabled={!this.state.breed}>Next</button>
                                     </div>
                                 : 
                                     <div className='dog-breed-list'>
@@ -493,33 +465,33 @@ export default class AddDogspace extends Component {
                         </MuiPickersUtilsProvider>
                         <p>Don’t know {this.state.name}'s exact date of birth? <br/> Share it's estimated age:</p>
                         <div className='dog-age-control'>
-                            <div className={this.state.birthday ? 'hidden' : 'age-control age-min'} src='/' alt='min' onClick={() => {this.decreaseNumber('age')}}><div className='min-icon'></div></div>
+                            <div className={this.state.birthday ? 'hidden' : 'age-control age-min disabled'} id={this.state.age > 0 ? 'active' : 'disabled'} src='/' alt='min' onClick={() => {this.decreaseNumber('age')}}><div className='min-icon'></div></div>
                             <div className='dog-age-box'>
                                 <p>{this.state.age}</p>
                             </div>
-                            <div className={this.state.birthday ? 'hidden' : 'age-control age-plus'} src='/' alt='plus' onClick={() => {this.increaseNumber('age')}}><div className='plus-icon'></div></div>
+                            <div className={this.state.birthday ? 'hidden' : 'age-control age-plus active'} id='active' src='/' alt='plus' onClick={() => {this.increaseNumber('age')}}><div className='plus-icon'></div></div>
                         </div>
                         <div className='dog-age-text'>
                             <p>years old</p>
                         </div>
                         <div className='dog-next-btn-box'>
-                            <button className='nxt-btn' onClick={() => {this.goToNext()}} disabled={this.state.isValidated === false}>Next</button>   
+                            <button className='nxt-btn' onClick={this.goToNext}>Next</button>   
                         </div>        
                     </div>
 
                     <div className={this.state.page === 4 ? 'dog-part-4' : 'hidden'}>
                         <label>What is {this.state.name}'s <br/> gender?</label>
                         <div className='gender-btn-box'>
-                            <button className='male' onClick={() => {this.handleSelect('Male')}}>male</button>
-                            <button className='female' onClick={() => {this.handleSelect('Female')}}>female</button>
+                            <button id={this.state.gender === 'Male' ? 'male' : 'disabled'} onClick={() => {this.handleSelect('Male')}}>male</button>
+                            <button id={this.state.gender === 'Female' ? 'female' : 'disabled'} onClick={() => {this.handleSelect('Female')}}>female</button>
                         </div>
                         <div className='dog-next-btn-box'>
-                            <button onClick={() => {this.goToNext()}} disabled={this.state.isValidated === false}>Next</button>
+                            <button onClick={this.goToNext} disabled={!this.state.gender}>Next</button>
                         </div>
                     </div>
 
                     <div className={this.state.page === 5 ? 'dog-part-5' : 'hidden'}>
-                        <form ref={form => this.formPage5 = form} onSubmit={(e) => {e.preventDefault(); return false}}>
+                        <form onSubmit={(e) => {e.preventDefault(); return false}}>
                             <h1>Choose an avatar <br/> for {this.state.name}</h1>
                             <div className='dog-avatar-container'>
                                     <div className='dog-avatar-option'>
@@ -551,7 +523,7 @@ export default class AddDogspace extends Component {
                                     </div>
                             </div>
                             <div className='dog-next-btn-box'>
-                                <button onClick={() => {this.goToNext(this.formPage5)}} disabled={this.state.isValidated === false}>Next</button>
+                                <button onClick={this.goToNext} disabled={!this.state.avatar}>Next</button>
                             </div>
                         </form>
                     </div>
@@ -568,13 +540,13 @@ export default class AddDogspace extends Component {
                                 <div className='dog-chapter'><div className='chapter-icon dictionary'></div><p>Commands dictionary</p></div>
                             </div>
                             <div className='dog-next-btn-box'>
-                                <button onClick={() => {this.goToNext(this.formPage5)}}>Create guide</button>
+                                <button onClick={this.goToNext}>Create guide</button>
                             </div>
                         </div>
                     </div>
 
                     <div className={this.state.page === 7 ? 'dog-part-7' : 'hidden'}>
-                        <form ref={form => this.formPage7 = form} onSubmit={(e) => {e.preventDefault(); return false}}>
+                        <form onSubmit={(e) => {e.preventDefault(); return false}}>
                             <div className='dog-chapter-title-box'>
                                 <h1>Dietery information</h1>
                             </div>
@@ -582,9 +554,9 @@ export default class AddDogspace extends Component {
                            <input className='foodbrand' required onChange={this.handleChange} value={this.state.foodBrand} placeholder="Food brand" type="text" name="foodBrand"/>
                            <label>Times fed a day</label>
                             <div className='diet-amount-box'>
-                                <div className='food-amount-control min'src='/' alt='min' onClick={() => {this.decreaseNumber('foodFreq')}}></div>
+                                <div className='food-amount-control min' id={this.state.foodFreq > 1 ? 'active' : 'disabled'} alt='min' onClick={() => {this.decreaseNumber('foodFreq')}}></div>
                                 <div className='diet-amount'><p>{this.state.foodFreq}</p></div>
-                                <div className='food-amount-control plus' onClick={() => {this.increaseNumber('foodFreq')}}></div>
+                                <div className='food-amount-control plus' id='active' onClick={() => {this.increaseNumber('foodFreq')}}></div>
                             </div>
                            <label>Amount fed per feeding</label>
                            <div className='diet-amount-box' id='grams-box'>
@@ -594,17 +566,17 @@ export default class AddDogspace extends Component {
                            </div>
                             <label>Treats per day</label>
                             <div className='diet-amount-box'>
-                                <div className='food-amount-control min'onClick={() => {this.decreaseNumber('cookieFreq')}}></div>
+                                <div className='food-amount-control min' id={this.state.cookiesAvgFreq > 0 ? 'active' : 'disabled'} onClick={() => {this.decreaseNumber('cookieFreq')}}></div>
                                 <div className='diet-amount'><p>{this.state.cookiesAvgFreq}</p></div>
-                                <div className='food-amount-control plus'onClick={() => {this.increaseNumber('cookieFreq')}}></div>
+                                <div className='food-amount-control plus' id='active' onClick={() => {this.increaseNumber('cookieFreq')}}></div>
                             </div>
                            <label>Is {this.state.name} allowed to have human food?</label>
                            <div className='human-food-btn-box'>
-                                <button className='human-no' onClick={() => {this.handleSelect('no')}}>no</button>
-                                <button className='human-yes' onClick={() => {this.handleSelect('yes')}}>yes</button>
+                                <button id={this.state.foodHuman === 'no' ? 'human-no' : 'disabled'} onClick={() => {this.handleSelect('no')}}>no</button>
+                                <button id={this.state.foodHuman === 'yes' ? 'human-yes' : 'disabled'} onClick={() => {this.handleSelect('yes')}}>yes</button>
                             </div>
                            <div className='dog-next-btn-box'>
-                                <button id='food-next-btn' onClick={() => {this.goToNext(this.formPage7)}} disabled={this.state.isValidated === false}>Next</button>
+                                <button id='food-next-btn' onClick={this.goToNext} disabled={!this.state.foodInfo}>Next</button>
                            </div>
                         </form>
                     </div>
@@ -616,39 +588,39 @@ export default class AddDogspace extends Component {
                            <label className='walk-label'>How much do you usually walk {this.state.name}?</label>
                            <div className='activity-box'>
                                 <div className='activity-amount-box'>
-                                        <div className='activity-amount-control min' onClick={() => {this.decreaseNumber('walkFreq')}}></div>
+                                        <div className='activity-amount-control min' id={this.state.walkAvgFreq > 0 ? 'active' : 'disabled'} onClick={() => {this.decreaseNumber('walkFreq')}}></div>
                                         <div className='activity-amount'><p>{this.state.walkAvgFreq}</p></div>
-                                        <div className='activity-amount-control plus' onClick={() => {this.increaseNumber('walkFreq')}}></div>
+                                        <div className='activity-amount-control plus' id='active' onClick={() => {this.increaseNumber('walkFreq')}}></div>
                                 </div>
                                 <p>times a day</p>
                            </div>
                            <div className='activity-box'>
                                 <div className='activity-amount-box'>
-                                        <div className='activity-amount-control min' onClick={() => {this.decreaseNumber('walkKm')}}></div>
+                                        <div className='activity-amount-control min' id={this.state.walkAvgKm > 0 ? 'active' : 'disabled'} onClick={() => {this.decreaseNumber('walkKm')}}></div>
                                         <div className='activity-amount'><p>{this.state.walkAvgKm}</p></div>
-                                        <div className='activity-amount-control plus' onClick={() => {this.increaseNumber('walkKm')}}></div>
+                                        <div className='activity-amount-control plus' id='active' onClick={() => {this.increaseNumber('walkKm')}}></div>
                                 </div>
                                 <p>km a day</p>
                            </div>
                            <div className='activity-box'>
                                 <div className='activity-amount-box'>
-                                        <div className='activity-amount-control min' onClick={() => {this.decreaseNumber('walkMinutes')}}></div>
+                                        <div className='activity-amount-control min' id={this.state.walkAvgMinutes > 0 ? 'active' : 'disabled'} onClick={() => {this.decreaseNumber('walkMinutes')}}></div>
                                         <div className='activity-amount'><p>{this.state.walkAvgMinutes}</p></div>
-                                        <div className='activity-amount-control plus' onClick={() => {this.increaseNumber('walkMinutes')}}></div>
+                                        <div className='activity-amount-control plus' id='active' onClick={() => {this.increaseNumber('walkMinutes')}}></div>
                                 </div>
                                 <p>minutes a day</p>
                            </div>
                            <label className='poop-label'>How much does {this.state.name} poop?</label>
                            <div className='activity-box'>
                                 <div className='activity-amount-box'>
-                                        <div className='activity-amount-control min' onClick={() => {this.decreaseNumber('poopFreq')}}></div>
+                                        <div className='activity-amount-control min' id={this.state.poopAvgFreq > 0 ? 'active' : 'disabled'} onClick={() => {this.decreaseNumber('poopFreq')}}></div>
                                         <div className='activity-amount'><p>{this.state.poopAvgFreq}</p></div>
-                                        <div className='activity-amount-control plus' onClick={() => {this.increaseNumber('poopFreq')}}></div>
+                                        <div className='activity-amount-control plus' id='active' onClick={() => {this.increaseNumber('poopFreq')}}></div>
                                 </div>
                                 <p>poops a day</p>
                            </div>
                            <div className='dog-next-btn-box'>
-                                <button id='food-next-btn' onClick={() => {this.goToNext()}} disabled={this.state.isValidated === false}>Next</button>
+                                <button id='food-next-btn' onClick={this.goToNext} disabled={!this.state.walkInfo}>Next</button>
                            </div>
                     </div>   
 
@@ -675,7 +647,7 @@ export default class AddDogspace extends Component {
                            <input className='vet-info' required onChange={this.handleChange} value={this.state.vetCompany} placeholder="Company name" type="text" name="vetCompany"/>
                            <input className='vet-info' required onChange={this.handleChange} value={this.state.vetPhone} placeholder="Phone number" type="text" name="vetPhone"/>
                            <div className='dog-next-btn-box'>
-                                <button id='food-next-btn' onClick={() => {this.goToNext(this.formPage9)}} disabled={this.state.isValidated === false}>Next</button>
+                                <button id='food-next-btn' onClick={this.goToNext} disabled={!this.state.iceInfo}>Next</button>
                            </div>
                         </form>
                     </div>
@@ -706,7 +678,7 @@ export default class AddDogspace extends Component {
                             </div>
                         </div>
                         <div className='dog-next-btn-box'>
-                            <button id='food-next-btn' onClick={this.handleSubmit} disabled={this.state.isValidated === false}>Next</button>
+                            <button id='food-next-btn' onClick={this.handleSubmit}>Next</button>
                         </div>
                     </div>
                     
