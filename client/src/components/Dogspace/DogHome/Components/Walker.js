@@ -4,7 +4,11 @@ import axios from 'axios';
 import Modal from 'react-bootstrap/Modal';
 import {getUser} from '../../../../utils/auth';
 
+import Map from './Map';
+
 import '../../../../styles/Walker.scss';
+
+const AVG_WALKING_SPEED = 15; // 15 min per km
 
 export default class Walker extends Component {
     constructor(props){
@@ -26,7 +30,9 @@ export default class Walker extends Component {
         dog: {},
         poopCount: 0,
         cookieCount: 0,
+        walkCount: 0,
         kmCount: 0,
+        minActual: 0,
         minCount: 0,
         seconds: 0,
         meters: 0,
@@ -84,6 +90,19 @@ export default class Walker extends Component {
 
     startTracking() {
       
+    }
+
+    stopTracking(data) {
+        this.setState({
+            poopCount: data.poops.length,
+            cookieCount: data.cookies.length,
+            kmCount: this.round(data.distanceWalked/1000),
+            meters: data.distanceWalked,
+            seconds: this.round(data.timeWalked/1000),
+            minActual: this.round(data.timeWalked/60000),
+            minCount: this.round((data.distanceWalked/1000) * AVG_WALKING_SPEED),
+            path: data.path
+        });
     }
 
     calculateDistance(){
@@ -157,6 +176,10 @@ export default class Walker extends Component {
         })     
     }
 
+    round = (num) => {
+        return Math.round(num * 100) / 100
+      }
+    
     render() {
         return (
             <div className='walker-container'>
@@ -166,23 +189,18 @@ export default class Walker extends Component {
                     <div className='manager-title'>
                         <h1>Walks</h1>
                     </div>
-                    <div className='map'>
-                        <div className='map-top'>
-                            <div onClick={this.startTracking}className='start-icon'></div>
-                            <div onClick={() => {this.increaseCount('poop')}}className='poop-icon'></div>
-                        </div>
-                        <div className='map-middle'>
-                            <div onClick={() => {this.increaseCount('cookie')}} className='cookie-icon'></div>
-                            <div onClick={this.handleShowICE} className='ice-icon'></div>
-                        </div>
-                        <div className='map-bottom'>
-                            <div onClick={this.handleShowCommands} className='dictionary-icon'></div>
-                        </div>
-                    </div>
+                        <Map 
+                            onStart={this.startTracking}
+                            onStop={ (data) => this.stopTracking(data)}
+                            onPoop={() => {this.increaseCount('poop')}}
+                            onCookie={() => {this.increaseCount('cookie')}}
+                            onShowICE={this.handleShowICE}
+                            onShowCommands={this.handleShowCommands}
+                        />                        
                     <div className='walk-data-container'>
                         <div className='walk-data-box'>
                             <div className='walk-data'>
-                                <p>{this.state.minCount}</p>
+                                <p>{this.state.minActual}</p>
                             </div>
                             <h2>MIN</h2>
                             <div className='walk-data'>
@@ -201,12 +219,20 @@ export default class Walker extends Component {
                             </div>
                         </div>
                     </div>
-                    <div className='walk-btn-box'>
-                        <button onClick={this.handleSubmit}>Save walk</button>
+                    <div className='walk-data-container'>
+                        <div className='walk-data-box'>
+                            <div hidden={!this.state.kmCount}>Expected time based on {AVG_WALKING_SPEED} min/km is: {this.state.minCount} min</div>
+                            <div hidden={this.state.kmCount}> </div>
+                        </div>
+                    </div>
+                    <div className='walk-data-container'>
+                        <div className='walk-btn-box'>
+                            <button onClick={this.handleSubmit}>Save walk</button>
+                        </div>    
                     </div>
 
                     {!this.state.dog.owner ? 
-                        <h1>Loading...</h1>
+                        <div/>
                     :
                         <Modal
                                 show={this.state.showICE}
