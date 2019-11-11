@@ -147,7 +147,6 @@ export default class DogHome extends Component {
             this.getPoopsToday();
             this.getWalksToday();
             this.getDogAge();
-
             this.checkForTrackings();
         })
         .catch((err) => console.log(err.message));
@@ -195,11 +194,13 @@ export default class DogHome extends Component {
     }
 
     getDateString(date) {
-        let year = date.getFullYear();
-        let month = date.getMonth() + 1;
-        let day = date.getDate();
-        let dateShort = `${year}/${month}/${day}`;
-
+        let dateShort = '';
+        if (date) {
+            let year = date.getFullYear();
+            let month = date.getMonth() + 1;
+            let day = date.getDate();
+            dateShort = `${year}/${month}/${day}`;
+        }
         return dateShort;
     }
 
