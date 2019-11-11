@@ -345,7 +345,7 @@ export default class DogHome extends Component {
 
                     {!this.state.dog.owner ? 
                         <div className='loader-doghome'>
-                            {/* <h1>Fetching tennis balls...</h1> */}
+                            <h1>Fetching tennis balls...</h1>
                         </div>
         
                     :
@@ -385,11 +385,15 @@ export default class DogHome extends Component {
                                             <p>{this.state.dog.ice_1.name}<br/>
                                             <Link to={`tell:${this.state.dog.ice_1.phone}`}>{this.state.dog.ice_1.phone}</Link></p>
                                         </div>
-                                        <h1 className='ice-label'>Emergency contact 2</h1>
-                                        <div className='box-text box2 ice-ice'>
-                                            <p>{this.state.dog.ice_2.name}<br/>
-                                            <Link to={`tell:${this.state.dog.ice_2.phone}`}>{this.state.dog.ice_2.phone}</Link></p>
-                                        </div>
+                                        {this.state.dog.ice_2.name ? 
+                                            <>
+                                                <h1 className='ice-label'>Emergency contact 2</h1>
+                                                <div className='box-text box2 ice-ice'>
+                                                    <p>{this.state.dog.ice_2.name}<br/>
+                                                    <Link to={`tell:${this.state.dog.ice_2.phone}`}>{this.state.dog.ice_2.phone}</Link></p>
+                                                </div>
+                                            </>
+                                        :<></>}
                                         <h1 className='ice-label'>Veterinary</h1>
                                         <div className='box-text box3 vet-ice'>
                                             <p>{this.state.dog.vet.name}<br/>

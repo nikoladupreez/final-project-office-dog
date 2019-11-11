@@ -65,7 +65,7 @@ export default class Map extends React.Component {
             ]            
         });
         this.timer = setInterval(() => this.updateRoute(), 2000 );
-        this.displayMessage("Let's go!");
+        // this.displayMessage("Let's go!");
     }, (err) => {
         this.setState({message: "Geolocation not enabled. "});
       });
@@ -294,8 +294,8 @@ export default class Map extends React.Component {
             </div>
             <div className='map-middle'>
                 <div onClick={this.onCookie} className='cookie-icon'></div>
-                <div onClick={this.props.onShowICE} className='ice-icon'></div>
                 <div id="message">{this.state.message}</div>
+                <div onClick={this.props.onShowICE} className='ice-icon'></div>
             </div>
             <div className='map-bottom'>
                 <div onClick={this.props.onShowCommands} className='dictionary-icon'></div>

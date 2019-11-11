@@ -22,11 +22,13 @@ export default class Walker extends Component {
         this.submitCookies = this.submitCookies.bind(this);
         this.submitPoops = this.submitPoops.bind(this);
         this.submitWalk = this.submitWalk.bind(this);
+        this.getDogAge = this.getDogAge.bind(this);
     }
 
     state = {
         dogId: this.props.match.params.id,
         userId: getUser()._id,
+        age: 0,
         dog: {},
         poopCount: 0,
         cookieCount: 0,
@@ -52,8 +54,21 @@ export default class Walker extends Component {
         .then((dog) => {
             this.setState({dog: dog.data})
             this.setState({commandList: dog.data.commands});
+            this.getDogAge();
         })
         .catch((err) => console.log(err.message));
+    }
+
+    getDogAge() {
+        let today = new Date();
+        let yearToday = today.getFullYear();
+
+        let dog = {...this.state.dog};
+        let birthday = dog.birthday;
+        let birthYear = parseInt(birthday.slice(0,4));
+   
+        let age = yearToday - birthYear;
+        this.setState({age: age});
     }
 
     handleShowCommands() {
@@ -163,7 +178,6 @@ export default class Walker extends Component {
     handleSubmit() {
         Promise.all([this.submitCookies(), this.submitPoops(), this.submitWalk()])
         .then((res) => {
-            debugger;
             this.setState({poopCount: 0});
             this.setState({cookieCount: 0});
             this.setState({kmCount: 0});
@@ -256,7 +270,7 @@ export default class Walker extends Component {
                                             <div className='box-text box4 dog-ice'>
                                                     <p>{this.state.dog.name}<br/>
                                                     {this.state.dog.breed}<br/>
-                                                    {this.state.dog.birthday}<br/>
+                                                    {this.state.age} years old<br/>
                                                     {this.state.dog.gender}</p>
                                             </div>
                                             <h1 className='ice-label'>Contact Owner {this.state.dog.name}</h1>
@@ -269,11 +283,15 @@ export default class Walker extends Component {
                                                 <p>{this.state.dog.ice_1.name}<br/>
                                                 <Link to={`tell:${this.state.dog.owner.phone}`}>{this.state.dog.ice_1.phone}</Link></p>
                                             </div>
-                                            <h1 className='ice-label'>Emergency contact 2</h1>
-                                            <div className='box-text box2 ice-ice'>
-                                                <p>{this.state.dog.ice_2.name}<br/>
-                                                <Link to={`tell:${this.state.dog.ice_2.phone}`}>{this.state.dog.ice_2.phone}</Link></p>
-                                            </div>
+                                            {this.state.dog.ice_2.name ?
+                                                <>
+                                                <h1 className='ice-label'>Emergency contact 2</h1>
+                                                <div className='box-text box2 ice-ice'>
+                                                    <p>{this.state.dog.ice_2.name}<br/>
+                                                    <Link to={`tell:${this.state.dog.ice_2.phone}`}>{this.state.dog.ice_2.phone}</Link></p>
+                                                </div>
+                                                </>
+                                            : <></>}
                                             <h1 className='ice-label'>Veterinary</h1>
                                             <div className='box-text box3 vet-ice'>
                                                 <p>{this.state.dog.vet.name}<br/>

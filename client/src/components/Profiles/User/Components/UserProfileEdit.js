@@ -11,7 +11,6 @@ import woman from '../../../../images/woman.png';
 import mix from '../../../../images/mix.png';
 import man from '../../../../images/man.png';
 
-
 export default class UserProfileEdit extends Component {
     constructor(props){
         super(props)
@@ -23,23 +22,31 @@ export default class UserProfileEdit extends Component {
     state = {
         userId: getUser()._id,
         avatar: "",
+        avatarOld: "",
         name: "",
         displayName: "",
         phone: "",
         avatarList: [man, mix, woman],
-        nonChosenAvatars: []
+        nonChosenAvatar1: "",
+        nonChosenAvatar2: ""
     }
 
     componentDidMount() {
-        let user = getUser();
-
-        this.setState({
-            avatar: user.avatar,
-            name: user.name,
-            displayName: user.display_name,
-            phone: user.phone
+        axios({
+            method: "GET",
+            url: `${process.env.REACT_APP_API}/users/${this.state.userId}`
         })
-        this.sortAvatars();
+        .then((user) => {
+            this.setState({
+                avatar: user.data.avatar,
+                avatarOld: user.data.avatar,
+                name: user.data.name,
+                displayName: user.data.display_name,
+                phone: user.data.phone
+            })
+            this.sortAvatars(user.data.avatar);
+        })
+        .catch((err) => console.log(err.message));
     }
 
     handleChange(e) {
@@ -49,6 +56,7 @@ export default class UserProfileEdit extends Component {
     }
 
     handleSubmit(e) {
+        debugger;
         e.preventDefault();
         axios({
             method: "POST",
@@ -72,14 +80,15 @@ export default class UserProfileEdit extends Component {
         }
     }
 
-    sortAvatars() {
-        let chosenAvatar = this.state.avatar;
+    sortAvatars(userAvatar) {
+        let chosenAvatar = userAvatar;
         let avatarList = [...this.state.avatarList];
         let nonChosenAvatars = avatarList.filter((avatar) => {
             return !(chosenAvatar === avatar);
         });
 
-        this.setState({nonChosenAvatars: nonChosenAvatars});
+        this.setState({nonChosenAvatar1: nonChosenAvatars[0]});
+        this.setState({nonChosenAvatar2: nonChosenAvatars[1]});
     }
 
     render () {
@@ -94,16 +103,17 @@ export default class UserProfileEdit extends Component {
                 <form onSubmit={(e) => {e.preventDefault(); return false}}>
                     <div className='avatar-option-box'>
                         <div className='avatar-small-container'>
-                            {this.state.nonChosenAvatars.map((avatar, index) => {
-                                return (
-                                        <div className='avatar-small-box' key={index}>
-                                            <label><div className='avatar-small'><img src={avatar} alt='avatar'/></div><input onChange={this.handleRadio} className='avatar-small-input' type='radio' name='avatar'/></label>
-                                        </div>
-                                )
-                            })}
+                            <div className='avatar-small-box'>
+                                <label><div className='avatar-small'><img src={this.state.nonChosenAvatar1} alt='avatar'/></div><input onChange={this.handleRadio} value={this.state.nonChosenAvatar1} className='avatar-small-input' type='radio' name='avatar'/></label>
+                            </div>
                         </div>
                         <div className='avatar-big-box'>
-                            <label className='avatar-big-label'><div className='avatar-big'><img src={this.state.avatar} alt='avatar-user'/></div><input checked value={this.state.avatar} onChange={this.handleRadio} className='avatar-big-input' type='radio' name='avatar'/></label>
+                            <label className='avatar-big-label'><div className='avatar-big'><img src={this.state.avatarOld} alt='avatar-user'/></div><input checked value={this.state.avatar} onChange={this.handleRadio} className='avatar-big-input' type='radio' name='avatar'/></label>
+                        </div>
+                        <div className='avatar-small-container'>
+                            <div className='avatar-small-box'>
+                                <label><div className='avatar-small'><img src={this.state.nonChosenAvatar2} alt='avatar'/></div><input onChange={this.handleRadio} value={this.state.nonChosenAvatar2} className='avatar-small-input' type='radio' name='avatar'/></label>
+                            </div>
                         </div>
                     </div>
                     <label className='label-profile'>Name</label>
