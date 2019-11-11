@@ -73,7 +73,7 @@ export default class AddDogspace extends Component {
         userId: getUser()._id,
         ownerId: getUser().owner,
         breedsShown: [],
-        page: 10,
+        page: 1,
         loading: true
     }
 
