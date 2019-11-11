@@ -54,6 +54,7 @@ export default class UserProfile extends Component {
                             <div className='user-profile-img'>
                                 <img src={this.state.userPopulated.avatar} alt='user-icon'/>
                             </div>
+                            <div className='asterix-owner-big'></div>
                         </div>
                         <div className='link-container'>
                             <ProfileLinkUser url='/user/profile/edit' title='Edit Profile' id='link-box-user'/>

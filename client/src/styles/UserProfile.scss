@@ -59,8 +59,10 @@
 }
 
 .user-profile-img {
-    margin: 0 20px 50px 20px;
     width: 111px;
+    position: fixed;
+    right: 15px;
+    top: 151px;
     height: 111px;
     background-color: white;
     border: 3px solid white;
@@ -75,9 +77,23 @@
     }
 }
 
+.asterix-owner-big {
+    margin: 0 10px 100px 0;
+    width: 20px;
+    height: 20px;
+    border: solid 0.2px #979797;
+    background-image: url('../images/astrix.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    border-radius: 50%;
+    z-index: 1;
+    position: relative;
+}
+
 
 .user-profile-info {
-    margin: 0 0 50px 0;
+    margin: 0 110px 50px 0;
     height: 100%;
     display: flex;
     flex-direction: column;

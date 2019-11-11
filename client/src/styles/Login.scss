@@ -100,7 +100,6 @@
 
         input {
             padding: 0 0 0 20px;
-            margin: 0;
             width: 336px;
             height: 50px;
             border-radius: 10px;
@@ -171,4 +170,21 @@
         width: 100%;
         display: flex;
         justify-content: center;
+
+        button:disabled {
+            background-color: #cecece;
+        }
+}
+
+.error-box-login {
+    margin: 10px 0 0 7px;
+    display: flex;
+    justify-content: flex-start;
+    position: relative;
+}
+
+.error-message {
+    color: red;
+    font-size: 15px;
+    position: absolute;
 }

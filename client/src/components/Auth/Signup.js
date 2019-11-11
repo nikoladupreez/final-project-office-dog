@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
+import axios from 'axios';
 
 //style
 import '../../styles/Signup.scss';
@@ -18,6 +19,7 @@ class Signup extends Component {
         this.handleRadio = this.handleRadio.bind(this);
         this.goToNext = this.goToNext.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleBlur = this.handleBlur.bind(this);
         this.formPage1 = React.createRef();
         this.formPage2 = React.createRef();
     }
@@ -30,7 +32,9 @@ class Signup extends Component {
         phone: "", 
         avatar: "",
         page: 1, 
-        isValidated: false
+        isValidated: false,
+        alreadyUser: false,
+        shortPassword: false
     }
 
     goToNext(){
@@ -38,12 +42,39 @@ class Signup extends Component {
         this.setState({isValidated: false})
     }
 
+    handleBlur(e){
+        if (e.target.name === 'email'){
+            axios({
+                method: "GET",
+                url: `${process.env.REACT_APP_API}/users/email/${this.state.email}`
+            })
+            .then((user) => {
+                if(this.state.email){
+                    this.setState({alreadyUser: true});
+                }
+            })
+            .catch((err) => {
+                console.log(err.message);
+            })
+        } else if (this.state.password && e.target.name === 'password' && e.target.value.length < 8){
+            this.setState({shortPassword: true});
+        }
+   }
+
     handleChange(e){
+        if (e.target.name === 'email'){
+            this.setState({alreadyUser: false});
+        } else if (e.target.name === 'password'){
+            this.setState({shortPassword: false});
+        }
+
         this.setState({
             [e.target.name]: e.target.value
         })
 
-        if (this.formPage1.checkValidity() || this.formPage2.checkValidity()){
+        if (this.formPage1.checkValidity() && !this.state.alreadyUser && this.state.shortPassword){
+            this.setState({isValidated: true});
+        } else if (this.formPage2.checkValidity()){
             this.setState({isValidated: true});
         } else {
             this.setState({isValidated: false});
@@ -91,11 +122,13 @@ class Signup extends Component {
                                 </div>
                                 <form ref={form => this.formPage1 = form} onSubmit={(e) => {e.preventDefault(); return false}}>
                                     <label>Work email adress</label>
-                                    <input className='inputText' required onChange={this.handleChange} value={this.state.email} type="text" name="email"/>
+                                    <input id={this.state.alreadyUser ? 'error' : ''} className='inputText' required onChange={this.handleChange} onBlur={this.handleBlur} value={this.state.email} type="text" name="email"/>
+                                    <div className={this.state.alreadyUser ? 'error-box-signup' : 'hidden'}><p className={this.state.alreadyUser ? 'error-message error-not-found' : 'hidden'}>Email already in use</p></div>
                                     <label>Name</label>
                                     <input className='inputText' required onChange={this.handleChange} value={this.state.name} type="text" name="name"/>
                                     <label>Password</label>
-                                    <input className='inputText' required onChange={this.handleChange} value={this.state.password} placeholder="8 characters or more"  type="password" name="password"/>
+                                    <input id={this.state.shortPassword ? 'error' : ''} className='inputText' required onChange={this.handleChange} onBlur={this.handleBlur} value={this.state.password} placeholder="8 characters or more"  type="password" name="password"/>
+                                    <div className={this.state.shortPassword ? 'error-box-signup' : 'hidden'}><p className={this.state.shortPassword ? 'error-message error-not-found' : 'hidden'}>Password too short</p></div>
                                     <div className='signup-btn-box'>
                                         <button onClick={this.goToNext} disabled={this.state.isValidated === false}>Sign up</button>
                                         <p className='signup-tos'>By signing up, you agree to DOGSPACE's <span>Terms of Service</span></p>

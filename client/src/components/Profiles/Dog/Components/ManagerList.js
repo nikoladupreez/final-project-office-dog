@@ -36,7 +36,7 @@ export default class ManagerList extends Component {
                     <Link to={`/dog/${this.state.dogId}/profile/managers/add`}><div className='edit-btn'></div></Link>
                 </div>
                 <div className='manager-title'>
-                    <h1>Dog managers</h1>
+                    <h1>Dog Managers</h1>
                 </div>
                 {this.state.managers ? 
                     <div className='manager-list'>

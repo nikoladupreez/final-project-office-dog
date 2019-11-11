@@ -13,12 +13,12 @@ import Home from '../components/Home/Home';
 import AddDogspace from '../components/Auth/AddDogspace';
 import Dogspace from '../components/Dogspace/Dogspace';
 import UserProfileSpace from '../components/Profiles/User/UserProfileSpace';
+import { getUser } from '../utils/auth';
 
 
 class App extends Component {
   state = {
-    example: "",
-    error: null, 
+    user: getUser, 
   }
 
   render() {

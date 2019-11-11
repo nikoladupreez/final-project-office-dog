@@ -264,4 +264,16 @@
           height: auto;
       }
   }
-  
+
+.error-box-signup {
+margin: 10px 0 0 7px;
+display: flex;
+justify-content: flex-start;
+position: relative;
+}
+
+.error-message {
+color: red;
+font-size: 15px;
+position: absolute;
+}

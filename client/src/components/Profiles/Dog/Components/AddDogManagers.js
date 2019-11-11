@@ -16,7 +16,6 @@ export default class AddDogManagers extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.searchValue = React.createRef();
-        this.getUser = this.getUser.bind(this);
         this.removeError = this.removeError.bind(this);
     }
 
@@ -30,17 +29,6 @@ export default class AddDogManagers extends Component {
         notFound: false,
         alreadyManager: false,
         error: false
-    }
-
-    getUser(email){
-       axios({
-                method: "GET",
-                url: `${process.env.REACT_APP_API}/users/email/${email}`
-        })
-        .then((user) => {
-            return user.data;
-        })
-        .catch((err) => console.log(err.message));
     }
 
     getDog(){
