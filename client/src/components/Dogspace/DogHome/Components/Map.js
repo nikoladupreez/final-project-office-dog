@@ -143,13 +143,13 @@ export default class Map extends React.Component {
   }
 
   onPoop = (event) => {
-    this.displayMessage("Oops!");
+    // this.displayMessage("Oops!");
     this.setState({poops: [...this.state.poops, { poop: {coordinates: this.state.icon[0].coordinates, time: new Date().getTime()} }]});
     this.props.onPoop();
   }
 
   onCookie = (event) => {
-    this.displayMessage("Yam yam!");
+    // this.displayMessage("Yam yam!");
     this.setState({cookies: [...this.state.cookies, { cookie: {coordinates: this.state.icon[0].coordinates, time: new Date().getTime()} }]});
     this.props.onCookie();
   }
@@ -300,7 +300,7 @@ export default class Map extends React.Component {
             <div className='map-bottom'>
                 <div onClick={this.props.onShowCommands} className='dictionary-icon'></div>
             </div>
-          </div>
+        </div>
       </>
     );
   }

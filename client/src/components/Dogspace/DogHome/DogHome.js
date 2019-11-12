@@ -330,11 +330,11 @@ export default class DogHome extends Component {
                                     <div className='cookie-box'>
                                     </div>
                                     <div className='cookie-count-box'>
-                                        <div onClick={this.decreaseCount} className='control-cookie min'></div>
+                                        <div onClick={this.decreaseCount} id={this.state.cookieCount > 0 ? 'active-cookie' : 'disabled'} className='control-cookie min'></div>
                                         <div className='cookie-count'>
                                             <p>{this.state.cookieCount}</p>
                                         </div>
-                                        <div onClick={this.increaseCount} className='control-cookie plus'></div>
+                                        <div onClick={this.increaseCount}  id='active-cookie' className='control-cookie plus'></div>
                                     </div>
                                     <div className='cookie-btn-box'>
                                         <button onClick={this.handleSubmitCookies}>Add</button>
@@ -345,7 +345,6 @@ export default class DogHome extends Component {
 
                     {!this.state.dog.owner ? 
                         <div className='loader-doghome'>
-                            <h1>Fetching tennis balls...</h1>
                         </div>
         
                     :

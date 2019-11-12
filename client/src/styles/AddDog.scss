@@ -212,6 +212,7 @@
         margin: 41px 0 0 0;
         width: 159.8px;
         height: 45.6px;
+        border: none;
         border-radius: 27px;
         box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.25);
         background-color: #a2d5f2;
@@ -507,6 +508,7 @@
         border-radius: 24.5px;
         box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.37);
         font-size: 18px;
+        border: none;
         font-weight: 600;
         font-stretch: normal;
         font-style: normal;
@@ -530,6 +532,7 @@
         background-color: #a2d5f2;
         font-size: 18px;
         font-weight: 600;
+        border: none;
         font-stretch: normal;
         font-style: normal;
         line-height: 1.17;
@@ -539,7 +542,7 @@
     }
 
     button:disabled {
-        background-color: #939393;
+        background-color: #cecece;
     }
 }
 
@@ -551,6 +554,10 @@
 #female {
     background-color: #ff6f91;
     border: none;
+}
+
+#non-active {
+    background-color: white;
 }
 
 .dog-part-5 {
@@ -677,6 +684,7 @@
         margin: 15px 0 0 0;
         width: 335px;
         height: 51px;
+        border: none;
         border-radius: 28px;
         box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.25);
         background-color: #a2d5f2;
@@ -930,11 +938,23 @@
 
 #human-no {
     background-color: #e31616;
+    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.46);
+    opacity: 0.9;
+}
+
+#disabled-human-no {
+    background-color: #a70a0a;
     opacity: 0.8;
 }
 
 #human-yes {
     background-color: #56db46;
+    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.46);
+    opacity: 0.9;
+}
+
+#disabled-human-yes {
+    background-color: #34882b;
     opacity: 0.8;
 }
 
@@ -982,6 +1002,7 @@
         margin: 70px 0 0 0;
         width: 159px;
         height: 54px;
+        border: none;
         border-radius: 27px;
         background-color: #535353;
         font-size: 18px;
@@ -1143,6 +1164,7 @@
             width: 159px;
             height: 54px;
             border-radius: 27px;
+            border: none;
             background-color: #535353;
             font-size: 18px;
             font-weight: 600;
@@ -1223,6 +1245,7 @@
         border-radius: 27px;
         background-color: #535353;
         font-size: 18px;
+        border: none;
         font-weight: 600;
         font-stretch: normal;
         font-style: normal;
@@ -1243,6 +1266,7 @@
     height: 55px;
     border-radius: 5px;
     background-color: #ffffff;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.46);
 }
 
 .dog-command-option {

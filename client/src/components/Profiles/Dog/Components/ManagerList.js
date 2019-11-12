@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
+import {getUser} from '../../../../utils/auth';
+
 
 //style
 import '../../../../styles/DogManager.scss';
@@ -10,7 +12,9 @@ export default class ManagerList extends Component {
         dogId: this.props.match.params.id,
         dog: {},
         managerList: [],
-        managers: false
+        managers: false,
+        dogOwnerId: "",
+        userId: ""
     }
 
     componentDidMount() {
@@ -20,6 +24,8 @@ export default class ManagerList extends Component {
         })
         .then((dog) => {
             this.setState({dog: dog.data})
+            this.setState({dogOwnerId: dog.data.owner._id});
+            this.setState({userId: getUser()._id});
             this.setState({managerList: dog.data.dog_managers})
             if (dog.data.dog_managers.length > 0){
                 this.setState({managers: true});
@@ -31,10 +37,14 @@ export default class ManagerList extends Component {
     render() {
         return (
             <div className='manager-container'>
-                <div className='back-box'>
-                    <Link to={`/dog/${this.state.dogId}/profile`}><div className='close-icon'></div></Link>
-                    <Link to={`/dog/${this.state.dogId}/profile/managers/add`}><div className='edit-btn'></div></Link>
-                </div>
+                {this.state.dogOwnerId ?
+                    <div className='back-box'>
+                        <Link to={`/dog/${this.state.dogId}/profile`}><div className='close-icon'></div></Link>
+                        {this.state.dogOwnerId === this.state.userId ? 
+                            <Link to={`/dog/${this.state.dogId}/profile/managers/add`}><div className='edit-btn'></div></Link>
+                        : <></>}
+                    </div>
+                : <></> }
                 <div className='manager-title'>
                     <h1>Dog Managers</h1>
                 </div>
@@ -59,7 +69,6 @@ export default class ManagerList extends Component {
                     <div className='no-managers'>
                         <p>There are no dog managers yet, add dog managers under edit.</p>
                     </div>
-
                 }
             </div>
         )

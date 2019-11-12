@@ -240,8 +240,11 @@
 .control-cookie {
     width: 32px;
     height: 32px;
-    background-color: #ff8974;
     border-radius: 50%;
+}
+
+#active-cookie {
+    background-color: #ff8974
 }
 
 .cookie-btn-box {
@@ -256,6 +259,7 @@
         border-radius: 27px;
         box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.25);
         background-color: #a2d5f2;
+        border: none;
         font-size: 18px;
         font-weight: 600;
         font-stretch: normal;

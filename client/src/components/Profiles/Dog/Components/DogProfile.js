@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
+import {getUser} from '../../../../utils/auth';
 
 //components
 import ProfileLinkDog from '../../ProfileLinkDog';
@@ -13,7 +14,9 @@ export default class DogProfile extends Component {
         dog: {},
         dogId: this.props.match.params.id,
         age: 0,
-        ageType: ""
+        ageType: "",
+        dogOwnerId: "",
+        userId: ""
     }
 
     componentDidMount() {
@@ -24,6 +27,8 @@ export default class DogProfile extends Component {
         .then((dog) => {
             this.setState({dog: dog.data})
             this.getDogAge();
+            this.setState({dogOwnerId: dog.data.owner._id});
+            this.setState({userId: getUser()._id});
         })
         .catch((err) => console.log(err.message));
     }
@@ -58,12 +63,26 @@ export default class DogProfile extends Component {
                                 <h2>{this.state.dog.gender}</h2>
                             </div>
                         </div>
-                        <div className='link-container'>
-                            <ProfileLinkDog id='link-box-dog' url={`/dog/${this.state.dogId}/profile/edit`} title={`Edit ${this.state.dog.name}'s Profile`}/>
-                            <ProfileLinkDog id='link-box-dog' url={`/dog/${this.state.dogId}/profile/guide`} title={`${this.state.dog.name}'s Guide`}/>
-                            <ProfileLinkDog id='link-box-dog' url={`/dog/${this.state.dogId}/profile/managers`} title='Dog Managers'/>
-                            <ProfileLinkDog id='link-box-dog' url='/home' icon='/' title='Go to another Dogspace'/>
-                        </div>
+                        {this.state.dogOwnerId ? 
+                            <div className='link-container'>
+                            {this.state.dogOwnerId === this.state.userId ?
+                                <>
+                                    <ProfileLinkDog id='link-box-dog' url={`/dog/${this.state.dogId}/profile/edit`} title={`Edit ${this.state.dog.name}'s Profile`}/>
+                                    <ProfileLinkDog id='link-box-dog' url={`/dog/${this.state.dogId}/profile/guide`} title={`${this.state.dog.name}'s Guide`}/>
+                                    <ProfileLinkDog id='link-box-dog' url={`/dog/${this.state.dogId}/profile/managers`} title='Dog Managers'/>
+                                    <ProfileLinkDog id='link-box-dog' url='/home' icon='/' title='Go to another Dogspace'/>
+                                </>
+                                :
+                                <>
+                                    <ProfileLinkDog id='link-box-dog' url={`/dog/${this.state.dogId}/profile/guide`} title={`${this.state.dog.name}'s Guide`}/>
+                                    <ProfileLinkDog id='link-box-dog' url={`/dog/${this.state.dogId}/profile/managers`} title='Dog Managers'/>
+                                    <ProfileLinkDog id='link-box-dog' url='/home' icon='/' title='Go to another Dogspace'/>
+                                </>
+                            }
+                            </div>
+                            : <></>
+                        }
+                        
                     </div>
         )
     }

@@ -63,7 +63,7 @@ export default class DogGuide extends Component {
                                 </div>
                                 <div className='guide-box'>
                                     <div className='guide-bone'></div>
-                                    <p>{this.state.dog.name} {this.state.dog.food_info.human === 'Yes' ? <span>is</span> : <span>is not</span>} allowed to eat human food!</p>
+                                    <p>{this.state.dog.name} {this.state.dog.food_info.human === 'yes' ? <span>is</span> : <span>is not</span>} allowed to eat human food!</p>
                                 </div>
                             </div>
                             <div className='guide-title-box'>

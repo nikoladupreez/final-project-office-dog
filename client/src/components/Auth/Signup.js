@@ -4,9 +4,9 @@ import axios from 'axios';
 
 //style
 import '../../styles/Signup.scss';
-import woman from '../../images/woman.png';
-import mix from '../../images/mix.png';
-import man from '../../images/man.png';
+import woman from '../../images/woman@3x.png';
+import mix from '../../images/mix@3x.png';
+import man from '../../images/man@3x.png';
 
 //components
 import {signup} from "../../utils/auth";
@@ -72,7 +72,7 @@ class Signup extends Component {
             [e.target.name]: e.target.value
         })
 
-        if (this.formPage1.checkValidity() && !this.state.alreadyUser && this.state.shortPassword){
+        if (this.formPage1.checkValidity() && !this.state.alreadyUser && !this.state.shortPassword){
             this.setState({isValidated: true});
         } else if (this.formPage2.checkValidity()){
             this.setState({isValidated: true});

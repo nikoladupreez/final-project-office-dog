@@ -2,8 +2,22 @@ const express    = require('express');
 const router     = express.Router();
 const passport   = require('passport');
 const bcrypt     = require('bcrypt');
+const nodemailer = require('nodemailer');
+var jwt = require('jsonwebtoken');
 
 const User       = require('../../models/user');
+
+let transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true, // true for 465, false for other ports
+    auth: {
+        user: process.env.emailAccount, 
+        pass: process.env.emailPassword
+    }
+});
+
+module.exports = transporter;
 
 
 // POST route => to create a new user
@@ -104,7 +118,6 @@ router.get('/loggedin', (req, res, next) => {
 
 // POST route => to log a user out
 router.post('/logout', (req, res, next) => {
-    debugger;
     // req.logout() is defined by passport
     req.logout();
     res.status(200).json({ message: 'Log out success!' });
@@ -112,3 +125,29 @@ router.post('/logout', (req, res, next) => {
 
 
 module.exports = router;
+
+//POST route => get reset link
+router.post('/get-reset-link', (req, res, next) => {
+    debugger;
+    User.findOne({email: req.body.email})
+    .then((user) =>{
+        jwt.sign({email: user.email}, process.env.jwtSecret, { expiresIn: 60 * 60 }, function(err, token){
+            transporter.sendMail({
+                from: '"Dogspace" <dogspace.ironhack@gmail.com>', // sender address
+                to: user.email, // list of receivers
+                subject: 'Reset your password ✔', // Subject line
+                text: 'Reset password', // plain text body
+                html: `<b>Click to reset password for Dogspace: <a href="${process.env.resetPasswordLink}?token=${token}">Reset Link</a></b>` // html body
+            })
+            .then(()=> {
+                res.redirect("/reset-link-confirm");
+            })
+            .catch((err)=> {
+                res.status(400).json({ message: 'Something went wrong with sending the email.', error: err });
+            })
+        })  
+    })
+    .catch((err)=> {
+        res.status(400).json({ message: 'Something went wrong with finding the user in the database.', error: err });
+    })
+})

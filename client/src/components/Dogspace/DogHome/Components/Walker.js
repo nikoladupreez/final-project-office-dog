@@ -235,7 +235,7 @@ export default class Walker extends Component {
                     </div>
                     <div className='walk-data-container'>
                         <div className='walk-data-box'>
-                            <div hidden={!this.state.kmCount}>Expected time based on {AVG_WALKING_SPEED} min/km is: {this.state.minCount} min</div>
+                            <div hidden={!this.state.kmCount}><h3>Expected time based on {AVG_WALKING_SPEED} min/km is: <br/> <span>{this.state.minCount} min</span></h3></div>
                             <div hidden={this.state.kmCount}> </div>
                         </div>
                     </div>

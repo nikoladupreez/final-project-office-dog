@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {Link} from 'react-router-dom';
+import Modal from 'react-bootstrap/Modal';
 import axios from 'axios';
 
 //components
@@ -13,34 +14,25 @@ export default class Login extends Component {
         super(props)
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleBlur = this.handleBlur.bind(this);
+        this.showForgotPassword = this.showForgotPassword.bind(this);
+        this.closeForgotPassword = this.closeForgotPassword.bind(this);
+        this.handleSubmitReset = this.handleSubmitReset.bind(this);
     }
 
     state = {
         email: "",
         password: "",
-        notFound: false,
-        wrongPassword: false,
-        credentials: false
+        credentials: false,
+        error: false,
+        setShowReset: false,
+        showReset: false,
+        setShowResetSend: false,
+        showResetSend: false
 
     }
 
-   handleBlur(e){
-        axios({
-            method: "GET",
-            url: `${process.env.REACT_APP_API}/users/email/${this.state.email}`
-        })
-        .catch((err) => {
-            this.setState({notFound: true});
-        })
-   }
-
     handleChange(e) {
-        if (e.target.name === 'email'){
-            this.setState({notFound: false});
-        } else {
-            this.setState({wrongPassword: false});
-        }
+       this.setState({error: false});
 
         this.setState({
             [e.target.name]: e.target.value
@@ -48,6 +40,8 @@ export default class Login extends Component {
 
         if (this.state.email && this.state.password){
             this.setState({credentials: true});
+        } else {
+            this.setState({credentials: false});
         }
     }
 
@@ -58,8 +52,38 @@ export default class Login extends Component {
                 this.props.history.push("/home");
             })
             .catch((err) => {
-                this.setState({wrongPassword: true})
+                this.setState({error: true});
             });
+    }
+
+    showForgotPassword() {
+        this.setState({setShowReset: true});
+        this.setState({showReset: true});
+    }
+
+    closeForgotPassword() {
+        this.setState({setShowReset: false});
+        this.setState({showReset: false});
+        this.setState({setShowResetSend: false});
+        this.setState({showResetSend: false});
+    }
+
+    showResetSend() {
+        this.setState({setShowResetSend: true});
+        this.setState({showResetSend: true});
+    }
+
+    handleSubmitReset(e) {
+        debugger;
+        e.preventDefault();
+        axios({
+            method: "POST",
+            url:  `${process.env.REACT_APP_API}/auth/get-reset-link`,
+            headers: { 'content-type': 'application/json' },
+            data: JSON.stringify(this.state.email)
+        })
+        .then(() => this.showResetSend())
+        .catch((err) => console.log(err.message));
     }
 
     render() {
@@ -76,19 +100,61 @@ export default class Login extends Component {
                         <h2>Enter your details below</h2>
                         <form onSubmit={(e) => {e.preventDefault(); return false}}>
                             <label className='login-email-label'>Email address</label>
-                            <input id={this.state.notFound ? 'error' : ''} required onChange={this.handleChange} onBlur={this.handleBlur} value={this.state.email} type="text" name="email"/>
-                            <div className={this.state.notFound ? 'error-box-login' : 'hidden'}><p className={this.state.notFound ? 'error-message error-not-found' : 'hidden'}>Email not registrated</p></div>
+                            <input id={this.state.error ? 'error' : ''} required onChange={this.handleChange} value={this.state.email} type="text" name="email"/>
                             <div className='login-password-box'>
                                 <label>Password</label>
-                                <Link to='/'><p>Forgot password?</p></Link>
+                                <p onClick={this.showForgotPassword}>Forgot password?</p>
                             </div>
-                            <input required id={this.state.wrongPassword ? 'error' : ''} onChange={this.handleChange} value={this.state.password} type="password" name="password"/>
-                            <div className={this.state.wrongPassword ? 'error-box-login' : 'hidden'}><p className={this.state.wrongPassword ? 'error-message error-not-found' : 'hidden'}>Incorrect password</p></div>
+                            <input required id={this.state.error ? 'error' : ''} onChange={this.handleChange} value={this.state.password} type="password" name="password"/>
+                            <div className={this.state.error ? 'error-box-login' : 'hidden'}><p className={this.state.error ? 'error-message error-not-found' : 'hidden'}>Oops! Email and/or password are incorrect.</p></div>
                             <div className='login-btn-box'>
                                 <button onClick={this.handleSubmit} disabled={!this.state.credentials}>Sign in</button>
                             </div>
                         </form>
                     </div>
+                    <Modal
+                        show={this.state.showReset}
+                        onHide={this.closeForgotPassword}
+                        centered='true'
+                        dialogClassName="modal-90w"
+                        aria-labelledby="forgot-password-modal"
+                        style={{maxWidth: '90%', width: '90%', margin: '0 0 0 18px'}}
+                    >
+                        <Modal.Header closeButton id='modal-header'>
+                            <Modal.Title id="reset-title">
+                                Reset Password
+                            </Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body id='reset-body' style={{margin: '0 0 0 -3px'}}>
+                            <form onSubmit={(e) => {e.preventDefault(); return false}} className='reset-container'>
+                                <label>Email adress</label>
+                                <input required onChange={this.handleChange} type='text' name='email'/>
+                                <div className='reset-btn-box'>
+                                    <button onClick={this.handleSubmitReset} disabled={!this.state.email}>Send Reset Link</button>
+                                </div>
+                            </form>
+                        </Modal.Body>
+                    </Modal>
+                    <Modal
+                        show={this.state.showResetSend}
+                        onHide={this.closeForgotPassword}
+                        centered='true'
+                        dialogClassName="modal-90w"
+                        aria-labelledby="forgot-password-modal"
+                        style={{maxWidth: '90%', width: '90%', margin: '0 0 0 18px'}}
+                    >
+                        <Modal.Header closeButton id='modal-header'>
+                            <Modal.Title id="reset-title">
+                                Reset Password
+                            </Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body id='reset-body' style={{margin: '0 0 0 -3px'}}>
+                            <div className='reset-link-box'>
+                                <h2>You've got mail!</h2>
+                                <h3>Reset link send to: {this.state.email}</h3>
+                            </div>
+                        </Modal.Body>
+                    </Modal>
                 </div>
         )
     }

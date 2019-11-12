@@ -73,7 +73,7 @@ export default class AddDogspace extends Component {
         userId: getUser()._id,
         ownerId: getUser().owner,
         breedsShown: [],
-        page: 1,
+        page: 8,
         loading: true
     }
 
@@ -484,8 +484,8 @@ export default class AddDogspace extends Component {
                     <div className={this.state.page === 4 ? 'dog-part-4' : 'hidden'}>
                         <label>What is {this.state.name}'s <br/> gender?</label>
                         <div className='gender-btn-box'>
-                            <button id={this.state.gender === 'Male' ? 'male' : 'disabled'} onClick={() => {this.handleSelect('Male')}}>male</button>
-                            <button id={this.state.gender === 'Female' ? 'female' : 'disabled'} onClick={() => {this.handleSelect('Female')}}>female</button>
+                            <button id={this.state.gender === 'Male' ? 'male' : 'non-active'} onClick={() => {this.handleSelect('Male')}}>male</button>
+                            <button id={this.state.gender === 'Female' ? 'female' : 'non-active'} onClick={() => {this.handleSelect('Female')}}>female</button>
                         </div>
                         <div className='dog-next-btn-box'>
                             <button onClick={this.goToNext} disabled={!this.state.gender}>Next</button>
@@ -574,8 +574,8 @@ export default class AddDogspace extends Component {
                             </div>
                            <label>Is {this.state.name} allowed to have human food?</label>
                            <div className='human-food-btn-box'>
-                                <button id={this.state.foodHuman === 'no' ? 'human-no' : 'disabled'} onClick={() => {this.handleSelect('no')}}>no</button>
-                                <button id={this.state.foodHuman === 'yes' ? 'human-yes' : 'disabled'} onClick={() => {this.handleSelect('yes')}}>yes</button>
+                                <button id={this.state.foodHuman === 'no' ? 'human-no' : 'disabled-human-no'} onClick={() => {this.handleSelect('no')}}>no</button>
+                                <button id={this.state.foodHuman === 'yes' ? 'human-yes' : 'disabled-human-yes'} onClick={() => {this.handleSelect('yes')}}>yes</button>
                             </div>
                            <div className='dog-next-btn-box'>
                                 <button id='food-next-btn' onClick={this.goToNext} disabled={!this.state.foodInfo}>Next</button>

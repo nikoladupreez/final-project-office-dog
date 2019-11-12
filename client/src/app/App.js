@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Route, Switch} from 'react-router-dom';
+import {Route, Switch, Redirect} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 //style
@@ -13,7 +13,16 @@ import Home from '../components/Home/Home';
 import AddDogspace from '../components/Auth/AddDogspace';
 import Dogspace from '../components/Dogspace/Dogspace';
 import UserProfileSpace from '../components/Profiles/User/UserProfileSpace';
-import { getUser } from '../utils/auth';
+import {getUser, loggedIn} from '../utils/auth';
+
+
+const SecureRoute = ({ component: Component, ...rest }) => (
+  <Route {...rest} render={(props) => (
+    loggedIn()
+      ? <Component {...props} />
+      : <Redirect to='/login' />
+  )} />
+);
 
 
 class App extends Component {
@@ -28,10 +37,10 @@ class App extends Component {
           <Route exact path='/' component={Index}/>
           <Route exact path='/login' component={Login}/>
           <Route exact path='/signup' component={Signup}/>
-          <Route exact path='/home' component={Home}/>
-          <Route path='/add-dog' component={AddDogspace}/>
-          <Route path='/dog' component={Dogspace}/>
-          <Route path='/user' component={UserProfileSpace}/>
+          <SecureRoute exact path='/home' component={Home} onEnter={this.requireAuth}/>
+          <SecureRoute path='/add-dog' component={AddDogspace} onEnter={this.requireAuth}/>
+          <SecureRoute path='/dog' component={Dogspace} onEnter={this.requireAuth}/>
+          <SecureRoute path='/user' component={UserProfileSpace} onEnter={this.requireAuth}/>
         </Switch>
       </div>
     );

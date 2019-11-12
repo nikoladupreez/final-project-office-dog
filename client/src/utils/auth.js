@@ -46,7 +46,6 @@ export const loggedIn = function(){
     }
 
 export const setUser = function(user){
-    debugger;
     if(user && user._id){
         localStorage.setItem('user', JSON.stringify(user));
     }
@@ -55,6 +54,19 @@ export const setUser = function(user){
 export const getUser = function(){
         return JSON.parse(localStorage.getItem('user'));
     }
+
+export const getDogOwner = function(dogId){
+    axios({
+        method: "GET",
+        url: `dogs/dog/${dogId}`
+    })
+    .then((dog) => {
+        return dog.data.owner
+    })
+    .catch((err) => {
+        console.log(err.message);
+    })
+}
 
 export const logout = function(navigate){
         debugger;

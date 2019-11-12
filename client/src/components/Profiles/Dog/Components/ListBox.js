@@ -1,5 +1,4 @@
 import React from 'react';
-import crossIcon from '../../../../images/cross.svg';
 
 export default function ListBox(props) {
     return (
@@ -12,7 +11,7 @@ export default function ListBox(props) {
                 <h3>{props.displayName}</h3>
                 <h3>{props.phone}</h3>
             </div>
-            <div onClick={props.deleteManager} className='delete-manager'><img src={crossIcon} alt='delete'/></div>
+            <div onClick={props.deleteManager} className='delete-manager'><div className='close-icon-manager'></div></div>
         </div>
     )
 }
