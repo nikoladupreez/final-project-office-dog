@@ -327,11 +327,11 @@
 }
 
 .MuiPickersToolbar-toolbar {
-    background-color: #f7b178 !important;
+    background-color:  #ff8974 !important;
 }
 
 .MuiPickersDay-daySelected {
-    background-color: #f7b178 !important;
+    background-color:  #ff8974!important;
 }
 
 .MuiPaper-root  {
@@ -418,7 +418,7 @@
 }
 
 #active {
-    background-color: #f7b178;
+    background-color:  #ff8974;
 }
 
 #disabled {
@@ -878,6 +878,16 @@
 
 #input-box::placeholder {
     color: #535353;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+input[type=number] {
+    -moz-appearance:textfield;
 }
 
 #grams-box {

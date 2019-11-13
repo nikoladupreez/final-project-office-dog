@@ -442,7 +442,7 @@ export default class AddDogspace extends Component {
                                     <div className='dog-breed-select-box'>
                                         <div className='dog-breed-selected'>
                                             <h2>{this.state.breed}</h2>
-                                            <div className='close-icon' onClick={this.deleteBreed}></div>
+                                            <div className='close-icon-manager' onClick={this.deleteBreed}></div>
                                         </div>
                                         <button onClick={this.goToNext} disabled={!this.state.breed}>Next</button>
                                     </div>
@@ -574,19 +574,19 @@ export default class AddDogspace extends Component {
                            <label>Times fed a day</label>
                             <div className='diet-amount-box'>
                                 <div className='food-amount-control min' id={this.state.foodFreq > 1 ? 'active' : 'disabled'} alt='min' onClick={() => {this.decreaseNumber('foodFreq')}}></div>
-                                <input id='input-box'required onChange={this.handleChange} placeholder={this.state.foodFreq} type="number" name="foodFreq"/>
+                                <input id='input-box' onChange={this.handleChange} placeholder={this.state.foodFreq} type="number" name="foodFreq"/>
                                 <div className='food-amount-control plus' id='active' onClick={() => {this.increaseNumber('foodFreq')}}></div>
                             </div>
                            <label>Amount fed per feeding</label>
                            <div className='diet-amount-box' id='grams-box'>
                                 <div className='empty'></div>
-                                <input id='diet-grams'required onChange={this.handleChange} placeholder='100' type="number" name="foodGrams"/>
+                                <input id='diet-grams' onChange={this.handleChange} placeholder='100' type="number" name="foodGrams"/>
                                 <p>grams</p>
                            </div>
                             <label>Treats per day</label>
                             <div className='diet-amount-box'>
                                 <div className='food-amount-control min' id={this.state.cookiesAvgFreq > 0 ? 'active' : 'disabled'} onClick={() => {this.decreaseNumber('cookieFreq')}}></div>
-                                <input id='input-box'required onChange={this.handleChange} placeholder={this.state.cookiesAvgFreq} type="number" name="cookiesAvgFreq"/>
+                                <input id='input-box' onChange={this.handleChange} placeholder={this.state.cookiesAvgFreq} type="number" name="cookiesAvgFreq"/>
                                 <div className='food-amount-control plus' id='active' onClick={() => {this.increaseNumber('cookieFreq')}}></div>
                             </div>
                            <label>Is {this.state.name} allowed to have human food?</label>
@@ -608,7 +608,7 @@ export default class AddDogspace extends Component {
                            <div className='activity-box'>
                                 <div className='activity-amount-box'>
                                         <div className='activity-amount-control min' id={this.state.walkAvgFreq > 0 ? 'active' : 'disabled'} onClick={() => {this.decreaseNumber('walkFreq')}}></div>
-                                        <input id='input-box'required onChange={this.handleChange} placeholder={this.state.walkAvgFreq} type="number" name="walkAvgFreq"/>
+                                        <input id='input-box' onChange={this.handleChange} placeholder={this.state.walkAvgFreq} type="number" name="walkAvgFreq"/>
                                         <div className='activity-amount-control plus' id='active' onClick={() => {this.increaseNumber('walkFreq')}}></div>
                                 </div>
                                 <p>times a day</p>
@@ -616,7 +616,7 @@ export default class AddDogspace extends Component {
                            <div className='activity-box'>
                                 <div className='activity-amount-box'>
                                         <div className='activity-amount-control min' id={this.state.walkAvgKm > 0 ? 'active' : 'disabled'} onClick={() => {this.decreaseNumber('walkKm')}}></div>
-                                        <input id='input-box'required onChange={this.handleChange} placeholder={this.state.walkAvgKm} type="number" name="walkAvgKm"/>
+                                        <input id='input-box' onChange={this.handleChange} placeholder={this.state.walkAvgKm} type="number" name="walkAvgKm"/>
                                         <div className='activity-amount-control plus' id='active' onClick={() => {this.increaseNumber('walkKm')}}></div>
                                 </div>
                                 <p>km a day</p>
@@ -624,7 +624,7 @@ export default class AddDogspace extends Component {
                            <div className='activity-box'>
                                 <div className='activity-amount-box'>
                                         <div className='activity-amount-control min' id={this.state.walkAvgMinutes > 0 ? 'active' : 'disabled'} onClick={() => {this.decreaseNumber('walkMinutes')}}></div>
-                                        <input id='input-box'required onChange={this.handleChange} placeholder={this.state.walkAvgMinutes} type="number" name="walkAvgMinutes"/>
+                                        <input id='input-box' onChange={this.handleChange} placeholder={this.state.walkAvgMinutes} type="number" name="walkAvgMinutes"/>
                                         <div className='activity-amount-control plus' id='active' onClick={() => {this.increaseNumber('walkMinutes')}}></div>
                                 </div>
                                 <p>minutes a day</p>
@@ -633,7 +633,7 @@ export default class AddDogspace extends Component {
                            <div className='activity-box'>
                                 <div className='activity-amount-box'>
                                         <div className='activity-amount-control min' id={this.state.poopAvgFreq > 0 ? 'active' : 'disabled'} onClick={() => {this.decreaseNumber('poopFreq')}}></div>
-                                        <input id='input-box'required onChange={this.handleChange} placeholder={this.state.poopAvgFreq} type="number" name="poopAvgFreq"/>
+                                        <input id='input-box' onChange={this.handleChange} placeholder={this.state.poopAvgFreq} type="number" name="poopAvgFreq"/>
                                         <div className='activity-amount-control plus' id='active' onClick={() => {this.increaseNumber('poopFreq')}}></div>
                                 </div>
                                 <p>poops a day</p>
