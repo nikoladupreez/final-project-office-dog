@@ -55,17 +55,12 @@ export const getUser = function(){
         return JSON.parse(localStorage.getItem('user'));
     }
 
-export const getDogOwner = function(dogId){
-    axios({
-        method: "GET",
-        url: `dogs/dog/${dogId}`
-    })
-    .then((dog) => {
-        return dog.data.owner
-    })
-    .catch((err) => {
-        console.log(err.message);
-    })
+export const isDogOwner = async function(dogId, userId){
+    let dog = await axios({
+            method: "GET",
+            url: `dogs/dog/${dogId}`
+        });
+    return dog.data.owner._id === userId;
 }
 
 export const logout = function(navigate){
