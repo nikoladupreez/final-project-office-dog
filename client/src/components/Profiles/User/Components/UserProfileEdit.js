@@ -7,9 +7,9 @@ import {getUser} from "../../../../utils/auth";
 
 //style
 import '../../../../styles/UserProfile.scss';
-import woman from '../../../../images/woman.png';
-import mix from '../../../../images/mix.png';
-import man from '../../../../images/man.png';
+import woman from '../../../../images/woman@3x.png';
+import mix from '../../../../images/mix@3x.png';
+import man from '../../../../images/man@3x.png';
 
 export default class UserProfileEdit extends Component {
     constructor(props){
