@@ -46,6 +46,7 @@ export default class Dictionary extends Component {
                             </div>
                         )
                     })}
+                    <div className='bottom-spacer'></div>
                 </div>
             </div>
         )

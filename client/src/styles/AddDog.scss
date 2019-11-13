@@ -278,7 +278,7 @@
             color: #ffffff;
         }
 
-        p {
+        .part-3-text {
             margin: 218px 0 0 0;
             width: 335px;
             height: 56px;
@@ -327,11 +327,16 @@
 }
 
 .MuiPickersToolbar-toolbar {
-    background-color: #f7b178;
+    background-color: #f7b178 !important;
 }
 
 .MuiPickersDay-daySelected {
-    background-color: #f7b178;
+    background-color: #f7b178 !important;
+}
+
+.MuiPaper-root  {
+    margin: 5px 0 0 0;
+    border-radius: 15px !important;
 }
 
 #date-picker-inline {
