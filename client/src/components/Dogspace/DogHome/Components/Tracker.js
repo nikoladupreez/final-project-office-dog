@@ -5,8 +5,6 @@ import '../../../../styles/Tracker.scss';
 function checkStatus(percentage){
     if(percentage > 100) {
         return 'danger'
-    } else if (percentage === 100){
-        return 'success'
     }
 };
 
