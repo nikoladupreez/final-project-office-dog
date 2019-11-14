@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "client-install": "npm install --prefix client",
-    "start": "NODE_ENV=production node ./bin/www",
+    "xstart": "NODE_ENV=production node ./bin/www",
+    "start": "node ./bin/www",
     "dev-inspect": "DEBUG=server:* nodemon --inspect ./bin/www"
   },
   "dependencies": {
