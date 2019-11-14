@@ -31,20 +31,16 @@ export default class AddDogManagers extends Component {
         error: false
     }
 
-    getDog(){
+    componentDidMount() {
         axios({
-                method: "GET",
-                url: `${process.env.REACT_APP_API}/dog/${this.state.dogId}`
+            method: "GET",
+            url: `${process.env.REACT_APP_API}/dog/${this.state.dogId}`
         })
         .then((dog) => {
             this.setState({dog: dog.data});
             this.setState({dogManagers: dog.data.dog_managers})
         })
         .catch((err) => console.log(err.message));
-    }
-
-    componentDidMount() {
-        this.getDog();
     }
 
     removeError() {
@@ -137,13 +133,12 @@ export default class AddDogManagers extends Component {
                                 <input id={this.state.error ? 'error' : ''} onChange={this.removeError}type='text' placeholder="Search Coworker's email" ref={this.searchValue}/>
                                 <div id={this.state.error ? 'error-btn' : ''} onClick={this.handleSearch} className='search-icon'></div>
                             </div>
-                            <div className={this.state.isOwner ? 'error-box' : 'hidden'}><p className={this.state.isOwner ? 'error-message error-owner' : 'hidden'}>Silly, that's yours!</p></div>
-                            <div className={this.state.notFound ? 'error-box' : 'hidden'}><p className={this.state.notFound ? 'error-message error-not-found' : 'hidden'}>User not found!</p></div>
-                            <div className={this.state.alreadyManager ? 'error-box' : 'hidden'}><p className={this.state.alreadyManager ? 'error-message error-dogmanager' : 'hidden'}>Already a dog manager!</p></div>
+                            <div className={this.state.isOwner ? 'error-box-manager' : 'hidden'}><p className={this.state.isOwner ? 'error-message-manager error-owner' : 'hidden'}>Silly, that's yours!</p></div>
+                            <div className={this.state.notFound ? 'error-box-manager' : 'hidden'}><p className={this.state.notFound ? 'error-message-manager error-not-found' : 'hidden'}>User not found!</p></div>
+                            <div className={this.state.alreadyManager ? 'error-box-manager' : 'hidden'}><p className={this.state.alreadyManager ? 'error-message-manager error-dogmanager' : 'hidden'}>Already a dog manager!</p></div>
                     </div>
 
                     {this.state.dogManagers ?
-
                         <div className='manager-list-add'>
                             {this.state.dogManagers.map((manager, index) => {
                                 return (
@@ -161,9 +156,9 @@ export default class AddDogManagers extends Component {
                         </div>
                     : <></>}
                     
-                        {this.state.dogManagers && this.state.dogManagers.length > 0 ? 
-                            <button onClick={this.handleSubmit}>Add</button>
-                        : <></>}
+                    {this.state.dogManagers && this.state.dogManagers.length > 0 ? 
+                        <button onClick={this.handleSubmit}>Add</button>
+                    : <></>}
                 </div>
         )
     }

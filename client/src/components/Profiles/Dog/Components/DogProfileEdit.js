@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import axios from "axios";
-import {getUser} from "../../../../utils/auth";
 import 'date-fns';
 import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
@@ -11,11 +11,25 @@ import {
 
 //style
 import '../../../../styles/AddDog.scss';
+import dog1 from '../../../../images/akita.svg';
+import dog2 from '../../../../images/bulldog.svg';
+import dog3 from '../../../../images/corgi.svg';
+import dog4 from '../../../../images/frenchdog.svg';
+import dog5 from '../../../../images/husky.svg';
+import dog6 from '../../../../images/retriever.svg';
+import dog7 from '../../../../images/rotweiler.svg';
+import dog8 from '../../../../images/samson.svg';
+import dog9 from '../../../../images/shepherd.svg';
+
+const TextFieldComponent = (props) => {
+    return <TextField {...props} disabled={true}/>
+}
 
 export default class DogProfileEdit extends Component {
     constructor(props){
         super(props);
         this.handleChange = this.handleChange.bind(this);
+        this.handleRadio        = this.handleRadio.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.selectBreed = this.selectBreed.bind(this);
         this.deleteBreed = this.deleteBreed.bind(this);
@@ -23,14 +37,7 @@ export default class DogProfileEdit extends Component {
         this.decreaseNumber = this.decreaseNumber.bind(this);
         this.goBack = this.goBack.bind(this);
         this.getDogAge = this.getDogAge.bind(this);
-        this.formPage1 = React.createRef();
-        this.formPage3 = React.createRef();
-        this.formPage4 = React.createRef();
-        this.formPage5 = React.createRef();
-        this.formPage7 = React.createRef();
-        this.formPage8 = React.createRef();
-        this.formPage9 = React.createRef();
-        this.formPage10 = React.createRef();
+        this.goToNext           = this.goToNext.bind(this);
         this.breedList = [];
     }
 
@@ -43,7 +50,6 @@ export default class DogProfileEdit extends Component {
         age: 0,
         gender: "",
         avatar: "",
-        userId: getUser()._id,
         page: 1,
         loading: true
     }
@@ -83,7 +89,7 @@ export default class DogProfileEdit extends Component {
                 avatar: dog.data.avatar
             })
             this.setState({loading: false});
-            this.getDogAge(this.state.birthday)
+            this.getDogAge(dog.data.birthday);
         })
         .catch((err) => console.log(err));
      }
@@ -96,17 +102,25 @@ export default class DogProfileEdit extends Component {
     handleChange(e) {
         if(e.target.id === 'birthday'){
             this.getDogAge(e.target.value);
+            this.setBirthday();
         } else {
             this.setState({[e.target.name]: e.target.value})
         }
     }
 
-    handleSubmit(e) {
-        this.setBirthday();
+    handleRadio(e){
+        if(e.target.checked){
+            this.setState({
+                [e.target.name]: e.target.value
+            })
+        }
+    }
 
+    handleSubmit(e) {
+        debugger;
         axios({
             method: "POST",
-            url: `${process.env.REACT_APP_API}/dogs/edit/profile`,
+            url: `${process.env.REACT_APP_API}/dogs/dog/${this.state.dogId}/profile-edit`,
             headers: { 'content-type': 'application/json' },
             data: JSON.stringify(this.state)
         })
@@ -214,11 +228,11 @@ export default class DogProfileEdit extends Component {
                     </div>
                     <div className={this.state.page === 1 ? 'dog-part-1' : 'hidden'}>
                         <div className='dog-part-1-box'>
-                            <form ref={form => this.formPage1 = form} onSubmit={(e) => {e.preventDefault(); return false}}>
+                            <form onSubmit={(e) => {e.preventDefault(); return false}}>
                                 <label>What is your dog's name?</label>
                                 <input onChange={this.handleChange} value={this.state.name} placeholder={this.state.dog.name} type="text" name="name"/>
                                 <div className='dog-btn-box'>
-                                    <button onClick={() => {this.goToNext(this.formPage1)}} disabled={this.state.isValidated === false}>Next</button>
+                                    <button onClick={this.goToNext} disabled={!this.state.name}>Next</button>
                                 </div>
                             </form>
                         </div>
@@ -226,7 +240,7 @@ export default class DogProfileEdit extends Component {
 
                     <div className={this.state.page === 2 ? 'dog-part-2' : 'hidden'}>
                         <div className='dog-breed-label'>
-                            <label>What is the breed of {this.state.name}?</label>
+                            <label>What breed is {this.state.name}?</label>
                             <input type='text' name='breed-search' onChange={this.handleSearch} placeholder={this.state.dog.breed}/>
                         </div>
                         {this.state.loading ? <h1>Loading...</h1> : 
@@ -235,14 +249,14 @@ export default class DogProfileEdit extends Component {
                                     <div className='dog-breed-select-box'>
                                         <div className='dog-breed-selected'>
                                             <h2>{this.state.breed}</h2>
-                                            <div className='delete-icon' onClick={this.deleteBreed}></div>
+                                            <div className='close-icon-manager' onClick={this.deleteBreed}></div>
                                         </div>
-                                        <button onClick={() => {this.goToNext()}}>Next</button>
+                                        <button onClick={this.goToNext} disabled={!this.state.breed}>Next</button>
                                     </div>
                                 : 
                                     <div className='dog-breed-list'>
                                         {this.state.breedsShown.map((breed, index) => {
-                                            return (
+                                                return (
                                                 <div key={index} onClick={() => {this.selectBreed(breed.name)}} className='dog-breed-box'>
                                                     <h2>{breed.name}</h2>
                                                 </div>
@@ -260,7 +274,7 @@ export default class DogProfileEdit extends Component {
                         <MuiPickersUtilsProvider utils={DateFnsUtils} className='datepicker'>
                             <Grid container justify="space-around">
                                 <KeyboardDatePicker
-                                enableToolbar
+                                enabletoolbar='true'
                                 variant="inline"
                                 format="dd-MM-yyyy"
                                 margin="normal"
@@ -271,66 +285,67 @@ export default class DogProfileEdit extends Component {
                                 KeyboardButtonProps={{
                                     'aria-label': 'change date',
                                 }}
+                                TextFieldComponent={TextFieldComponent}
                                 />
                             </Grid>
                         </MuiPickersUtilsProvider>
-                        <p>Don’t know {this.state.name}'s exact date of birth? <br/> Share it's estimated age:</p>
+                        <p className='part-3-text'>Don’t know {this.state.name}'s exact date of birth? <br/> Share it's estimated age:</p>
                         <div className='dog-age-control'>
-                            <div className={this.state.birthday ? 'hidden' : 'age-control age-min'} src='/' alt='min' onClick={() => {this.decreaseNumber('age')}}><div className='min-icon'></div></div>
+                            <div className={this.state.birthday ? 'hidden' : 'age-control age-min disabled'} id={this.state.age > 0 ? 'active' : 'disabled'} src='/' alt='min' onClick={() => {this.decreaseNumber('age')}}><div className='min-icon'></div></div>
                             <div className='dog-age-box'>
                                 <p>{this.state.age}</p>
                             </div>
-                            <div className={this.state.birthday ? 'hidden' : 'age-control age-plus'} src='/' alt='plus' onClick={() => {this.increaseNumber('age')}}><div className='plus-icon'></div></div>
+                            <div className={this.state.birthday ? 'hidden' : 'age-control age-plus active'} id='active' src='/' alt='plus' onClick={() => {this.increaseNumber('age')}}><div className='plus-icon'></div></div>
                         </div>
                         <div className='dog-age-text'>
                             <p>years old</p>
                         </div>
                         <div className='dog-next-btn-box'>
-                            <button className='nxt-btn' onClick={() => {this.goToNext()}}>Next</button>   
+                            <button className='nxt-btn' onClick={this.goToNext}>Next</button>   
                         </div>        
                     </div>
 
                     <div className={this.state.page === 4 ? 'dog-part-4' : 'hidden'}>
                         <label>What is {this.state.name}'s <br/> gender?</label>
                         <div className='gender-btn-box'>
-                            <button className='male' onClick={() => {this.handleSelect('male')}}>male</button>
-                            <button className='female' onClick={() => {this.handleSelect('female')}}>female</button>
+                            <button id={this.state.gender === 'Male' ? 'male' : 'non-active'} onClick={() => {this.handleSelect('Male')}}>male</button>
+                            <button id={this.state.gender === 'Female' ? 'female' : 'non-active'} onClick={() => {this.handleSelect('Female')}}>female</button>
                         </div>
                         <div className='dog-next-btn-box'>
-                            <button onClick={() => {this.goToNext()}}>Next</button>
+                            <button onClick={this.goToNext} disabled={!this.state.gender}>Next</button>
                         </div>
                     </div>
 
                     <div className={this.state.page === 5 ? 'dog-part-5' : 'hidden'}>
-                        <form ref={form => this.formPage5 = form} onSubmit={(e) => {e.preventDefault(); return false}}>
+                        <form onSubmit={(e) => {e.preventDefault(); return false}}>
                             <h1>Choose an avatar <br/> for {this.state.name}</h1>
                             <div className='dog-avatar-container'>
                                     <div className='dog-avatar-option'>
-                                        <label><div className='dog-avatar-box'><img src='/' alt='avatar1'/></div><input onChange={this.handleRadio} type='radio' value='/1.png' name='avatar'/></label> 
+                                        <label><div className='dog-avatar-box'><img src={dog1} alt='avatar1'/></div><input checked={this.state.avatar === dog1 ? true : false} onChange={this.handleRadio} type='radio' value={dog1} name='avatar'/></label> 
                                     </div>
                                     <div className='dog-avatar-option'>
-                                        <label><div className='dog-avatar-box'><img src='/' alt='avatar2'/></div><input onChange={this.handleRadio} type='radio' value='/1.png' name='avatar'/></label> 
+                                        <label><div className='dog-avatar-box'><img src={dog2}  alt='avatar2'/></div><input checked={this.state.avatar === dog2 ? true : false} onChange={this.handleRadio} type='radio' value={dog2} name='avatar'/></label> 
                                     </div>
                                     <div className='dog-avatar-option'>
-                                        <label><div className='dog-avatar-box'><img src='/' alt='avatar3'/></div><input onChange={this.handleRadio} type='radio' value='/1.png' name='avatar'/></label> 
+                                        <label><div className='dog-avatar-box'><img src={dog3}  alt='avatar3'/></div><input checked={this.state.avatar === dog3 ? true : false} onChange={this.handleRadio} type='radio' value={dog3} name='avatar'/></label> 
                                     </div>
                                     <div className='dog-avatar-option'>
-                                        <label><div className='dog-avatar-box'><img src='/' alt='avatar4'/></div><input onChange={this.handleRadio} type='radio' value='/1.png' name='avatar'/></label> 
+                                        <label><div className='dog-avatar-box'><img src={dog4}  alt='avatar4'/></div><input checked={this.state.avatar === dog4 ? true : false}onChange={this.handleRadio} type='radio' value={dog4} name='avatar'/></label> 
                                     </div>
                                     <div className='dog-avatar-option'>
-                                        <label><div className='dog-avatar-box'><img src='/' alt='avatar5'/></div><input onChange={this.handleRadio} type='radio' value='/1.png' name='avatar'/></label> 
+                                        <label><div className='dog-avatar-box'><img src={dog5}  alt='avatar5'/></div><input checked={this.state.avatar === dog5 ? true : false} onChange={this.handleRadio} type='radio' value={dog5} name='avatar'/></label> 
                                     </div>
                                     <div className='dog-avatar-option'>
-                                        <label><div className='dog-avatar-box'><img src='/' alt='avatar6'/></div><input onChange={this.handleRadio} type='radio' value='/1.png' name='avatar'/></label> 
+                                        <label><div className='dog-avatar-box'><img src={dog6}  alt='avatar6'/></div><input checked={this.state.avatar === dog6 ? true : false} onChange={this.handleRadio} type='radio' value={dog6} name='avatar'/></label> 
                                     </div>
                                     <div className='dog-avatar-option'>
-                                        <label><div className='dog-avatar-box'><img src='/' alt='avatar7'/></div><input onChange={this.handleRadio} type='radio' value='/1.png' name='avatar'/></label> 
+                                        <label><div className='dog-avatar-box'><img src={dog7}  alt='avatar7'/></div><input checked={this.state.avatar === dog7 ? true : false}onChange={this.handleRadio} type='radio' value={dog7} name='avatar'/></label> 
                                     </div>
                                     <div className='dog-avatar-option'>
-                                        <label><div className='dog-avatar-box'><img src='/' alt='avatar8'/></div><input onChange={this.handleRadio} type='radio' value='/1.png' name='avatar'/></label> 
+                                        <label><div className='dog-avatar-box'><img src={dog8}  alt='avatar8'/></div><input checked={this.state.avatar === dog8 ? true : false} onChange={this.handleRadio} type='radio' value={dog8}name='avatar'/></label> 
                                     </div>
                                     <div className='dog-avatar-option'>
-                                        <label><div className='dog-avatar-box'><img src='/' alt='avatar9'/></div><input onChange={this.handleRadio} type='radio' value='/1.png' name='avatar'/></label> 
+                                        <label><div className='dog-avatar-box'><img src={dog9}  alt='avatar9'/></div><input checked={this.state.avatar === dog9 ? true : false} onChange={this.handleRadio} type='radio' value={dog9}name='avatar'/></label> 
                                     </div>
                             </div>
                             <div className='dog-next-btn-box'>
