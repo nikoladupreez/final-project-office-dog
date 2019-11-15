@@ -7,9 +7,10 @@ import {getUser} from "../../../../utils/auth";
 
 //style
 import '../../../../styles/UserProfile.scss';
-import woman from '../../../../images/woman@3x.png';
+import woman from '../../../../images/woman-color.svg';
 import mix from '../../../../images/mix@3x.png';
 import man from '../../../../images/man@3x.png';
+import Loader from '../../../../images/spacedog1.svg';
 
 export default class UserProfileEdit extends Component {
     constructor(props){
@@ -28,7 +29,8 @@ export default class UserProfileEdit extends Component {
         phone: "",
         avatarList: [man, mix, woman],
         nonChosenAvatar1: "",
-        nonChosenAvatar2: ""
+        nonChosenAvatar2: "",
+        loading: true
     }
 
     componentDidMount() {
@@ -46,7 +48,12 @@ export default class UserProfileEdit extends Component {
             })
             this.sortAvatars(user.data.avatar);
         })
-        .catch((err) => console.log(err.message));
+        .catch((err) => console.log(err.message))
+        .finally(() => {
+            setTimeout(() => {
+                this.setState({loading: false});
+            }, 1000)
+        })
     }
 
     handleChange(e) {
@@ -56,7 +63,6 @@ export default class UserProfileEdit extends Component {
     }
 
     handleSubmit(e) {
-        debugger;
         e.preventDefault();
         axios({
             method: "POST",
@@ -100,32 +106,43 @@ export default class UserProfileEdit extends Component {
                     <div className='edit-user-title'>
                         <h1>Edit Profile</h1>
                     </div>
-                <form onSubmit={(e) => {e.preventDefault(); return false}}>
-                    <div className='avatar-option-box'>
-                        <div className='avatar-small-container'>
-                            <div className='avatar-small-box'>
-                                <label><div className='avatar-small'><img src={this.state.nonChosenAvatar1} alt='avatar'/></div><input onChange={this.handleRadio} value={this.state.nonChosenAvatar1} className='avatar-small-input' type='radio' name='avatar'/></label>
-                            </div>
+                    {this.state.loading ? 
+                        <div className='loader-container-edit'>
+                                <div className='loader-box'>
+                                    <img src={Loader} alt='spacedog'/>
+                                    <p>Fetching balls...</p>
+                                </div> 
                         </div>
-                        <div className='avatar-big-box'>
-                            <label className='avatar-big-label'><div className='avatar-big'><img src={this.state.avatarOld} alt='avatar-user'/></div><input checked value={this.state.avatar} onChange={this.handleRadio} className='avatar-big-input' type='radio' name='avatar'/></label>
-                        </div>
-                        <div className='avatar-small-container'>
-                            <div className='avatar-small-box'>
-                                <label><div className='avatar-small'><img src={this.state.nonChosenAvatar2} alt='avatar'/></div><input onChange={this.handleRadio} value={this.state.nonChosenAvatar2} className='avatar-small-input' type='radio' name='avatar'/></label>
-                            </div>
-                        </div>
-                    </div>
-                    <label className='label-profile'>Name</label>
-                    <input className='text-input-profile' onChange={this.handleChange} name='name' placeholder={this.state.name}/>
-                    <label className='label-profile'>Display name</label>
-                    <input className='text-input-profile' onChange={this.handleChange} name='displayName' placeholder={this.state.displayName}/>
-                    <label className='label-profile'>Phone number</label>
-                    <input className='text-input-profile' onChange={this.handleChange} name='phone' placeholder={this.state.phone}/>
-                    <div className='btn-box'>
-                        <button onClick={this.handleSubmit}>Save</button>
-                    </div>
-                </form>
+                    :
+                        <>
+                            <form onSubmit={(e) => {e.preventDefault(); return false}}>
+                                <div className='avatar-option-box'>
+                                    <div className='avatar-small-container'>
+                                        <div className='avatar-small-box'>
+                                            <label><div className='avatar-small'><img src={this.state.nonChosenAvatar1} alt='avatar'/></div><input onChange={this.handleRadio} value={this.state.nonChosenAvatar1} className='avatar-small-input' type='radio' name='avatar'/></label>
+                                        </div>
+                                    </div>
+                                    <div className='avatar-big-box'>
+                                        <label className='avatar-big-label'><div className='avatar-big'><img src={this.state.avatarOld} alt='avatar-user'/></div><input checked value={this.state.avatar} onChange={this.handleRadio} className='avatar-big-input' type='radio' name='avatar'/></label>
+                                    </div>
+                                    <div className='avatar-small-container'>
+                                        <div className='avatar-small-box'>
+                                            <label><div className='avatar-small'><img src={this.state.nonChosenAvatar2} alt='avatar'/></div><input onChange={this.handleRadio} value={this.state.nonChosenAvatar2} className='avatar-small-input' type='radio' name='avatar'/></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <label className='label-profile'>Name</label>
+                                <input className='text-input-profile' onChange={this.handleChange} name='name' placeholder={this.state.name}/>
+                                <label className='label-profile'>Display name</label>
+                                <input className='text-input-profile' onChange={this.handleChange} name='displayName' placeholder={this.state.displayName}/>
+                                <label className='label-profile'>Phone number</label>
+                                <input className='text-input-profile' onChange={this.handleChange} name='phone' placeholder={this.state.phone}/>
+                                <div className='btn-box'>
+                                    <button onClick={this.handleSubmit}>Save</button>
+                                </div>
+                            </form>
+                        </>
+                    }
             </div>
         )
     }

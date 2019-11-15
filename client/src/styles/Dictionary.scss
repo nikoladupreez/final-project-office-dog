@@ -41,10 +41,7 @@
 
 .commands {
     width: 100%; 
-    display: grid;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    margin: 0 0 0 8px;
     overflow-y: scroll;
     height: 672px;
     scrollbar-width: none;

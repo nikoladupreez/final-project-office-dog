@@ -9,6 +9,7 @@ import Tracker from './Components/Tracker';
 
 //style
 import '../../../styles/DogHome.scss';
+import Loader from '../../../images/spacedog1.svg';
 
 export default class DogHome extends Component {
     constructor(props){
@@ -48,7 +49,10 @@ export default class DogHome extends Component {
         showCookie: false,
         setShowCookie: false,
         showICE: false,
-        setShowICE: false
+        setShowICE: false,
+        cookieStatus: 'still',
+        cookieCountChange: 'min',
+        loading: true
     }
 
     getCookiesToday() {
@@ -139,17 +143,24 @@ export default class DogHome extends Component {
             url: `${process.env.REACT_APP_API}/dogs/dog/${this.state.dogId}`
         })
         .then((dog) => {
-            this.setState({cookiesList: dog.data.cookies})
-            this.setState({poopsList: dog.data.poops})
-            this.setState({walksList: dog.data.walks})
-            this.setState({dog: dog.data})
-            this.getCookiesToday();
-            this.getPoopsToday();
-            this.getWalksToday();
-            this.getDogAge();
-            this.checkForTrackings();
+            this.setState({
+                            cookiesList: dog.data.cookies,
+                            poopsList: dog.data.poops,
+                            walksList: dog.data.walks,
+                            dog: dog.data
+                         });
         })
-        .catch((err) => console.log(err.message));
+        .catch((err) => console.log(err.message))
+        .finally(() => {
+            setTimeout(() => {
+                this.getCookiesToday();
+                this.getPoopsToday();
+                this.getWalksToday();
+                this.getDogAge();
+                this.checkForTrackings();
+                this.setState({loading: false});
+            }, 1000)
+        })
     }
 
     initializeDates() {
@@ -225,15 +236,25 @@ export default class DogHome extends Component {
     increaseCount() {
         let count = this.state.cookieCount;
         let countNew = count + 1;
-        this.setState({cookieCount: countNew});
+        this.setState({
+                        cookieCount: countNew,
+                        cookieStatus: 'animated',
+                        cookieCountChange: 'plus'
+                     });
+        setTimeout(() => {this.setState({cookieStatus: 'still'})}, 800);
     }
 
     decreaseCount() {
         if (this.state.cookieCount > 0){
             let count = this.state.cookieCount;
             let countNew = count - 1;
-            this.setState({cookieCount: countNew});
+            this.setState({
+                            cookieCount: countNew,
+                            cookieStatus: 'animated',
+                            cookieCountChange: 'min'
+                         });
         }
+        setTimeout(() => {this.setState({cookieStatus: 'still'})}, 800);
     }
 
     handleShowICE() {
@@ -273,6 +294,28 @@ export default class DogHome extends Component {
         this.setState({age: age});
     }
 
+    animateCookie(){
+        switch(this.state.cookieCountChange){
+            case 'plus':
+                return 'cookie-box-plus';
+            case 'min':
+                return 'cookie-box-min';
+            default:
+                return 'cookie-box-start';
+        };
+    }
+
+    stopCookie(){
+        switch(this.state.cookieCountChange){
+            case 'plus':
+                return 'cookie-box-end';
+            case 'min':
+                return 'cookie-box-start';
+            default:
+                break;
+        };
+    }
+
     render() {
         return (
             <div className='doghome-container'>
@@ -280,131 +323,139 @@ export default class DogHome extends Component {
                     <Link to={`/dog/${this.state.dogId}/profile`}><div className='dogprofile-icon'></div></Link>
                     <Link to={`/user/profile`}><div className='userprofile-icon'></div></Link>
                 </div>
-                <div className='dogspace-container'>
-                    <div className='trackings-container'>
-                        {this.state.trackings ? 
-                            <div className='trackings-box'>
-                                <h1 className='dog-day'>{this.state.dog.name}'s Day</h1>
-                                <Tracker
-                                    cookieCount={this.state.cookieCountToday}
-                                    poopCount={this.state.poopCountToday}
-                                    walkCount={this.state.walkCountToday}
-                                    walkKm={this.state.walkKmToday}
-                                    walkMin={this.state.walkMinToday}
-                                    walkPercentage={this.state.walkPercentage}
-                                    poopPercentage={this.state.poopPercentage}
-                                    cookiePercentage={this.state.cookiePercentage}
-                                />
-                            </div>
-                        :
-
-                            <div className='no-trackings'>
-                                <div className='no-tracking-name'>
+                {!this.state.loading ? 
+                    <div className='dogspace-container'>
+                        <div className='trackings-container'>
+                            {this.state.trackings ? 
+                                <div className='trackings-box'>
                                     <h1 className='dog-day'>{this.state.dog.name}'s Day</h1>
+                                    <Tracker
+                                        cookieCount={this.state.cookieCountToday}
+                                        poopCount={this.state.poopCountToday}
+                                        walkCount={this.state.walkCountToday}
+                                        walkKm={this.state.walkKmToday}
+                                        walkMin={this.state.walkMinToday}
+                                        walkPercentage={this.state.walkPercentage}
+                                        poopPercentage={this.state.poopPercentage}
+                                        cookiePercentage={this.state.cookiePercentage}
+                                    />
                                 </div>
-                                <p>No trackings yet today. <br/><span>Start tracking!</span></p>
-                            </div>
-                        }
-                        <div className='dogspace-btn-box'>
-                            <Link to={`/dog/${this.state.dogId}/home/walk`}><div className='walk-btn'></div></Link>
-                            <div onClick={this.handleShowCookie} className='cookie-btn'></div>
-                            <div onClick={this.handleShowICE} className='ice-btn'></div>
-                            <Link to={`/dog/${this.state.dogId}/home/dictionary`}><div className='dictionary-btn'></div></Link>
-                            
-                        </div>
-                        <Modal
-                            show={this.state.showCookie}
-                            onHide={this.handleCloseCookie}
-                            centered='true'
-                            dialogClassName="modal-90w"
-                            aria-labelledby="cookie-modal"
-                            style={{maxWidth: '90%', width: '90%', margin: '0 0 0 18px'}}
-                        >
-                            <Modal.Header closeButton id='modal-header'>
-                                <Modal.Title id="cookie-title">
-                                    Cookie <br/> Counter
-                                </Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body id='cookie-body' style={{margin: '0 0 0 -3px'}}>
-                                <div className='cookie-container'>
-                                    <div className='cookie-box'>
-                                    </div>
-                                    <div className='cookie-count-box'>
-                                        <div onClick={this.decreaseCount} id={this.state.cookieCount > 0 ? 'active-cookie' : 'disabled'} className='control-cookie min'></div>
-                                        <div className='cookie-count'>
-                                            <p>{this.state.cookieCount}</p>
-                                        </div>
-                                        <div onClick={this.increaseCount}  id='active-cookie' className='control-cookie plus'></div>
-                                    </div>
-                                    <div className='cookie-btn-box'>
-                                        <button onClick={this.handleSubmitCookies}>Add</button>
-                                    </div>
-                                </div>
-                            </Modal.Body>
-                        </Modal>
+                            :
 
-                    {!this.state.dog.owner ? 
-                        <div className='loader-doghome'>
-                        </div>
-        
-                    :
-                        <Modal
-                            show={this.state.showICE}
-                            onHide={this.handleCloseICE}
-                            dialogClassName="modal-90w"
-                            centered='true'
-                            aria-labelledby="ice-modal"
-                            style={{maxWidth: '90%', width: '90%', margin: '0 0 0 18px', borderRadius: "5px"}}
-                        >
-                            <Modal.Header closeButton id='modal-header'>
-                            {/* <Link to={`/dog/${this.state.dogId}/home/ice/edit`}><div className='edit-btn'></div></Link> */}
-                            <Modal.Title id="ice-title">
-                                Emergency <br/> Card
-                            </Modal.Title>
-                            </Modal.Header>
-                                <Modal.Body id='ice-body' style={{margin: '0 0 0 -15px'}}>
-                                    <div className='ice-info-container'>
-                                        <div className='ambulance-box'>
-                                            <h1 className='ice-label'>Dutch Animal Ambulance</h1>
-                                            <Link to='tell:09000245'><p>0900 0245</p></Link>
-                                        </div>
-                                        <div className='box-text box4 dog-ice'>
-                                                <p>{this.state.dog.name}<br/>
-                                                   {this.state.dog.breed}<br/>
-                                                   {this.state.age} years old<br/>
-                                                   {this.state.dog.gender}</p>
-                                        </div>
-                                        <h1 className='ice-label'>Contact Owner {this.state.dog.name}</h1>
-                                        <div className='box-text box2 dog-ice'>
-                                                <p>{this.state.dog.owner.name}<br/>
-                                                <Link to={`tell:{this.state.dog.owner.phone}`}>{this.state.dog.owner.phone}</Link></p>
-                                        </div>
-                                        <h1 className='ice-label'>Emergency contact 1</h1>
-                                        <div className='box-text box2 ice-ice'>
-                                            <p>{this.state.dog.ice_1.name}<br/>
-                                            <Link to={`tell:${this.state.dog.ice_1.phone}`}>{this.state.dog.ice_1.phone}</Link></p>
-                                        </div>
-                                        {this.state.dog.ice_2.name ? 
-                                            <>
-                                                <h1 className='ice-label'>Emergency contact 2</h1>
-                                                <div className='box-text box2 ice-ice'>
-                                                    <p>{this.state.dog.ice_2.name}<br/>
-                                                    <Link to={`tell:${this.state.dog.ice_2.phone}`}>{this.state.dog.ice_2.phone}</Link></p>
-                                                </div>
-                                            </>
-                                        :<></>}
-                                        <h1 className='ice-label'>Veterinary</h1>
-                                        <div className='box-text box3 vet-ice'>
-                                            <p>{this.state.dog.vet.name}<br/>
-                                            {this.state.dog.vet.company}<br/>
-                                            <Link to={`tell:${this.state.dog.vet.phone}`}>{this.state.dog.vet.phone}</Link></p>
-                                        </div>
+                                <div className='no-trackings'>
+                                    <div className='no-tracking-name'>
+                                        <h1 className='dog-day'>{this.state.dog.name}'s Day</h1>
+                                    </div>
+                                    <p>No trackings yet today. <br/><span>Start tracking!</span></p>
                                 </div>
-                            </Modal.Body>
-                        </Modal>
-                        }
+                            }
+                            <div className='dogspace-btn-box'>
+                                <Link to={`/dog/${this.state.dogId}/home/walk`}><div className='walk-btn'></div></Link>
+                                <div onClick={this.handleShowCookie} className='cookie-btn'></div>
+                                <div onClick={this.handleShowICE} className='ice-btn'></div>
+                                <Link to={`/dog/${this.state.dogId}/home/dictionary`}><div className='dictionary-btn'></div></Link>
+                                
+                            </div>
+                            <Modal
+                                show={this.state.showCookie}
+                                onHide={this.handleCloseCookie}
+                                centered='true'
+                                dialogClassName="modal-90w"
+                                aria-labelledby="cookie-modal"
+                                style={{maxWidth: '90%', width: '90%', margin: '0 0 0 18px'}}
+                            >
+                                <Modal.Header closeButton id='modal-header'>
+                                    <Modal.Title id="cookie-title">
+                                        Cookie <br/> Counter
+                                    </Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body id='cookie-body' style={{margin: '0 0 0 -3px'}}>
+                                    <div className='cookie-container'>
+                                        <div className={this.state.cookieStatus === 'animated' ? this.animateCookie() : this.stopCookie()}>
+                                        </div>
+                                        <div className='cookie-count-box'>
+                                            <div onClick={this.decreaseCount} id={this.state.cookieCount > 0 ? 'active-cookie' : 'disabled'} className='control-cookie min'></div>
+                                            <div className='cookie-count'>
+                                                <p>{this.state.cookieCount}</p>
+                                            </div>
+                                            <div onClick={this.increaseCount}  id='active-cookie' className='control-cookie plus'></div>
+                                        </div>
+                                        <div className='cookie-btn-box'>
+                                            <button onClick={this.handleSubmitCookies}>Add</button>
+                                        </div>
+                                    </div>
+                                </Modal.Body>
+                            </Modal>
+
+                        {!this.state.dog.owner ? 
+                            <div className='loader-doghome'>
+                            </div>
+            
+                        :
+                            <Modal
+                                show={this.state.showICE}
+                                onHide={this.handleCloseICE}
+                                dialogClassName="modal-90w"
+                                centered='true'
+                                aria-labelledby="ice-modal"
+                                style={{maxWidth: '90%', width: '90%', margin: '0 0 0 18px', borderRadius: "5px"}}
+                            >
+                                <Modal.Header closeButton id='modal-header'>
+                                {/* <Link to={`/dog/${this.state.dogId}/home/ice/edit`}><div className='edit-btn'></div></Link> */}
+                                <Modal.Title id="ice-title">
+                                    Emergency <br/> Card
+                                </Modal.Title>
+                                </Modal.Header>
+                                    <Modal.Body id='ice-body' style={{margin: '0 0 0 -15px'}}>
+                                        <div className='ice-info-container'>
+                                            <div className='ambulance-box'>
+                                                <h1 className='ice-label'>Dutch Animal Ambulance</h1>
+                                                <Link to='tell:09000245'><p>0900 0245</p></Link>
+                                            </div>
+                                            <div className='box-text box4 dog-ice'>
+                                                    <p>{this.state.dog.name}<br/>
+                                                    {this.state.dog.breed}<br/>
+                                                    {this.state.age} years old<br/>
+                                                    {this.state.dog.gender}</p>
+                                            </div>
+                                            <h1 className='ice-label'>Contact Owner {this.state.dog.name}</h1>
+                                            <div className='box-text box2 dog-ice'>
+                                                    <p>{this.state.dog.owner.name}<br/>
+                                                    <Link to={`tell:{this.state.dog.owner.phone}`}>{this.state.dog.owner.phone}</Link></p>
+                                            </div>
+                                            <h1 className='ice-label'>Emergency contact 1</h1>
+                                            <div className='box-text box2 ice-ice'>
+                                                <p>{this.state.dog.ice_1.name}<br/>
+                                                <Link to={`tell:${this.state.dog.ice_1.phone}`}>{this.state.dog.ice_1.phone}</Link></p>
+                                            </div>
+                                            {this.state.dog.ice_2.name ? 
+                                                <>
+                                                    <h1 className='ice-label'>Emergency contact 2</h1>
+                                                    <div className='box-text box2 ice-ice'>
+                                                        <p>{this.state.dog.ice_2.name}<br/>
+                                                        <Link to={`tell:${this.state.dog.ice_2.phone}`}>{this.state.dog.ice_2.phone}</Link></p>
+                                                    </div>
+                                                </>
+                                            :<></>}
+                                            <h1 className='ice-label'>Veterinary</h1>
+                                            <div className='box-text box3 vet-ice'>
+                                                <p>{this.state.dog.vet.name}<br/>
+                                                {this.state.dog.vet.company}<br/>
+                                                <Link to={`tell:${this.state.dog.vet.phone}`}>{this.state.dog.vet.phone}</Link></p>
+                                            </div>
+                                    </div>
+                                </Modal.Body>
+                            </Modal>
+                            }
+                        </div>
                     </div>
-                </div>
+                    : <div className='loader-container'>
+                        <div className='loader-box'>
+                            <img src={Loader} alt='spacedog'/>
+                            <p>Fetching balls...</p>
+                        </div> 
+                      </div>
+                    }
             </div>
         )
     }

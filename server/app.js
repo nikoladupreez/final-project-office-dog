@@ -14,6 +14,8 @@ const cors         = require("cors");
 
 require('./configs/passport');
 
+console.log(`Now: ${new Date()}`);
+
 
 // Database
 mongoose
