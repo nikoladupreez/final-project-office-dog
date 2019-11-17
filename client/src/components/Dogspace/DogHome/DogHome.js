@@ -273,6 +273,10 @@ export default class DogHome extends Component {
         this.setState({age: age});
     }
 
+    getParent() {
+        return document.querySelector('#root');
+    }
+
     render() {
         return (
             <div className='doghome-container'>
@@ -316,9 +320,10 @@ export default class DogHome extends Component {
                             show={this.state.showCookie}
                             onHide={this.handleCloseCookie}
                             centered='true'
+                            container={this.getParent}
                             dialogClassName="modal-90w"
                             aria-labelledby="cookie-modal"
-                            style={{maxWidth: '90%', width: '90%', margin: '0 0 0 18px'}}
+                            style={{maxWidth: '90%', width: '90%', height: 'auto', left: '18px', top: '-90px', position: 'absolute'}}
                         >
                             <Modal.Header closeButton id='modal-header'>
                                 <Modal.Title id="cookie-title">
@@ -353,8 +358,10 @@ export default class DogHome extends Component {
                             onHide={this.handleCloseICE}
                             dialogClassName="modal-90w"
                             centered='true'
+                            container={this.getParent}
                             aria-labelledby="ice-modal"
-                            style={{maxWidth: '90%', width: '90%', margin: '0 0 0 18px', borderRadius: "5px"}}
+                            style={{maxWidth: '90%', width: '90%', height: 'auto', left: '18px', top: '-90px', position: 'absolute'}}
+
                         >
                             <Modal.Header closeButton id='modal-header'>
                             {/* <Link to={`/dog/${this.state.dogId}/home/ice/edit`}><div className='edit-btn'></div></Link> */}
