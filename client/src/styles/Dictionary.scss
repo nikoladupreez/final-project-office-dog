@@ -40,13 +40,11 @@
 }
 
 .commands {
-    width: 100%;
-    // height: 672px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    // overflow: scroll;
+    width: 100%; 
+    margin: 0 0 0 8px;
+    overflow-y: scroll;
+    height: 672px;
+    scrollbar-width: none;
 }
 
 .command-box {
@@ -141,4 +139,8 @@
         text-align: center;
         color: #1b1041;
     }
+}
+
+.bottom-spacer {
+    height: 10px;
 }

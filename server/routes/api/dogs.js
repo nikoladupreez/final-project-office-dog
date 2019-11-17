@@ -114,7 +114,7 @@ router.post('/add-dog', (req, res, next) => {
       })
   });
 
-
+  
   // GET route => to get a specific dogspace
   router.get('/dog/:id', (req, res, next) => {
     Dog.findById(req.params.id)
@@ -172,6 +172,24 @@ router.post('/add-dog', (req, res, next) => {
           res.status(500).json({message: "Something went wrong with finding the dog in the database.", error: err});
        })
   })
+
+  // POST route => edit dog profile
+router.post('/dog/:id/profile-edit', (req, res, next) => {
+  Dog.updateOne({_id: req.params.id}, {
+      name: req.body.name,
+      breed: req.body.breed,
+      birthday: req.body.birthday,
+      gender: req.body.gender,
+      avatar: req.body.avatar,
+    })
+    .then((dog) => {
+      res.json(dog);
+    })
+    .catch((err) => {
+        res.status(500).json({message:'Something went wrong with saving the dog to the database.', error: err});
+    })
+});
+
 
 
   module.exports = router;

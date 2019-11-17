@@ -5,6 +5,7 @@ import axios from 'axios';
 //components
 import DogspaceBox from './DogspaceBox';
 import {getUser} from "../../utils/auth";
+import Loader from '../../images/spacedog1.svg';
 
 //style
 import '../../styles/Home.scss';
@@ -15,6 +16,7 @@ export default class Home extends Component {
         coworkerDogList: [],
         userId: getUser()._id,
         userPopulated: {},
+        loading: true
     }
 
     userHasDogs() {
@@ -44,7 +46,12 @@ export default class Home extends Component {
             if(user.data.owner) this.setState({myDogList: user.data.owner.dogs});
             if(user.data.dog_manager) this.setState({coworkerDogList: user.data.dog_manager.dogs});
         })
-        .catch((err) => console.log(err.message));
+        .catch((err) => console.log(err.message))
+        .finally(() => {
+            setTimeout(() => {
+                this.setState({loading: false});
+            }, 1000)
+        })
     }
 
     render() {
@@ -53,60 +60,71 @@ export default class Home extends Component {
                     <div className='home-user-box'>
                         <Link to='/user/profile'><div className='user-icon'></div></Link>
                     </div>
-                    <div className={!this.userHasDogs() && !this.userManagesDogs() ? 'dog-container' : 'hidden'}>
-                        <h1 className='oeps'>Whoops!</h1>
-                        <div className='sample-dogspace-box'>
-                            <div className='sample-dogspace-subbox'>
-                                <div className='sample-dogspace-img'></div>
-                                <h1 className='sample'>Dogspace</h1>
+                    {this.state.loading ?
+                        <div className='loader-container-small'>
+                                <div className='loader-box'>
+                                    <img src={Loader} alt='spacedog'/>
+                                    <p>Fetching balls...</p>
+                                </div> 
+                        </div>
+                    :
+                    <>
+                        <div className={!this.userHasDogs() && !this.userManagesDogs() ? 'dog-container' : 'hidden'}>
+                            <h1 className='oeps'>Whoops!</h1>
+                            <div className='sample-dogspace-box'>
+                                <div className='sample-dogspace-subbox'>
+                                    <div className='sample-dogspace-img'></div>
+                                    <h1 className='sample'>Dogspace</h1>
+                                </div>
+                            </div>
+                            <p>You're not connected to a dogspace yet, ask the dogowner to add you! </p>
+                        </div>
+                        <div className={this.userHasDogs() ? 'dog-container' : 'hidden'}>
+                            <div>
+                                {this.state.myDogList.map((dog, index) => {
+                                    return (
+                                        <DogspaceBox
+                                            owner='true'
+                                            key={index}
+                                            id={dog._id}
+                                            avatar={dog.avatar}
+                                            name={dog.name}
+                                        />
+                                    )
+                                })}
                             </div>
                         </div>
-                        <p>You're not connected to a dogspace yet, ask the dogowner to add you! </p>
-                    </div>
-                    <div className={this.userHasDogs() ? 'dog-container' : 'hidden'}>
-                        <div>
-                            {this.state.myDogList.map((dog, index) => {
-                                return (
-                                    <DogspaceBox
-                                        owner='true'
-                                        key={index}
-                                        id={dog._id}
-                                        avatar={dog.avatar}
-                                        name={dog.name}
-                                    />
-                                )
-                            })}
-                        </div>
-                    </div>
-                    <div className={this.userManagesDogs() ? 'dog-container' : 'hidden'}>
-                        <div>
-                            {this.state.coworkerDogList.map((dog, index) => {
-                                return (
-                                    <DogspaceBox
-                                        owner='false'
-                                        key={index}
-                                        id={dog._id}
-                                        avatar={dog.avatar}
-                                        name={dog.name}
-                                    />
-                                )
-                            })}
-                        </div>
-                    </div>
-                    <div className='home-add-dog-box'>
-                        <div className='home-or-box'>
-                            <div className='home-or-line'></div>
-                            <div className='home-or'>
-                                <p>or</p>
+                        <div className={this.userManagesDogs() ? 'dog-container' : 'hidden'}>
+                            <div>
+                                {this.state.coworkerDogList.map((dog, index) => {
+                                    return (
+                                        <DogspaceBox
+                                            owner='false'
+                                            key={index}
+                                            id={dog._id}
+                                            avatar={dog.avatar}
+                                            name={dog.name}
+                                        />
+                                    )
+                                })}
                             </div>
-                            <div className='home-or-line'></div>
                         </div>
-                        <div className='home-create-dog-box'>
-                            <h1>Create a dogspace!</h1>
-                            <p>Are you an office dog owner and want to start using Dogspace? Create one here!</p>
-                            <Link to='/add-dog'><button><div className='add-dogspace-box'><div className='add-dogspace-img'><div className='asterix'></div></div>Create dogspace</div></button></Link>
-                        </div>
-                    </div>      
+                        <div className='home-add-dog-box'>
+                            <div className='home-or-box'>
+                                <div className='home-or-line'></div>
+                                <div className='home-or'>
+                                    <p>or</p>
+                                </div>
+                                <div className='home-or-line'></div>
+                            </div>
+                            <div className='home-create-dog-box'>
+                                <h1>Create a dogspace!</h1>
+                                <p>Are you an office dog owner and want to start using Dogspace? Create one here!</p>
+                                <Link to='/add-dog'><button><div className='add-dogspace-box'><div className='add-dogspace-img'><div className='asterix'></div></div>Create dogspace</div></button></Link>
+                            </div>
+                        </div>      
+                    </>
+                    }
             </div>
         )
     }

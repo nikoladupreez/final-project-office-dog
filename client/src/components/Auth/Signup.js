@@ -4,7 +4,7 @@ import axios from 'axios';
 
 //style
 import '../../styles/Signup.scss';
-import woman from '../../images/woman@3x.png';
+import woman from '../../images/woman-color.svg';
 import mix from '../../images/mix@3x.png';
 import man from '../../images/man@3x.png';
 

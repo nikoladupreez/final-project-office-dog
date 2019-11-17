@@ -64,7 +64,6 @@ export const isDogOwner = async function(dogId, userId){
 }
 
 export const logout = function(navigate){
-        debugger;
        return axios({
             method: "POST",
             url: "auth/logout"

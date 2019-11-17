@@ -5,6 +5,7 @@
   "scripts": {
     "client-install": "npm install --prefix client",
     "start": "NODE_ENV=production node ./bin/www",
+    "xstart": "node ./bin/www",
     "dev-inspect": "DEBUG=server:* nodemon --inspect ./bin/www"
   },
   "dependencies": {

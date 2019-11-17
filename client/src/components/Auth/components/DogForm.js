@@ -3,6 +3,7 @@ import axios from "axios";
 import {getUser, setUser} from "../../../utils/auth";
 import 'date-fns';
 import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
@@ -20,6 +21,10 @@ import dog6 from '../../../images/retriever.svg';
 import dog7 from '../../../images/rotweiler.svg';
 import dog8 from '../../../images/samson.svg';
 import dog9 from '../../../images/shepherd.svg';
+
+const TextFieldComponent = (props) => {
+    return <TextField {...props} disabled={true}/>
+}
 
 export default class AddDogspace extends Component {
     constructor(props){
@@ -73,7 +78,7 @@ export default class AddDogspace extends Component {
         userId: getUser()._id,
         ownerId: getUser().owner,
         breedsShown: [],
-        page: 8,
+        page: 1,
         loading: true
     }
 
@@ -110,7 +115,7 @@ export default class AddDogspace extends Component {
     }
 
     handleDateChange = (date) => {
-        this.getDogAge(date) 
+        this.getDogAge(date);
         this.setState({birthday: date});
     };
 
@@ -325,52 +330,63 @@ export default class AddDogspace extends Component {
                 if(this.state.foodFreq > 1){
                     let foodFreq = this.state.foodFreq;
                     let newFoodFreq = foodFreq - 1
-                    this.setState({foodFreq: newFoodFreq});
+                    this.setState({
+                                    foodFreq: newFoodFreq
+                                 });
                 }
                 break;
             case 'cookieFreq':
                 if(this.state.cookiesAvgFreq > 0){
                     let cookieFreq = this.state.cookiesAvgFreq;
                     let newCookieFreq = cookieFreq - 1
-                    this.setState({cookiesAvgFreq: newCookieFreq});
+                    this.setState({
+                                    cookiesAvgFreq: newCookieFreq,
+                                    foodInfo: newCookieFreq === 0 ? false : this.state.foodInfo
+                                 });
                 }
                 break;
             case 'walkFreq':
                 if(this.state.walkAvgFreq > 0){
                     let walkFreq = this.state.walkAvgFreq;
                     let newWalkFreq = walkFreq - 1
-                    this.setState({walkAvgFreq: newWalkFreq});
+                    this.setState({
+                                    walkAvgFreq: newWalkFreq,
+                                    walkInfo: newWalkFreq === 0 ? false : this.state.walkInfo
+                                 });
                 }
                     break;
             case 'walkKm':
                 if(this.state.walkAvgKm > 0){
                     let walkKm = this.state.walkAvgKm;
                     let newWalkKm = walkKm - 1
-                    this.setState({walkAvgKm: newWalkKm});
+                    this.setState({
+                                    walkAvgKm: newWalkKm,
+                                    walkInfo: newWalkKm === 0 ? false : this.state.walkInfo 
+                                 });
                 }
                 break;
             case 'walkMinutes':
                 if(this.state.walkAvgMinutes > 0){
                     let walkMin = this.state.walkAvgMinutes;
                     let newWalkMin = walkMin - 1
-                    this.setState({walkAvgMinutes: newWalkMin});
+                    this.setState({
+                                    walkAvgMinutes: newWalkMin,
+                                    walkInfo: newWalkMin === 0 ? false : this.state.walkInfo  
+                                  });
                 }
                 break;
             case 'poopFreq':
                 if(this.state.poopAvgFreq > 0){
                     let poopFreq = this.state.poopAvgFreq;
                     let newPoopFreq = poopFreq - 1
-                    this.setState({poopAvgFreq: newPoopFreq});
+                    this.setState({
+                                    poopAvgFreq: newPoopFreq,
+                                    walkInfo: newPoopFreq === 0 ? false : this.state.walkInfo  
+                                 });
                 }
                 break;
             default:
                 break;
-        }
-
-        if(!this.state.walkAvgFreq || !this.state.walkAvgKm || !this.state.walkAvgMinutes || !this.state.poopAvgFreq){
-            this.setState({walkInfo: false});
-        } else if(!this.state.foodFreq || !this.state.foodGrams || !this.state.foodBrand || !this.state.foodHuman || !this.state.cookiesAvgFreq){
-            this.setState({foodInfo: false});
         }
     }
 
@@ -426,7 +442,7 @@ export default class AddDogspace extends Component {
                                     <div className='dog-breed-select-box'>
                                         <div className='dog-breed-selected'>
                                             <h2>{this.state.breed}</h2>
-                                            <div className='close-icon' onClick={this.deleteBreed}></div>
+                                            <div className='close-icon-manager' onClick={this.deleteBreed}></div>
                                         </div>
                                         <button onClick={this.goToNext} disabled={!this.state.breed}>Next</button>
                                     </div>
@@ -462,10 +478,11 @@ export default class AddDogspace extends Component {
                                 KeyboardButtonProps={{
                                     'aria-label': 'change date',
                                 }}
+                                TextFieldComponent={TextFieldComponent}
                                 />
                             </Grid>
                         </MuiPickersUtilsProvider>
-                        <p>Don’t know {this.state.name}'s exact date of birth? <br/> Share it's estimated age:</p>
+                        <p className='part-3-text'>Don’t know {this.state.name}'s exact date of birth? <br/> Share it's estimated age:</p>
                         <div className='dog-age-control'>
                             <div className={this.state.birthday ? 'hidden' : 'age-control age-min disabled'} id={this.state.age > 0 ? 'active' : 'disabled'} src='/' alt='min' onClick={() => {this.decreaseNumber('age')}}><div className='min-icon'></div></div>
                             <div className='dog-age-box'>
@@ -557,19 +574,19 @@ export default class AddDogspace extends Component {
                            <label>Times fed a day</label>
                             <div className='diet-amount-box'>
                                 <div className='food-amount-control min' id={this.state.foodFreq > 1 ? 'active' : 'disabled'} alt='min' onClick={() => {this.decreaseNumber('foodFreq')}}></div>
-                                <input id='input-box'required onChange={this.handleChange} placeholder={this.state.foodFreq} type="number" name="foodFreq"/>
+                                <input id='input-box' onChange={this.handleChange} placeholder={this.state.foodFreq} type="number" name="foodFreq"/>
                                 <div className='food-amount-control plus' id='active' onClick={() => {this.increaseNumber('foodFreq')}}></div>
                             </div>
                            <label>Amount fed per feeding</label>
                            <div className='diet-amount-box' id='grams-box'>
                                 <div className='empty'></div>
-                                <input id='diet-grams'required onChange={this.handleChange} placeholder='100' type="number" name="foodGrams"/>
+                                <input id='diet-grams' onChange={this.handleChange} placeholder='100' type="number" name="foodGrams"/>
                                 <p>grams</p>
                            </div>
                             <label>Treats per day</label>
                             <div className='diet-amount-box'>
                                 <div className='food-amount-control min' id={this.state.cookiesAvgFreq > 0 ? 'active' : 'disabled'} onClick={() => {this.decreaseNumber('cookieFreq')}}></div>
-                                <input id='input-box'required onChange={this.handleChange} placeholder={this.state.cookiesAvgFreq} type="number" name="cookiesAvgFreq"/>
+                                <input id='input-box' onChange={this.handleChange} placeholder={this.state.cookiesAvgFreq} type="number" name="cookiesAvgFreq"/>
                                 <div className='food-amount-control plus' id='active' onClick={() => {this.increaseNumber('cookieFreq')}}></div>
                             </div>
                            <label>Is {this.state.name} allowed to have human food?</label>
@@ -591,7 +608,7 @@ export default class AddDogspace extends Component {
                            <div className='activity-box'>
                                 <div className='activity-amount-box'>
                                         <div className='activity-amount-control min' id={this.state.walkAvgFreq > 0 ? 'active' : 'disabled'} onClick={() => {this.decreaseNumber('walkFreq')}}></div>
-                                        <input id='input-box'required onChange={this.handleChange} placeholder={this.state.walkAvgFreq} type="number" name="walkAvgFreq"/>
+                                        <input id='input-box' onChange={this.handleChange} placeholder={this.state.walkAvgFreq} type="number" name="walkAvgFreq"/>
                                         <div className='activity-amount-control plus' id='active' onClick={() => {this.increaseNumber('walkFreq')}}></div>
                                 </div>
                                 <p>times a day</p>
@@ -599,7 +616,7 @@ export default class AddDogspace extends Component {
                            <div className='activity-box'>
                                 <div className='activity-amount-box'>
                                         <div className='activity-amount-control min' id={this.state.walkAvgKm > 0 ? 'active' : 'disabled'} onClick={() => {this.decreaseNumber('walkKm')}}></div>
-                                        <input id='input-box'required onChange={this.handleChange} placeholder={this.state.walkAvgKm} type="number" name="walkAvgKm"/>
+                                        <input id='input-box' onChange={this.handleChange} placeholder={this.state.walkAvgKm} type="number" name="walkAvgKm"/>
                                         <div className='activity-amount-control plus' id='active' onClick={() => {this.increaseNumber('walkKm')}}></div>
                                 </div>
                                 <p>km a day</p>
@@ -607,7 +624,7 @@ export default class AddDogspace extends Component {
                            <div className='activity-box'>
                                 <div className='activity-amount-box'>
                                         <div className='activity-amount-control min' id={this.state.walkAvgMinutes > 0 ? 'active' : 'disabled'} onClick={() => {this.decreaseNumber('walkMinutes')}}></div>
-                                        <input id='input-box'required onChange={this.handleChange} placeholder={this.state.walkAvgMinutes} type="number" name="walkAvgMinutes"/>
+                                        <input id='input-box' onChange={this.handleChange} placeholder={this.state.walkAvgMinutes} type="number" name="walkAvgMinutes"/>
                                         <div className='activity-amount-control plus' id='active' onClick={() => {this.increaseNumber('walkMinutes')}}></div>
                                 </div>
                                 <p>minutes a day</p>
@@ -616,7 +633,7 @@ export default class AddDogspace extends Component {
                            <div className='activity-box'>
                                 <div className='activity-amount-box'>
                                         <div className='activity-amount-control min' id={this.state.poopAvgFreq > 0 ? 'active' : 'disabled'} onClick={() => {this.decreaseNumber('poopFreq')}}></div>
-                                        <input id='input-box'required onChange={this.handleChange} placeholder={this.state.poopAvgFreq} type="number" name="poopAvgFreq"/>
+                                        <input id='input-box' onChange={this.handleChange} placeholder={this.state.poopAvgFreq} type="number" name="poopAvgFreq"/>
                                         <div className='activity-amount-control plus' id='active' onClick={() => {this.increaseNumber('poopFreq')}}></div>
                                 </div>
                                 <p>poops a day</p>

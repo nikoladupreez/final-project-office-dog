@@ -22,7 +22,6 @@ export default class Login extends Component {
     state = {
         email: "",
         password: "",
-        credentials: false,
         error: false,
         setShowReset: false,
         showReset: false,
@@ -32,17 +31,10 @@ export default class Login extends Component {
     }
 
     handleChange(e) {
-       this.setState({error: false});
-
         this.setState({
-            [e.target.name]: e.target.value
+            [e.target.name]: e.target.value,
+            error: false
         })
-
-        if (this.state.email && this.state.password){
-            this.setState({credentials: true});
-        } else {
-            this.setState({credentials: false});
-        }
     }
 
     handleSubmit(e) {
@@ -108,7 +100,7 @@ export default class Login extends Component {
                             <input required id={this.state.error ? 'error' : ''} onChange={this.handleChange} value={this.state.password} type="password" name="password"/>
                             <div className={this.state.error ? 'error-box-login' : 'hidden'}><p className={this.state.error ? 'error-message error-not-found' : 'hidden'}>Oops! Email and/or password are incorrect.</p></div>
                             <div className='login-btn-box'>
-                                <button onClick={this.handleSubmit} disabled={!this.state.credentials}>Sign in</button>
+                                <button onClick={this.handleSubmit} disabled={!this.state.email || !this.state.password}>Sign in</button>
                             </div>
                         </form>
                     </div>

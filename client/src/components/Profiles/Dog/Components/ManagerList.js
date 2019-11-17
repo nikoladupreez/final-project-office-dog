@@ -6,6 +6,7 @@ import {getUser} from '../../../../utils/auth';
 
 //style
 import '../../../../styles/DogManager.scss';
+import Loader from '../../../../images/spacedog1.svg';
 
 export default class ManagerList extends Component {
     state = {
@@ -14,7 +15,8 @@ export default class ManagerList extends Component {
         managerList: [],
         managers: false,
         dogOwnerId: "",
-        userId: ""
+        userId: "",
+        loading: true
     }
 
     componentDidMount() {
@@ -31,7 +33,12 @@ export default class ManagerList extends Component {
                 this.setState({managers: true});
             }
         })
-        .catch((err) => console.log(err.message));
+        .catch((err) => console.log(err.message))
+        .finally(() => {
+            setTimeout(() => {
+                this.setState({loading: false});
+            }, 1000)
+        })
     }
 
     render() {
@@ -48,27 +55,38 @@ export default class ManagerList extends Component {
                 <div className='manager-title'>
                     <h1>Dog Managers</h1>
                 </div>
-                {this.state.managers ? 
-                    <div className='manager-list'>
-                        {this.state.managerList.map((manager, index) => {
-                        return (
-                            <div key={index} className='manager-box'>
-                                <div className='manager-img-box'>
-                                    <img src={manager.avatar} alt='user'/>
-                                </div>
-                                <div className='manager-name-box'>
-                                    <h2>{manager.name}</h2>
-                                    <h3>{manager.display_name}</h3>
-                                    <h3>{manager.phone}</h3>
-                                </div>
+                {this.state.loading ?
+                        <div className='loader-container-small'>
+                                <div className='loader-box'>
+                                    <img src={Loader} alt='spacedog'/>
+                                    <p>Fetching balls...</p>
+                                </div> 
+                        </div>
+                    :
+                      <>
+                        {this.state.managers ? 
+                            <div className='manager-list'>
+                                {this.state.managerList.map((manager, index) => {
+                                return (
+                                    <div key={index} className='manager-box'>
+                                        <div className='manager-img-box'>
+                                            <img src={manager.avatar} alt='user'/>
+                                        </div>
+                                        <div className='manager-name-box'>
+                                            <h2>{manager.name}</h2>
+                                            <h3>{manager.display_name}</h3>
+                                            <h3>{manager.phone}</h3>
+                                        </div>
+                                    </div>
+                                )
+                                })}
+                            </div>  
+                        :
+                            <div className='no-managers'>
+                                <p>There are no dog managers yet, add dog managers under edit.</p>
                             </div>
-                        )
-                        })}
-                    </div>  
-                :
-                    <div className='no-managers'>
-                        <p>There are no dog managers yet, add dog managers under edit.</p>
-                    </div>
+                        }
+                    </>
                 }
             </div>
         )

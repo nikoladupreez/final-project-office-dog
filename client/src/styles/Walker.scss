@@ -320,14 +320,15 @@
     color: #535353;
 }
 
-.command-body {
+#command-body {
+    height: 476px !important;
+    overflow-y: scroll;
+    scrollbar-width: none;
     width: 100%;
-    display: flex;
-    flex-direction: column;
 }
 
 .walker-command-box {
-    margin: 10px 0 0 0;
+    margin: 0 0 10px 22px !important;
     width: 105%;
     height: 117px;
     border-radius: 10px;
