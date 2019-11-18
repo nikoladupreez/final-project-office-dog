@@ -157,6 +157,10 @@
     background-size: contain;
 }
 
+.modal {
+    margin: 90px 0 0 0;
+}
+
 #modal-header {
     display: flex;
     justify-content: center;
@@ -194,11 +198,7 @@
 
 .cookie-box-plus {
     width: 235px;
-<<<<<<< HEAD
     height: 300px;
-=======
-    height: 402px;
->>>>>>> 29dd4fac9e2487a1f605e1daad75403354edcc00
     border-radius: 12px;
     background-image: url('../images/cookie\ 1\ gif.gif');
     background-repeat: no-repeat;
@@ -210,30 +210,10 @@
 }
 
 .cookie-box-min {
-<<<<<<< HEAD
-=======
-    width: 235px;
-    height: 402px;
-    border-radius: 12px;
-    background-image: url('../images/botje\ zonder\ grijze\ streep\ gif.gif');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.cookie-box-start {
->>>>>>> 29dd4fac9e2487a1f605e1daad75403354edcc00
     width: 235px;
     height: 300px;
     border-radius: 12px;
-<<<<<<< HEAD
     background-image: url('../images/botje\ zonder\ grijze\ streep\ gif.gif');
-=======
-    background-image: url('../images/start\ positie\ botje.svg');
->>>>>>> 29dd4fac9e2487a1f605e1daad75403354edcc00
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -242,7 +222,6 @@
     align-items: center;
 }
 
-<<<<<<< HEAD
 .cookie-box-start {
     width: 235px;
     height: 300px;
@@ -259,11 +238,6 @@
 .cookie-box-end {
     width: 235px;
     height: 300px;
-=======
-.cookie-box-end {
-    width: 235px;
-    height: 402px;
->>>>>>> 29dd4fac9e2487a1f605e1daad75403354edcc00
     border-radius: 12px;
     background-image: url('../images/eindpositie\ botje.svg');
     background-size: cover;
