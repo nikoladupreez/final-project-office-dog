@@ -236,11 +236,20 @@ export default class DogHome extends Component {
     increaseCount() {
         let count = this.state.cookieCount;
         let countNew = count + 1;
-        this.setState({
-                        cookieCount: countNew,
-                        cookieStatus: 'animated',
-                        cookieCountChange: 'plus'
-                     });
+
+        if(this.state.cookieCountChange === 'plus'){
+            this.setState({
+                cookieCount: countNew,
+                cookieStatus: 'animated',
+                cookieCountChange: 'min'
+             });
+        } else {
+            this.setState({
+                cookieCount: countNew,
+                cookieStatus: 'animated',
+                cookieCountChange: 'plus'
+             });
+        }
         setTimeout(() => {this.setState({cookieStatus: 'still'})}, 800);
     }
 
@@ -248,11 +257,20 @@ export default class DogHome extends Component {
         if (this.state.cookieCount > 0){
             let count = this.state.cookieCount;
             let countNew = count - 1;
-            this.setState({
-                            cookieCount: countNew,
-                            cookieStatus: 'animated',
-                            cookieCountChange: 'min'
-                         });
+            
+            if(this.state.cookieCountChange === 'plus'){
+                this.setState({
+                    cookieCount: countNew,
+                    cookieStatus: 'animated',
+                    cookieCountChange: 'min'
+                });
+            } else {
+                this.setState({
+                    cookieCount: countNew,
+                    cookieStatus: 'animated',
+                    cookieCountChange: 'plus'
+                });
+            }
         }
         setTimeout(() => {this.setState({cookieStatus: 'still'})}, 800);
     }
@@ -301,7 +319,8 @@ export default class DogHome extends Component {
             case 'min':
                 return 'cookie-box-min';
             default:
-                return 'cookie-box-start';
+                // return 'cookie-box-start';
+                break;
         };
     }
 
