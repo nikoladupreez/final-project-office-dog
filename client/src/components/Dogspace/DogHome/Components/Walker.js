@@ -254,7 +254,8 @@ export default class Walker extends Component {
                                 dialogClassName="modal-90w"
                                 centered='true'
                                 aria-labelledby="ice-modal"
-                                style={{maxWidth: '90%', width: '90%', margin: '0 0 0 18px'}}
+                                container={document.querySelector('#root')}
+                                style={{maxWidth: '85%', width: '85%', height: 'auto', left: '18px', top: '-90px', position: 'absolute', borderRadius: '5px'}}
                             >
                                 <Modal.Header closeButton id='modal-header'>
                                 <Modal.Title id="ice2-title">
@@ -308,7 +309,8 @@ export default class Walker extends Component {
                             dialogClassName="modal-90w"
                             centered='true'
                             aria-labelledby="command-modal"
-                            style={{maxWidth: '90%', width: '90%', margin: '0 0 0 18px'}}
+                            container={document.querySelector('#root')}
+                                style={{maxWidth: '85%', width: '85%', height: 'auto', left: '18px', top: '-90px', position: 'absolute', borderRadius: '5px'}}
                         >
                             <Modal.Header closeButton id='modal-header'>
                             <Modal.Title id="commands-title">
