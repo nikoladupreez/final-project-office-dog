@@ -381,8 +381,9 @@ export default class DogHome extends Component {
                                 centered='true'
                                 dialogClassName="modal-90w"
                                 aria-labelledby="cookie-modal"
-                                style={{maxWidth: '90%', width: '90%', margin: '0 0 0 18px'}}
-                            >
+                                container={document.querySelector('#root')}
+                                style={{maxWidth: '90%', width: '90%', height: 'auto', left: '18px', top: '-90px', position: 'absolute'}}
+                                >
                                 <Modal.Header closeButton id='modal-header'>
                                     <Modal.Title id="cookie-title">
                                         Cookie <br/> Counter
@@ -417,8 +418,9 @@ export default class DogHome extends Component {
                                 dialogClassName="modal-90w"
                                 centered='true'
                                 aria-labelledby="ice-modal"
-                                style={{maxWidth: '90%', width: '90%', margin: '0 0 0 18px', borderRadius: "5px"}}
-                            >
+                                container={document.querySelector('#root')}
+                                style={{maxWidth: '90%', width: '90%', height: 'auto', left: '18px', top: '-90px', position: 'absolute'}}
+                                >
                                 <Modal.Header closeButton id='modal-header'>
                                 {/* <Link to={`/dog/${this.state.dogId}/home/ice/edit`}><div className='edit-btn'></div></Link> */}
                                 <Modal.Title id="ice-title">
