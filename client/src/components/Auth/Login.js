@@ -110,7 +110,8 @@ export default class Login extends Component {
                         centered='true'
                         dialogClassName="modal-90w"
                         aria-labelledby="forgot-password-modal"
-                        style={{maxWidth: '90%', width: '90%', margin: '0 0 0 18px'}}
+                        container={document.querySelector('#root')}
+                        style={{maxWidth: '85%', width: '85%', height: 'auto', left: '18px', top: '-90px', position: 'absolute', borderRadius: '5px'}}
                     >
                         <Modal.Header closeButton id='modal-header'>
                             <Modal.Title id="reset-title">
